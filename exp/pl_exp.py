@@ -1,0 +1,219 @@
+# ruff: noqa: E402
+
+
+import pytorch_lightning as pl
+import torch
+import torch.nn as nn
+from torch import optim
+from torch.optim import lr_scheduler
+
+from models import SimpleMLP, TimeMixer
+from utils.tools import adjust_learning_rate  # noqa
+
+
+class WindPowerExperiment(pl.LightningModule):
+    def __init__(self, config):
+        super(WindPowerExperiment, self).__init__()
+        self.config = config
+        self.model_dict = {
+            "TimeMixer": TimeMixer,
+            "SimpleMLP": SimpleMLP,
+        }
+
+        if config:
+            self.save_hyperparameters(config)
+            # self.save_hyperparameters(vars(config))
+
+        self.model = self._build_model()
+        self.criterion = self._select_criterion()
+        self.configure_metrics()
+
+    def configure_metrics(self):
+        # Initialize metrics
+        self.curr_min_train_loss = float("inf")
+        self.curr_min_vali_loss = float("inf")
+        self.curr_min_test_loss = float("inf")
+
+        self.train_losses = []
+        self.val_losses = []
+        self.test_losses = []
+
+        self.best_metrics = {
+            # best train
+            "train_rmse": float("inf"),
+            "train_custom_acc": float("inf"),
+            "val_rmse_for_best_train": float("inf"),
+            # "val_custom_acc_for_best_train": float("inf"),
+            "test_rmse_for_best_train": float("inf"),
+            # "test_custom_acc_for_best_train": float("inf"),
+            "train_epoch_for_best_train": -1,
+            # best val
+            "val_rmse": float("inf"),
+            "val_custom_acc": float("inf"),
+            "train_rmse_for_best_val": float("inf"),
+            # "train_custom_acc_for_best_val": float("inf"),
+            "test_rmse_for_best_val": float("inf"),
+            # "test_custom_acc_for_best_val": float("inf"),
+            "val_epoch_for_best_val": -1,
+            # best test
+            "test_rmse": float("inf"),
+            "test_custom_acc": float("inf"),
+            "train_rmse_for_best_test": float("inf"),
+            # "train_custom_acc_for_best_test": float("inf"),
+            "val_rmse_for_best_test": float("inf"),
+            # "val_custom_acc_for_best_test": float("inf"),
+            "test_epoch_for_best_test": -1,
+        }
+
+    def common_step(self, batch, batch_idx, phase, dataloader_idx=None):
+        loss = self.process_batch(batch, self.criterion)
+
+        if phase == "train":
+            self.train_losses.append(loss)
+            # Log the learning rate
+            optimizer = self.trainer.optimizers[0]
+            current_lr = optimizer.param_groups[0]["lr"]
+            self.log("LearningRate/train_step", current_lr, on_step=True, logger=True)
+        elif phase == "val":
+            self.val_losses.append(loss)
+        elif phase == "test":
+            self.test_losses.append(loss)
+
+        # Set the current phase for metric callback
+        self.current_phase = phase
+
+        return {"loss": loss}
+
+    def training_step(self, batch, batch_idx):
+        return self.common_step(batch, batch_idx, "train")
+
+    def validation_step(self, batch, batch_idx, dataloader_idx=0):
+        phase = "val" if dataloader_idx == 0 else "test"
+        return self.common_step(batch, batch_idx, phase, dataloader_idx)
+
+    def on_train_epoch_end(self):
+        if not self.train_losses:
+            raise ValueError("No training loss found for epoch end logging.")
+        avg_train_loss = self._aggregate_losses(self.train_losses)
+        self.avg_train_loss = avg_train_loss
+        self.train_losses.clear()
+
+        # Log to TensorBoard with truncated value
+        truncated_train_loss = self._truncate_loss(avg_train_loss)
+        self.log("Loss/train", truncated_train_loss, on_epoch=True, logger=True)
+
+        # todo check if this is necessary
+        # # Adjust the learning rate at the end of each epoch
+        # scheduler = (
+        #     self.lr_schedulers() if self.config.scheduler_type == "OneCycleLR" else None
+        # )
+        # adjust_learning_rate(
+        #     self.trainer.optimizers[0], scheduler, self.current_epoch, self.config
+        # )
+
+    def on_validation_epoch_end(self):
+        if self.val_losses:
+            avg_val_loss = self._aggregate_losses(self.val_losses)
+            self.avg_val_loss = avg_val_loss
+            self.val_losses.clear()
+
+            # Log to TensorBoard with truncated value
+            truncated_val_loss = self._truncate_loss(avg_val_loss)
+            if truncated_val_loss > 10:
+                raise ValueError("Val loss is too large, check the model.")
+            self.log("Loss/val", truncated_val_loss, on_epoch=True, logger=True)
+
+        if self.test_losses:
+            avg_test_loss = self._aggregate_losses(self.test_losses)
+            self.avg_test_loss = avg_test_loss
+            self.test_losses.clear()
+
+            # Log to TensorBoard with truncated value
+            truncated_test_loss = self._truncate_loss(avg_test_loss)
+            self.log("Loss/test", truncated_test_loss, on_epoch=True, logger=True)
+
+    def _truncate_loss(self, loss, max_value=5.0):
+        return torch.clamp(loss, max=max_value)
+
+    def _aggregate_losses(self, losses):
+        # Handle both single tensor and list of tensors cases
+        if isinstance(losses[0], list):
+            losses = [item for sublist in losses for item in sublist]
+        return torch.stack(losses).mean()
+
+    def log_epoch_end_metrics(self):
+        # Log any additional metrics at the end of the epoch if necessary
+        pass
+
+    def process_batch(self, batch, criterion, mask_value=None):
+        batch_x, batch_y, batch_x_mark, batch_y_mark = self._prepare_batch(batch)
+        dec_inp = None
+        outputs = self(batch_x, batch_x_mark, dec_inp, batch_y_mark)
+
+        if mask_value is not None:
+            mask = batch_y == mask_value
+            outputs = torch.where(mask, torch.zeros_like(outputs), outputs)
+        loss = self._compute_loss(outputs, batch_y, criterion)
+        return loss
+
+    def _prepare_batch(self, batch):
+        batch_x, batch_y, batch_x_mark, batch_y_mark = batch
+        return (
+            batch_x.float().to(self.device),
+            batch_y.float().to(self.device),
+            batch_x_mark.float().to(self.device),
+            batch_y_mark.float().to(self.device),
+        )
+
+    def _compute_loss(self, outputs, batch_y, criterion):
+        outputs = outputs[:, :, -1]
+        batch_y = batch_y[:, :, -1].detach()
+        mask = ~torch.isnan(batch_y)
+        return criterion(outputs[mask], batch_y[mask])
+
+    def _build_model(self):
+        model = self.model_dict[self.config.model].Model(self.config).float()
+        return model
+
+    def _select_optimizer(self):
+        return optim.AdamW(
+            self.model.parameters(),
+            lr=self.config.learning_rate,
+            weight_decay=self.config.weight_decay,
+        )
+
+    def _select_criterion(self):
+        return nn.MSELoss() if self.config.data != "PEMS" else nn.L1Loss()
+
+    def configure_optimizers(self):
+        optimizer = self._select_optimizer()
+        if self.config.scheduler_type == "OneCycleLR":
+            scheduler = {
+                "scheduler": lr_scheduler.OneCycleLR(
+                    optimizer=optimizer,
+                    steps_per_epoch=self.config.steps_per_epoch,
+                    pct_start=self.config.pct_start,
+                    epochs=self.config.train_epochs,
+                    max_lr=self.config.learning_rate,
+                ),
+                "interval": "step",
+                "frequency": 1,
+            }
+        elif self.config.scheduler_type == "CosineAnnealingLR":
+            scheduler = {
+                "scheduler": lr_scheduler.CosineAnnealingLR(
+                    optimizer=optimizer, T_max=self.config.T_max, eta_min=1e-6
+                ),
+                "interval": "epoch",
+                "frequency": 1,
+            }
+        else:
+            scheduler = None
+
+        if scheduler:
+            return [optimizer], [scheduler]
+        else:
+            return optimizer
+
+    def forward(self, batch_x, batch_x_mark, dec_inp, batch_y_mark):
+        return self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)

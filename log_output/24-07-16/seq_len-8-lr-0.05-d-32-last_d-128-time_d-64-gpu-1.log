@@ -1,0 +1,124 @@
+Running experiment with config: Namespace(seed=17, is_training=1, task_name='default', des='test', comment='grid search', log_output_dir='/data3/lsf/Pein/Power-Prediction/log_output/24-07-16', output_dir='/data3/lsf/Pein/Power-Prediction/output/24-07-16', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metrics.log', data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_data_89_withTime.csv', test_path='train_data_89_withTime.csv', train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', model='SimpleMLP', input_dim=75, dec_in=75, output_dim=1, d_model=32, n_heads=4, e_layers=8, d_layers=1, hidden_dim=128, last_hidden_dim=128, top_k=5, num_kernels=6, activation='gelu', time_d_model=64, combine_type='add', seq_len=8, pred_len=1, exp_settings='seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-8-comb_type-add-bs-1100', gradient_clip_val=2, train_epochs=100, batch_size=1100, early_stop_patience=6, learning_rate=0.05, loss='MSE', lradj='TST', pct_start=0.2, use_amp=False, moving_avg=25, dropout=0.1, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg', scheduler_type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, Reduce_factor=0.2, use_gpu=True, gpu=1, use_multi_gpu=False, use_all_gpus_for_search=True, min_y_value=0.0)
+
+
+min_y_value has been set to 0.0
+
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_exp ...
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/fit_loop.py:298: The number of training batches (11) is smaller than the logging interval Trainer(log_every_n_steps=1100). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+Epoch 1:
+val loss improved to 0.05684
+test loss improved to 0.06893
+train loss: inf | val loss: 0.05684 | test loss: 0.06893
+
+Experiment Settings: seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-8-comb_type-add-bs-1100
++------------------------------+---------------+---------------+---------------+-------+
+| Metric                       | Training      | Validation    | Test          | Epoch |
++------------------------------+---------------+---------------+---------------+-------+
+| Train RMSE                   | inf           | inf           | inf           | -1    |
+| Val RMSE                     | 357.2704      | 471.0760      | 382.9991      | 1     |
+| Test RMSE                    | 357.2704      | 471.0760      | 382.9991      | 1     |
+| Best Train Custom Accuracy   | inf           |               |               | -1    |
+| Best Val Custom Accuracy     |               | -220.3241     |               | 1     |
+| Best Test Custom Accuracy    |               |               | -134.1299     | 1     |
++------------------------------+---------------+---------------+---------------+-------+
+Epoch 2:
+train loss improved to 0.11466
+test loss improved to 0.05073
+train loss: 0.11466 | val loss: 0.05684 | test loss: 0.05073
+
+Experiment Settings: seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-8-comb_type-add-bs-1100
++------------------------------+---------------+---------------+---------------+-------+
+| Metric                       | Training      | Validation    | Test          | Epoch |
++------------------------------+---------------+---------------+---------------+-------+
+| Train RMSE                   | 574.6703      | 511.8827      | 563.0836      | 2     |
+| Val RMSE                     | 357.2704      | 471.0760      | 382.9991      | 1     |
+| Test RMSE                    | 574.6703      | 511.8827      | 563.0836      | 2     |
+| Best Train Custom Accuracy   | -51.3875      |               |               | 2     |
+| Best Val Custom Accuracy     |               | -220.3241     |               | 1     |
+| Best Test Custom Accuracy    |               |               | -28.6431      | 2     |
++------------------------------+---------------+---------------+---------------+-------+
+Epoch 3:
+train loss improved to 0.03228
+train loss: 0.03228 | val loss: 0.05684 | test loss: 0.05073
+
+Experiment Settings: seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-8-comb_type-add-bs-1100
++------------------------------+---------------+---------------+---------------+-------+
+| Metric                       | Training      | Validation    | Test          | Epoch |
++------------------------------+---------------+---------------+---------------+-------+
+| Train RMSE                   | 771.5355      | 568.5656      | 735.7066      | 3     |
+| Val RMSE                     | 357.2704      | 471.0760      | 382.9991      | 1     |
+| Test RMSE                    | 574.6703      | 511.8827      | 563.0836      | 2     |
+| Best Train Custom Accuracy   | -96.1183      |               |               | 3     |
+| Best Val Custom Accuracy     |               | -220.3241     |               | 1     |
+| Best Test Custom Accuracy    |               |               | -28.6431      | 2     |
++------------------------------+---------------+---------------+---------------+-------+
+Epoch 4:
+train loss improved to 0.02362
+train loss: 0.02362 | val loss: 0.05684 | test loss: 0.05073
+
+Experiment Settings: seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-8-comb_type-add-bs-1100
++------------------------------+---------------+---------------+---------------+-------+
+| Metric                       | Training      | Validation    | Test          | Epoch |
++------------------------------+---------------+---------------+---------------+-------+
+| Train RMSE                   | 587.8013      | 545.6511      | 580.0004      | 4     |
+| Val RMSE                     | 357.2704      | 471.0760      | 382.9991      | 1     |
+| Test RMSE                    | 574.6703      | 511.8827      | 563.0836      | 2     |
+| Best Train Custom Accuracy   | -74.1309      |               |               | 4     |
+| Best Val Custom Accuracy     |               | -220.3241     |               | 1     |
+| Best Test Custom Accuracy    |               |               | -28.6431      | 2     |
++------------------------------+---------------+---------------+---------------+-------+
+Epoch 5:
+train loss improved to 0.01931
+train loss: 0.01931 | val loss: 0.05684 | test loss: 0.05073
+
+Experiment Settings: seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-8-comb_type-add-bs-1100
++------------------------------+---------------+---------------+---------------+-------+
+| Metric                       | Training      | Validation    | Test          | Epoch |
++------------------------------+---------------+---------------+---------------+-------+
+| Train RMSE                   | 774.3892      | 626.4024      | 747.3817      | 5     |
+| Val RMSE                     | 357.2704      | 471.0760      | 382.9991      | 1     |
+| Test RMSE                    | 574.6703      | 511.8827      | 563.0836      | 2     |
+| Best Train Custom Accuracy   | -150.4225     |               |               | 5     |
+| Best Val Custom Accuracy     |               | -220.3241     |               | 1     |
+| Best Test Custom Accuracy    |               |               | -28.6431      | 2     |
++------------------------------+---------------+---------------+---------------+-------+
+Epoch 6:
+train loss improved to 0.01712
+train loss: 0.01712 | val loss: 0.05684 | test loss: 0.05073
+
+Experiment Settings: seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-8-comb_type-add-bs-1100
++------------------------------+---------------+---------------+---------------+-------+
+| Metric                       | Training      | Validation    | Test          | Epoch |
++------------------------------+---------------+---------------+---------------+-------+
+| Train RMSE                   | 264.0056      | 445.0253      | 309.4317      | 6     |
+| Val RMSE                     | 357.2704      | 471.0760      | 382.9991      | 1     |
+| Test RMSE                    | 574.6703      | 511.8827      | 563.0836      | 2     |
+| Best Train Custom Accuracy   | -65.5683      |               |               | 6     |
+| Best Val Custom Accuracy     |               | -220.3241     |               | 1     |
+| Best Test Custom Accuracy    |               |               | -28.6431      | 2     |
++------------------------------+---------------+---------------+---------------+-------+
+Epoch 7:
+train loss improved to 0.01659
+test loss improved to 0.04370
+train loss: 0.01659 | val loss: 0.05684 | test loss: 0.04370
+
+Experiment Settings: seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-8-comb_type-add-bs-1100
++------------------------------+---------------+---------------+---------------+-------+
+| Metric                       | Training      | Validation    | Test          | Epoch |
++------------------------------+---------------+---------------+---------------+-------+
+| Train RMSE                   | 277.9768      | 451.7008      | 320.8201      | 7     |
+| Val RMSE                     | 357.2704      | 471.0760      | 382.9991      | 1     |
+| Test RMSE                    | 277.9768      | 451.7008      | 320.8201      | 7     |
+| Best Train Custom Accuracy   | -10.5800      |               |               | 7     |
+| Best Val Custom Accuracy     |               | -220.3241     |               | 1     |
+| Best Test Custom Accuracy    |               |               | -3.3262       | 7     |
++------------------------------+---------------+---------------+---------------+-------+
+
+min_y_value has been set to 0.0
+
+Figure saved to /data3/lsf/Pein/Power-Prediction/output/24-07-16/seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-8-comb_type-add-bs-1100/version_0/plots/scaled_transform_together.pdf
+Figure saved to /data3/lsf/Pein/Power-Prediction/output/24-07-16/seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-8-comb_type-add-bs-1100/version_0/plots/scaled_transform_separate.pdf
+Figure saved to /data3/lsf/Pein/Power-Prediction/output/24-07-16/seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-8-comb_type-add-bs-1100/version_0/plots/original_transform_together.pdf
+Figure saved to /data3/lsf/Pein/Power-Prediction/output/24-07-16/seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-8-comb_type-add-bs-1100/version_0/plots/original_transform_separate.pdf
+best metrics saved to /data3/lsf/Pein/Power-Prediction/output/24-07-16/seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-8-comb_type-add-bs-1100/version_0/metrics.csv successfully.
+Experiment finished.

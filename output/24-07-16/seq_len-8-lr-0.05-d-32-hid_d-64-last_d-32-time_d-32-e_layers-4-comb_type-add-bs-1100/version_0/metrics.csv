@@ -1,0 +1,2 @@
+exp_date,train_rmse,train_custom_acc,val_rmse_for_best_train,test_rmse_for_best_train,train_epoch_for_best_train,val_rmse,val_custom_acc,train_rmse_for_best_val,test_rmse_for_best_val,val_epoch_for_best_val,test_rmse,test_custom_acc,train_rmse_for_best_test,val_rmse_for_best_test,test_epoch_for_best_test,seq_len,lr,d,hid_d,last_d,time_d,e_layers,comb_type,bs
+2024-07-16 19:28,143.45064,48.57288360595703,428.8358,231.08684,21,474.76694,-80.16192626953125,297.23495,340.1372,16,340.1372,6.526993751525879,297.23495,474.76694,16,8,0.05,32,64,32,32,4,add,1100

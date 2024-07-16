@@ -1,0 +1,8 @@
+# Ignore everything under the data directory
+/data
+
+# Ignore all .pth files
+*.pth
+
+# Ignore __pycache__ directories
+__pycache__/
