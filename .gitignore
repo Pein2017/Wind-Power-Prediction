@@ -1,5 +1,5 @@
 # Ignore everything under the data directory
-/data
+/data/
 
 # Ignore all .pth files
 *.pth
@@ -7,5 +7,6 @@
 # Ignore __pycache__ directories
 __pycache__/
 
-/log_output
-/output
+# Ignore everything under log_output and output directories
+/log_output/
+/output/

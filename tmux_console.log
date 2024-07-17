@@ -1113,3 +1113,848 @@ Metric Loss/val improved by 0.007 >= min_delta = 0.0. New best score: 0.050
 Metric Loss/val improved by 0.001 >= min_delta = 0.0. New best score: 0.053
 Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 0.051
 Metric Loss/val improved by 0.000 >= min_delta = 0.0. New best score: 0.051
+Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 0.049
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.050. Signaling Trainer to stop.
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 133 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+133 K     Trainable params
+0         Non-trainable params
+133 K     Total params
+0.535     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 108 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+108 K     Trainable params
+0         Non-trainable params
+108 K     Total params
+0.435     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 0.131
+Metric Loss/val improved by 0.039 >= min_delta = 0.0. New best score: 0.092
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.049. Signaling Trainer to stop.
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 292 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+292 K     Trainable params
+0         Non-trainable params
+292 K     Total params
+1.169     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 193 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+193 K     Trainable params
+0         Non-trainable params
+193 K     Total params
+0.775     Total estimated model params size (MB)
+Metric Loss/val improved by 0.012 >= min_delta = 0.0. New best score: 0.080
+Metric Loss/val improved. New best score: 0.140
+Metric Loss/val improved by 0.067 >= min_delta = 0.0. New best score: 0.073
+Metric Loss/val improved by 0.025 >= min_delta = 0.0. New best score: 0.055
+Metric Loss/val improved by 0.014 >= min_delta = 0.0. New best score: 0.058
+Metric Loss/val improved by 0.006 >= min_delta = 0.0. New best score: 0.049
+Metric Loss/val improved by 0.007 >= min_delta = 0.0. New best score: 0.051
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.049. Signaling Trainer to stop.
+Metric Loss/val improved by 0.001 >= min_delta = 0.0. New best score: 0.050
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 133 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+133 K     Trainable params
+0         Non-trainable params
+133 K     Total params
+0.535     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 108 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+108 K     Trainable params
+0         Non-trainable params
+108 K     Total params
+0.435     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 2.758
+Metric Loss/val improved by 2.424 >= min_delta = 0.0. New best score: 0.334
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.050. Signaling Trainer to stop.
+Metric Loss/val improved by 0.063 >= min_delta = 0.0. New best score: 0.271
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 292 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+292 K     Trainable params
+0         Non-trainable params
+292 K     Total params
+1.169     Total estimated model params size (MB)
+Metric Loss/val improved by 0.145 >= min_delta = 0.0. New best score: 0.125
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 193 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+193 K     Trainable params
+0         Non-trainable params
+193 K     Total params
+0.775     Total estimated model params size (MB)
+Metric Loss/val improved by 0.036 >= min_delta = 0.0. New best score: 0.090
+Metric Loss/val improved. New best score: 0.108
+Metric Loss/val improved by 0.034 >= min_delta = 0.0. New best score: 0.056
+Metric Loss/val improved by 0.033 >= min_delta = 0.0. New best score: 0.075
+Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 0.073
+Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 0.053
+Metric Loss/val improved by 0.010 >= min_delta = 0.0. New best score: 0.063
+Metric Loss/val improved by 0.005 >= min_delta = 0.0. New best score: 0.058
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.053. Signaling Trainer to stop.
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+Metric Loss/val improved by 0.003 >= min_delta = 0.0. New best score: 0.054
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 133 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+133 K     Trainable params
+0         Non-trainable params
+133 K     Total params
+0.535     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 57.5 K | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+57.5 K    Trainable params
+0         Non-trainable params
+57.5 K    Total params
+0.230     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 0.068
+Metric Loss/val improved by 0.009 >= min_delta = 0.0. New best score: 0.059
+Metric Loss/val improved by 0.008 >= min_delta = 0.0. New best score: 0.051
+Metric Loss/val improved by 0.003 >= min_delta = 0.0. New best score: 0.048
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.054. Signaling Trainer to stop.
+Metric Loss/val improved by 0.001 >= min_delta = 0.0. New best score: 0.047
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 292 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+292 K     Trainable params
+0         Non-trainable params
+292 K     Total params
+1.169     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.4 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.4 M     Trainable params
+0         Non-trainable params
+1.4 M     Total params
+5.549     Total estimated model params size (MB)
+Metric Loss/val improved by 0.006 >= min_delta = 0.0. New best score: 0.041
+Metric Loss/val improved. New best score: 0.067
+Metric Loss/val improved by 0.009 >= min_delta = 0.0. New best score: 0.058
+Metric Loss/val improved by 0.005 >= min_delta = 0.0. New best score: 0.053
+Metric Loss/val improved by 0.001 >= min_delta = 0.0. New best score: 0.051
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.041. Signaling Trainer to stop.
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 82.5 K | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+82.5 K    Trainable params
+0         Non-trainable params
+82.5 K    Total params
+0.330     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 57.5 K | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+57.5 K    Trainable params
+0         Non-trainable params
+57.5 K    Total params
+0.230     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 0.060
+Metric Loss/val improved by 0.005 >= min_delta = 0.0. New best score: 0.055
+Metric Loss/val improved by 0.001 >= min_delta = 0.0. New best score: 0.051
+Metric Loss/val improved by 0.008 >= min_delta = 0.0. New best score: 0.047
+Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 0.048
+Metric Loss/val improved by 0.004 >= min_delta = 0.0. New best score: 0.043
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.048. Signaling Trainer to stop.
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.5 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.5 M     Trainable params
+0         Non-trainable params
+1.5 M     Total params
+5.943     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.4 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.4 M     Trainable params
+0         Non-trainable params
+1.4 M     Total params
+5.549     Total estimated model params size (MB)
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.043. Signaling Trainer to stop.
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 82.5 K | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+82.5 K    Trainable params
+0         Non-trainable params
+82.5 K    Total params
+0.330     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 117 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+117 K     Trainable params
+0         Non-trainable params
+117 K     Total params
+0.472     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 0.102
+Metric Loss/val improved. New best score: 0.085
+Metric Loss/val improved by 0.004 >= min_delta = 0.0. New best score: 0.098
+Metric Loss/val improved by 0.019 >= min_delta = 0.0. New best score: 0.079
+Metric Loss/val improved by 0.019 >= min_delta = 0.0. New best score: 0.066
+Metric Loss/val improved by 0.024 >= min_delta = 0.0. New best score: 0.055
+Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 0.063
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.055. Signaling Trainer to stop.
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.063. Signaling Trainer to stop.
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.5 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.5 M     Trainable params
+0         Non-trainable params
+1.5 M     Total params
+5.943     Total estimated model params size (MB)
+Seed set to 17
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.4 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.4 M     Trainable params
+0         Non-trainable params
+1.4 M     Total params
+5.549     Total estimated model params size (MB)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 140 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+140 K     Trainable params
+0         Non-trainable params
+140 K     Total params
+0.563     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 117 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+117 K     Trainable params
+0         Non-trainable params
+117 K     Total params
+0.472     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 5.000
+Metric Loss/val improved. New best score: 0.207
+Metric Loss/val improved by 2.882 >= min_delta = 0.0. New best score: 2.118
+Metric Loss/val improved by 1.553 >= min_delta = 0.0. New best score: 0.565
+Metric Loss/val improved by 0.262 >= min_delta = 0.0. New best score: 0.303
+Metric Loss/val improved by 0.063 >= min_delta = 0.0. New best score: 0.144
+Metric Loss/val improved by 0.117 >= min_delta = 0.0. New best score: 0.187
+Metric Loss/val improved by 0.062 >= min_delta = 0.0. New best score: 0.082
+Metric Loss/val improved by 0.123 >= min_delta = 0.0. New best score: 0.063
+Metric Loss/val improved by 0.016 >= min_delta = 0.0. New best score: 0.066
+Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 0.061
+Metric Loss/val improved by 0.001 >= min_delta = 0.0. New best score: 0.059
+Metric Loss/val improved by 0.009 >= min_delta = 0.0. New best score: 0.050
+Metric Loss/val improved by 0.007 >= min_delta = 0.0. New best score: 0.058
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.058. Signaling Trainer to stop.
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 140 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+140 K     Trainable params
+0         Non-trainable params
+140 K     Total params
+0.563     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 45.1 K | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+45.1 K    Trainable params
+0         Non-trainable params
+45.1 K    Total params
+0.180     Total estimated model params size (MB)
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.050. Signaling Trainer to stop.
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.5 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.5 M     Trainable params
+0         Non-trainable params
+1.5 M     Total params
+5.943     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 0.124
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.4 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.4 M     Trainable params
+0         Non-trainable params
+1.4 M     Total params
+5.549     Total estimated model params size (MB)
+Metric Loss/val improved by 0.046 >= min_delta = 0.0. New best score: 0.078
+Metric Loss/val improved. New best score: 5.000
+Metric Loss/val improved by 0.024 >= min_delta = 0.0. New best score: 0.054
+Metric Loss/val improved by 2.281 >= min_delta = 0.0. New best score: 2.719
+Metric Loss/val improved by 1.919 >= min_delta = 0.0. New best score: 0.800
+Metric Loss/val improved by 0.007 >= min_delta = 0.0. New best score: 0.047
+Metric Loss/val improved by 0.359 >= min_delta = 0.0. New best score: 0.441
+Metric Loss/val improved by 0.263 >= min_delta = 0.0. New best score: 0.178
+Metric Loss/val improved by 0.059 >= min_delta = 0.0. New best score: 0.119
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.047. Signaling Trainer to stop.
+Metric Loss/val improved by 0.049 >= min_delta = 0.0. New best score: 0.069
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 67.9 K | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+67.9 K    Trainable params
+0         Non-trainable params
+67.9 K    Total params
+0.272     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 45.1 K | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+45.1 K    Trainable params
+0         Non-trainable params
+45.1 K    Total params
+0.180     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 0.081
+Metric Loss/val improved by 0.036 >= min_delta = 0.0. New best score: 0.045
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.069. Signaling Trainer to stop.
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.5 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.5 M     Trainable params
+0         Non-trainable params
+1.5 M     Total params
+5.943     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 293 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+293 K     Trainable params
+0         Non-trainable params
+293 K     Total params
+1.173     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 0.330
+Metric Loss/val improved by 0.091 >= min_delta = 0.0. New best score: 0.240
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.045. Signaling Trainer to stop.
+Metric Loss/val improved by 0.059 >= min_delta = 0.0. New best score: 0.180
+Seed set to 17
+Metric Loss/val improved by 0.115 >= min_delta = 0.0. New best score: 0.065
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 67.9 K | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+67.9 K    Trainable params
+0         Non-trainable params
+67.9 K    Total params
+0.272     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 45.1 K | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+45.1 K    Trainable params
+0         Non-trainable params
+45.1 K    Total params
+0.180     Total estimated model params size (MB)
+Metric Loss/val improved by 0.004 >= min_delta = 0.0. New best score: 0.061
+Metric Loss/val improved. New best score: 0.069
+Metric Loss/val improved by 0.004 >= min_delta = 0.0. New best score: 0.065
+Metric Loss/val improved by 0.014 >= min_delta = 0.0. New best score: 0.047
+Metric Loss/val improved by 0.004 >= min_delta = 0.0. New best score: 0.061
+Metric Loss/val improved by 0.005 >= min_delta = 0.0. New best score: 0.056
+Metric Loss/val improved by 0.004 >= min_delta = 0.0. New best score: 0.053
+Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 0.051
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.047. Signaling Trainer to stop.
+Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 0.049
+Seed set to 17
+Metric Loss/val improved by 0.000 >= min_delta = 0.0. New best score: 0.048
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 392 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+392 K     Trainable params
+0         Non-trainable params
+392 K     Total params
+1.568     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 293 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+293 K     Trainable params
+0         Non-trainable params
+293 K     Total params
+1.173     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 0.363
+Metric Loss/val improved by 0.142 >= min_delta = 0.0. New best score: 0.221
+Metric Loss/val improved by 0.120 >= min_delta = 0.0. New best score: 0.101
+Metric Loss/val improved by 0.049 >= min_delta = 0.0. New best score: 0.052
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.048. Signaling Trainer to stop.
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 67.9 K | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+67.9 K    Trainable params
+0         Non-trainable params
+67.9 K    Total params
+0.272     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 45.1 K | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+45.1 K    Trainable params
+0         Non-trainable params
+45.1 K    Total params
+0.180     Total estimated model params size (MB)
+Metric Loss/val improved by 0.007 >= min_delta = 0.0. New best score: 0.045
+Metric Loss/val improved. New best score: 0.096
+Metric Loss/val improved by 0.033 >= min_delta = 0.0. New best score: 0.063
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.045. Signaling Trainer to stop.
+Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 0.061
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 392 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+392 K     Trainable params
+0         Non-trainable params
+392 K     Total params
+1.568     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 293 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+293 K     Trainable params
+0         Non-trainable params
+293 K     Total params
+1.173     Total estimated model params size (MB)
+Metric Loss/val improved by 0.004 >= min_delta = 0.0. New best score: 0.057
+Metric Loss/val improved. New best score: 0.777
+Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 0.055
+Metric Loss/val improved by 0.332 >= min_delta = 0.0. New best score: 0.445
+Metric Loss/val improved by 0.001 >= min_delta = 0.0. New best score: 0.054
+Metric Loss/val improved by 0.311 >= min_delta = 0.0. New best score: 0.134
+Metric Loss/val improved by 0.003 >= min_delta = 0.0. New best score: 0.051
+Metric Loss/val improved by 0.069 >= min_delta = 0.0. New best score: 0.065
+Metric Loss/val improved by 0.000 >= min_delta = 0.0. New best score: 0.064
+Metric Loss/val improved by 0.011 >= min_delta = 0.0. New best score: 0.053
+Metric Loss/val improved by 0.001 >= min_delta = 0.0. New best score: 0.052
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.051. Signaling Trainer to stop.
+Metric Loss/val improved by 0.005 >= min_delta = 0.0. New best score: 0.048
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 67.9 K | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+67.9 K    Trainable params
+0         Non-trainable params
+67.9 K    Total params
+0.272     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 122 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+122 K     Trainable params
+0         Non-trainable params
+122 K     Total params
+0.489     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 0.185
+Metric Loss/val improved by 0.051 >= min_delta = 0.0. New best score: 0.134
+Metric Loss/val improved by 0.058 >= min_delta = 0.0. New best score: 0.075
+Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 0.074
+Metric Loss/val improved by 0.000 >= min_delta = 0.0. New best score: 0.047
+Metric Loss/val improved by 0.021 >= min_delta = 0.0. New best score: 0.053
+Metric Loss/val improved by 0.008 >= min_delta = 0.0. New best score: 0.045
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.047. Signaling Trainer to stop.
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 392 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+392 K     Trainable params
+0         Non-trainable params
+392 K     Total params
+1.568     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 293 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+293 K     Trainable params
+0         Non-trainable params
+293 K     Total params
+1.173     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 0.437
+Metric Loss/val improved by 0.328 >= min_delta = 0.0. New best score: 0.109
+Metric Loss/val improved by 0.036 >= min_delta = 0.0. New best score: 0.073
+Monitored metric Loss/val did not improve in the last 6 records. Best score: 0.045. Signaling Trainer to stop.
+Metric Loss/val improved by 0.013 >= min_delta = 0.0. New best score: 0.061
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 145 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+145 K     Trainable params
+0         Non-trainable params
+145 K     Total params
+0.581     Total estimated model params size (MB)
+Seed set to 17
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 122 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+122 K     Trainable params
+0         Non-trainable params
+122 K     Total params
+0.489     Total estimated model params size (MB)
