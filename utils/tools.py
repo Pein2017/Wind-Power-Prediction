@@ -203,3 +203,14 @@ def get_next_version(output_dir):
         if existing_versions:
             version = max(existing_versions) + 1
     return version
+
+
+def get_last_order_number(log_path):
+    if not os.path.exists(log_path):
+        return 0
+    with open(log_path, "r") as f:
+        lines = f.readlines()
+        for line in reversed(lines):
+            if line.strip().startswith("| Order Number"):
+                return int(line.split("|")[1].strip())  # Extract the last order number
+    return 0

@@ -1,6 +1,8 @@
 import os
 import sys
+import time
 import traceback
+from datetime import timedelta
 
 import pathos.multiprocessing as mp
 import torch
@@ -13,15 +15,16 @@ from utils.config import dict_to_namespace, load_config, parse_args
 from utils.exp_search import generate_hyperparameter_combinations
 
 # Define the search space for hyperparameters
-search_space = {
+SEARCH_SPACE = {
     "d_model": [32, 64, 128],
-    "hidden_dim": [64, 128, 256, 512],
-    "last_hidden_dim": [32, 64, 128, 256, 512],
-    "time_d_model": [32, 64],
-    "seq_len": [8, 16, 24],
-    "learning_rate": [0.05, 0.08, 0.1, 0.15, 0.18, 0.2],
+    "hidden_dim": [64, 256],
+    "last_hidden_dim": [32, 64, 256],
+    "time_d_model": [32],
+    "e_layers": [2, 8],
+    "learning_rate": [0.01, 0.05, 0.1, 0.2],
+    "combine_type": ["add", "concat"],
     "train_epochs": [100],
-    "e_layers": [2, 4, 6, 8, 12],
+    "seq_len": [8],
 }
 
 
@@ -62,7 +65,48 @@ def worker(config, device_id=None):
     """Worker function to run an experiment."""
     if device_id is not None:
         config.gpu = device_id
+    start_time = time.time()
     execute_experiment_with_logging(config)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    return elapsed_time
+
+
+def run_experiments_in_order(configurations):
+    total_experiments = len(configurations)
+    for i, config in enumerate(configurations):
+        print(f"Running {i+1}/{total_experiments} of the experiments.")
+        try:
+            exp_start_time = time.time()
+            elapsed_time = worker(config)
+            exp_end_time = time.time()
+            total_elapsed_time = exp_end_time - exp_start_time
+            print(
+                f"Completed {i+1}/{total_experiments} of the experiments in {timedelta(seconds=total_elapsed_time)}."
+            )
+        except Exception as e:
+            print(f"Error during experiment {i+1}: {e}")
+
+
+def run_experiments_in_parallel(configurations, num_devices):
+    start_time = time.time()
+    with mp.Pool(processes=num_devices) as pool:
+        try:
+            results = pool.starmap(
+                worker,
+                [(config, i % num_devices) for i, config in enumerate(configurations)],
+            )
+        except KeyboardInterrupt:
+            print("Caught KeyboardInterrupt, terminating workers")
+            pool.terminate()
+        finally:
+            pool.close()
+            pool.join()
+    total_elapsed_time = time.time() - start_time
+    print(f"Total elapsed time: {timedelta(seconds=total_elapsed_time)}")
+    print(
+        f"Average time per experiment: {timedelta(seconds=total_elapsed_time / len(configurations))}"
+    )
 
 
 def main():
@@ -71,52 +115,27 @@ def main():
 
     # Generate hyperparameter combinations
     configurations = list(
-        generate_hyperparameter_combinations(base_config, search_space)
+        generate_hyperparameter_combinations(base_config, SEARCH_SPACE)
     )
-
-    # Convert configurations to argparse.Namespace
     configurations = [dict_to_namespace(config) for config in configurations]
 
     print(f"Total number of experiments: {len(configurations)}")
 
-    # Get the number of available devices
     num_devices = torch.cuda.device_count()
-
     use_multi_gpu = base_config.get("use_multi_gpu", False)
     use_gpu = base_config.get("use_gpu", False)
     use_all_gpus_for_search = base_config.get("use_all_gpus_for_search", False)
 
     if use_multi_gpu:
         print("Using multiple GPUs for each experiment.")
-        for config in configurations:
-            execute_experiment_with_logging(config)
+        run_experiments_in_order(configurations)
     elif use_gpu:
         if use_all_gpus_for_search:
             print("Using all GPUs to conduct a grid search in parallel.")
-            with mp.Pool(processes=num_devices) as pool:
-                try:
-                    pool.starmap(
-                        worker,
-                        [
-                            (config, i % num_devices)
-                            for i, config in enumerate(configurations)
-                        ],
-                    )
-                except KeyboardInterrupt:
-                    print("Caught KeyboardInterrupt, terminating workers")
-                    pool.terminate()
-                finally:
-                    pool.close()
-                    pool.join()
+            run_experiments_in_parallel(configurations, num_devices)
         else:
             print("Using single GPU to conduct a grid search in order.")
-            for i, config in enumerate(configurations):
-                print(f"Running {i+1}/{len(configurations)} of the experiments.")
-                try:
-                    worker(config)
-                    print(f"Completed {i+1}/{len(configurations)} of the experiments.")
-                except Exception as e:
-                    print(f"Error during experiment {i+1}: {e}")
+            run_experiments_in_order(configurations)
     else:
         raise ValueError("No GPU available for experiments.")
 

@@ -1,40 +1,64 @@
-Running experiment with config: Namespace(seed=17, is_training=1, task_name='default', des='test', comment='grid search', log_output_dir='/data3/lsf/Pein/Power-Prediction/log_output/24-07-16', output_dir='/data3/lsf/Pein/Power-Prediction/output/24-07-16', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metrics.log', data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_data_89_withTime.csv', test_path='train_data_89_withTime.csv', train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', model='SimpleMLP', input_dim=75, dec_in=75, output_dim=1, d_model=32, n_heads=4, e_layers=12, d_layers=1, hidden_dim=128, last_hidden_dim=128, top_k=5, num_kernels=6, activation='gelu', time_d_model=64, combine_type='add', seq_len=8, pred_len=1, exp_settings='seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-12-comb_type-add-bs-1100', gradient_clip_val=2, train_epochs=100, batch_size=1100, early_stop_patience=6, learning_rate=0.05, loss='MSE', lradj='TST', pct_start=0.2, use_amp=False, moving_avg=25, dropout=0.1, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg', scheduler_type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, Reduce_factor=0.2, use_gpu=True, gpu=0, use_multi_gpu=False, use_all_gpus_for_search=True, min_y_value=0.0)
+Running experiment with config: Namespace(seed=17, is_training=1, task_name='default', des='test', comment='grid search', log_output_dir='/data3/lsf/Pein/Power-Prediction/log_output/24-07-16', output_dir='/data3/lsf/Pein/Power-Prediction/output/24-07-16', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metrics.log', data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_data_89_withTime.csv', test_path='train_data_89_withTime.csv', train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', model='SimpleMLP', input_dim=75, dec_in=75, output_dim=1, d_model=32, n_heads=4, e_layers=12, d_layers=1, hidden_dim=256, last_hidden_dim=128, top_k=5, num_kernels=6, activation='gelu', time_d_model=64, combine_type='add', seq_len=8, pred_len=1, exp_settings='seq_len-8-lr-0.05-d-32-hid_d-256-last_d-128-time_d-64-e_layers-12-comb_type-add-bs-1100', gradient_clip_val=2, train_epochs=100, batch_size=1100, early_stop_patience=6, learning_rate=0.05, loss='MSE', lradj='TST', pct_start=0.2, use_amp=False, moving_avg=25, dropout=0.1, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg', scheduler_type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, Reduce_factor=0.2, use_gpu=True, gpu=0, use_multi_gpu=False, use_all_gpus_for_search=True, min_y_value=0.0)
 
+--- Logging error ---
+Traceback (most recent call last):
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/logging/__init__.py", line 1103, in emit
+    stream.write(msg + self.terminator)
+OSError: [Errno 5] Input/output error
+Call stack:
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_exp.py", line 125, in <module>
+    main()
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_exp.py", line 96, in main
+    with mp.Pool(processes=num_devices) as pool:
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/multiprocess/pool.py", line 215, in __init__
+    self._repopulate_pool()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/multiprocess/pool.py", line 306, in _repopulate_pool
+    return self._repopulate_pool_static(self._ctx, self.Process,
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/multiprocess/pool.py", line 329, in _repopulate_pool_static
+    w.start()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/multiprocess/process.py", line 121, in start
+    self._popen = self._Popen(self)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/multiprocess/context.py", line 281, in _Popen
+    return Popen(process_obj)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/multiprocess/popen_fork.py", line 19, in __init__
+    self._launch(process_obj)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/multiprocess/popen_fork.py", line 71, in _launch
+    code = process_obj._bootstrap(parent_sentinel=child_r)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/multiprocess/pool.py", line 51, in starmapstar
+    return list(itertools.starmap(args[0], args[1]))
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_exp.py", line 65, in worker
+    execute_experiment_with_logging(config)
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_exp.py", line 51, in execute_experiment_with_logging
+    execute_experiment(config)
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/single_exp.py", line 42, in execute_experiment
+    return devices, strategy
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/single_exp.py", line 26, in set_seed
+    def set_seed(seed):
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/utilities/seed.py", line 54, in seed_everything
+    log.info(rank_prefixed_message(f"Seed set to {seed}", _get_rank()))
+Message: 'Seed set to 17'
+Arguments: ()
 
 min_y_value has been set to 0.0
 
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_exp ...
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/fit_loop.py:298: The number of training batches (11) is smaller than the logging interval Trainer(log_every_n_steps=1100). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
-Epoch 1:
-val loss improved to 0.10313
-test loss improved to 0.18170
-train loss: inf | val loss: 0.10313 | test loss: 0.18170
-
-Experiment Settings: seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-12-comb_type-add-bs-1100
-+------------------------------+---------------+---------------+---------------+-------+
-| Metric                       | Training      | Validation    | Test          | Epoch |
-+------------------------------+---------------+---------------+---------------+-------+
-| Train RMSE                   | inf           | inf           | inf           | -1    |
-| Val RMSE                     | 493.5688      | 539.0750      | 503.4590      | 1     |
-| Test RMSE                    | 493.5688      | 539.0750      | 503.4590      | 1     |
-| Best Train Custom Accuracy   | inf           |               |               | -1    |
-| Best Val Custom Accuracy     |               | -27.0374      |               | 1     |
-| Best Test Custom Accuracy    |               |               | 11.8852       | 1     |
-+------------------------------+---------------+---------------+---------------+-------+
-Epoch 2:
-train loss improved to 0.16569
-val loss improved to 0.08701
-test loss improved to 0.08424
-train loss: 0.16569 | val loss: 0.08701 | test loss: 0.08424
-
-Experiment Settings: seq_len-8-lr-0.05-d-32-hid_d-128-last_d-128-time_d-64-e_layers-12-comb_type-add-bs-1100
-+------------------------------+---------------+---------------+---------------+-------+
-| Metric                       | Training      | Validation    | Test          | Epoch |
-+------------------------------+---------------+---------------+---------------+-------+
-| Train RMSE                   | 1677.0706     | 1312.0413     | 1610.4436     | 2     |
-| Val RMSE                     | 1677.0706     | 1312.0413     | 1610.4436     | 2     |
-| Test RMSE                    | 1677.0706     | 1312.0413     | 1610.4436     | 2     |
-| Best Train Custom Accuracy   | -333.3985     |               |               | 2     |
-| Best Val Custom Accuracy     |               | -871.4609     |               | 2     |
-| Best Test Custom Accuracy    |               |               | -369.5789     | 2     |
-+------------------------------+---------------+---------------+---------------+-------+
+Error during experiment: Cannot re-initialize CUDA in forked subprocess. To use CUDA with multiprocessing, you must use the 'spawn' start method
+Traceback (most recent call last):
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_exp.py", line 51, in execute_experiment_with_logging
+    execute_experiment(config)
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/single_exp.py", line 66, in execute_experiment
+  File "/data3/lsf/Pein/Power-Prediction/exp/pl_exp.py", line 27, in __init__
+    }
+  File "/data3/lsf/Pein/Power-Prediction/exp/pl_exp.py", line 175, in _build_model
+    outputs = outputs[:, :, -1]
+  File "/data3/lsf/Pein/Power-Prediction/models/SimpleMLP.py", line 55, in __init__
+    self.min_y_value = torch.tensor(
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/cuda/__init__.py", line 279, in _lazy_init
+    raise RuntimeError(
+RuntimeError: Cannot re-initialize CUDA in forked subprocess. To use CUDA with multiprocessing, you must use the 'spawn' start method
+Experiment finished.

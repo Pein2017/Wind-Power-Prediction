@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from pytorch_lightning.callbacks import (
     Callback,
@@ -246,10 +247,12 @@ class MetricsCallback(Callback):
                 print(line)
 
         if log_to_file:
+            last_order_number = self.get_last_order_number()
+            order_number = last_order_number + 1
             with open(self.log_path, "a") as f:
+                f.write(f"Exp: {order_number}\n")
                 for line in output:
                     f.write(line + "\n")
-                f.write(line + "\n")
                 f.write("\n")
 
     def _update_train_metrics(
@@ -313,3 +316,13 @@ class MetricsCallback(Callback):
         pl_module.best_metrics["val_rmse_for_best_test"] = val_rmse
         # pl_module.best_metrics["val_custom_acc_for_best_test"] = val_custom_acc
         pl_module.best_metrics["test_epoch_for_best_test"] = pl_module.current_epoch + 1
+
+    def get_last_order_number(self):
+        if not os.path.exists(self.log_path):
+            return 0
+        with open(self.log_path, "r") as f:
+            lines = f.readlines()[-50:]  # Read only the last 50 lines
+            for line in reversed(lines):
+                if line.strip().startswith("Exp:"):
+                    return int(line.split(":")[1].strip())
+        return 0

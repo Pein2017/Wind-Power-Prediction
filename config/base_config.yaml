@@ -6,17 +6,12 @@ des: "test"
 comment: "grid search"
 
 # Paths
-# tb_log_dir: "/data3/lsf/Pein/Power-Prediction/output/tb_log"
-# checkpoint_dir: "/data3/lsf/Pein/Power-Prediction/output/checkpoint"
-# best_metrics_dir: "/data3/lsf/Pein/Power-Prediction/output/best_metrics"
-log_output_dir: "/data3/lsf/Pein/Power-Prediction/log_output/24-07-16"
-output_dir: "/data3/lsf/Pein/Power-Prediction/output/24-07-16"
-final_best_metrics_log_path: "/data3/lsf/Pein/Power-Prediction/final_best_metrics.log"
-# result_dir: "/data3/lsf/Pein/Power-Prediction/output/result"
+log_output_dir: "/data3/lsf/Pein/Power-Prediction/log_output/24-07-17"
+output_dir: "/data3/lsf/Pein/Power-Prediction/output/24-07-17"
+final_best_metrics_log_path: "/data3/lsf/Pein/Power-Prediction/24-07-17_final_best_metrics.log"
 data_root_dir: "/data3/lsf/Pein/Power-Prediction/data"
 train_path: "train_data_89_withTime.csv"
-test_path: "train_data_89_withTime.csv"
-# checkpoints: "/data3/lsf/Pein/Power-Prediction/output/checkpoint"
+test_path: "test_data_89_withTime.csv"
 
 # Data settings
 train_val_split: 0.2

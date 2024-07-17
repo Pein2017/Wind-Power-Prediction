@@ -1,6 +1,9 @@
 # ruff: noqa: E402
 
 
+from argparse import Namespace
+from typing import Dict
+
 import pytorch_lightning as pl
 import torch
 import torch.nn as nn
@@ -8,12 +11,15 @@ from torch import optim
 from torch.optim import lr_scheduler
 
 from models import SimpleMLP, TimeMixer
+from utils.config import dict_to_namespace
 from utils.tools import adjust_learning_rate  # noqa
 
 
 class WindPowerExperiment(pl.LightningModule):
-    def __init__(self, config):
+    def __init__(self, config: Namespace | Dict):
         super(WindPowerExperiment, self).__init__()
+        if isinstance(config, dict):
+            config = dict_to_namespace(config)
         self.config = config
         self.model_dict = {
             "TimeMixer": TimeMixer,

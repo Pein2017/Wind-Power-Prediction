@@ -4,15 +4,19 @@ from argparse import Namespace
 import pandas as pd  # noqa
 from pytorch_lightning import LightningDataModule
 from sklearn.model_selection import train_test_split
+from sympy import Dict
 from torch.utils.data import DataLoader
 
 from dataset import WindPowerDataset
+from utils.config import dict_to_namespace
 from utils.tools import get_scaler, inverse_transform, transform  # noqa
 
 
 class WindPowerDataModule(LightningDataModule):
-    def __init__(self, args: Namespace):
+    def __init__(self, args: Namespace | Dict):
         super().__init__()
+        if isinstance(args, dict):
+            args = dict_to_namespace(args)
         self.args = args
         self.data_root_dir = args.data_root_dir
         self.train_path = os.path.join(self.data_root_dir, args.train_path)
