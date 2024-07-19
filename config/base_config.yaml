@@ -6,9 +6,9 @@ des: "test"
 comment: "grid search"
 
 # Paths
-log_output_dir: "/data3/lsf/Pein/Power-Prediction/log_output/24-07-17"
-output_dir: "/data3/lsf/Pein/Power-Prediction/output/24-07-17"
-final_best_metrics_log_path: "/data3/lsf/Pein/Power-Prediction/24-07-17_final_best_metrics.log"
+log_output_dir: "/data3/lsf/Pein/Power-Prediction/log_output/24-07-18"
+output_dir: "/data3/lsf/Pein/Power-Prediction/tb_output/24-07-18"
+final_best_metrics_log_path: "/data3/lsf/Pein/Power-Prediction/final_best_metric/24-07-18.log"
 data_root_dir: "/data3/lsf/Pein/Power-Prediction/data"
 train_path: "train_data_89_withTime.csv"
 test_path: "test_data_89_withTime.csv"
@@ -40,15 +40,16 @@ seq_len: 8
 pred_len: 1
 
 # Training settings
+warmup_steps_ratio: 0.001
 exp_settings: null
-gradient_clip_val: 2
+gradient_clip_val: 5
 train_epochs: 5
 batch_size: 1100
-early_stop_patience: 6
+early_stop_patience: 10
 learning_rate: 0.01
 loss: "MSE"
 lradj: "TST"
-pct_start: 0.2
+pct_start: 0.3
 use_amp: false
 moving_avg: 25
 dropout: 0.1

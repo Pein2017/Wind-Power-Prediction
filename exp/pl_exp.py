@@ -12,7 +12,6 @@ from torch.optim import lr_scheduler
 
 from models import SimpleMLP, TimeMixer
 from utils.config import dict_to_namespace
-from utils.tools import adjust_learning_rate  # noqa
 
 
 class WindPowerExperiment(pl.LightningModule):
@@ -47,27 +46,27 @@ class WindPowerExperiment(pl.LightningModule):
         self.best_metrics = {
             # best train
             "train_rmse": float("inf"),
-            "train_custom_acc": float("inf"),
+            "train_custom_acc": float("-inf"),
             "val_rmse_for_best_train": float("inf"),
-            # "val_custom_acc_for_best_train": float("inf"),
+            "val_custom_acc_for_best_train": float("-inf"),
             "test_rmse_for_best_train": float("inf"),
-            # "test_custom_acc_for_best_train": float("inf"),
+            "test_custom_acc_for_best_train": float("-inf"),
             "train_epoch_for_best_train": -1,
             # best val
             "val_rmse": float("inf"),
-            "val_custom_acc": float("inf"),
+            "val_custom_acc": float("-inf"),
             "train_rmse_for_best_val": float("inf"),
-            # "train_custom_acc_for_best_val": float("inf"),
+            "train_custom_acc_for_best_val": float("-inf"),
             "test_rmse_for_best_val": float("inf"),
-            # "test_custom_acc_for_best_val": float("inf"),
+            "test_custom_acc_for_best_val": float("-inf"),
             "val_epoch_for_best_val": -1,
             # best test
             "test_rmse": float("inf"),
-            "test_custom_acc": float("inf"),
+            "test_custom_acc": float("-inf"),
             "train_rmse_for_best_test": float("inf"),
-            # "train_custom_acc_for_best_test": float("inf"),
+            "train_custom_acc_for_best_test": float("-inf"),
             "val_rmse_for_best_test": float("inf"),
-            # "val_custom_acc_for_best_test": float("inf"),
+            "val_custom_acc_for_best_test": float("-inf"),
             "test_epoch_for_best_test": -1,
         }
 
@@ -76,10 +75,12 @@ class WindPowerExperiment(pl.LightningModule):
 
         if phase == "train":
             self.train_losses.append(loss)
+
             # Log the learning rate
             optimizer = self.trainer.optimizers[0]
             current_lr = optimizer.param_groups[0]["lr"]
-            self.log("LearningRate/train_step", current_lr, on_step=True, logger=True)
+
+            self.log("lr", current_lr, on_epoch=True, on_step=False, logger=True)
         elif phase == "val":
             self.val_losses.append(loss)
         elif phase == "test":
@@ -97,46 +98,92 @@ class WindPowerExperiment(pl.LightningModule):
         phase = "val" if dataloader_idx == 0 else "test"
         return self.common_step(batch, batch_idx, phase, dataloader_idx)
 
-    def on_train_epoch_end(self):
-        if not self.train_losses:
-            raise ValueError("No training loss found for epoch end logging.")
-        avg_train_loss = self._aggregate_losses(self.train_losses)
-        self.avg_train_loss = avg_train_loss
-        self.train_losses.clear()
-
-        # Log to TensorBoard with truncated value
-        truncated_train_loss = self._truncate_loss(avg_train_loss)
-        self.log("Loss/train", truncated_train_loss, on_epoch=True, logger=True)
-
-        # todo check if this is necessary
-        # # Adjust the learning rate at the end of each epoch
-        # scheduler = (
-        #     self.lr_schedulers() if self.config.scheduler_type == "OneCycleLR" else None
-        # )
-        # adjust_learning_rate(
-        #     self.trainer.optimizers[0], scheduler, self.current_epoch, self.config
-        # )
-
     def on_validation_epoch_end(self):
+        log_data = {}
+
+        # Handling training loss logging
+        if self.train_losses:
+            avg_train_loss = self._aggregate_losses(self.train_losses)
+            self.train_losses.clear()
+            log_data["Loss/train"] = avg_train_loss
+            self.avg_train_loss = avg_train_loss
+
+        # Handling validation loss logging
         if self.val_losses:
             avg_val_loss = self._aggregate_losses(self.val_losses)
-            self.avg_val_loss = avg_val_loss
             self.val_losses.clear()
+            log_data["Loss/val"] = avg_val_loss
+            self.avg_val_loss = avg_val_loss
 
-            # Log to TensorBoard with truncated value
-            truncated_val_loss = self._truncate_loss(avg_val_loss)
-            if truncated_val_loss > 10:
-                raise ValueError("Val loss is too large, check the model.")
-            self.log("Loss/val", truncated_val_loss, on_epoch=True, logger=True)
-
+        # Handling test loss logging
         if self.test_losses:
             avg_test_loss = self._aggregate_losses(self.test_losses)
-            self.avg_test_loss = avg_test_loss
             self.test_losses.clear()
+            log_data["Loss/test"] = avg_test_loss
+            self.avg_test_loss = avg_test_loss
 
-            # Log to TensorBoard with truncated value
-            truncated_test_loss = self._truncate_loss(avg_test_loss)
-            self.log("Loss/test", truncated_test_loss, on_epoch=True, logger=True)
+        # Log all at once
+        self.log_dict(log_data, on_epoch=True, on_step=False)
+
+    # def on_train_epoch_end(self):
+    #     if not self.train_losses:
+    #         raise ValueError("No training loss found for epoch end logging.")
+    #     avg_train_loss = self._aggregate_losses(self.train_losses)
+    #     self.avg_train_loss = avg_train_loss
+    #     self.train_losses.clear()
+
+    #     # Log to TensorBoard with truncated value
+    #     truncated_train_loss = self._truncate_loss(avg_train_loss)
+    #     print(f"debug: truncated_train_loss: {truncated_train_loss}")
+    #     self.log(
+    #         "train_loss",
+    #         truncated_train_loss,
+    #         on_epoch=True,
+    #         on_step=False,
+    #         logger=True,
+    #     )
+
+    #     # todo check if this is necessary
+    #     # # Adjust the learning rate at the end of each epoch
+    #     # scheduler = (
+    #     #     self.lr_schedulers() if self.config.scheduler_type == "OneCycleLR" else None
+    #     # )
+    #     # adjust_learning_rate(
+    #     #     self.trainer.optimizers[0], scheduler, self.current_epoch, self.config
+    #     # )
+
+    # def on_validation_epoch_end(self):
+    #     if self.val_losses:
+    #         avg_val_loss = self._aggregate_losses(self.val_losses)
+    #         self.avg_val_loss = avg_val_loss
+    #         self.val_losses.clear()
+
+    #         # Log to TensorBoard with truncated value
+    #         truncated_val_loss = self._truncate_loss(avg_val_loss)
+    #         if truncated_val_loss > 10:
+    #             raise ValueError("Val loss is too large, check the model.")
+    #         self.log(
+    #             "val_loss",
+    #             truncated_val_loss,
+    #             on_epoch=True,
+    #             on_step=False,
+    #             logger=True,
+    #         )
+
+    #     if self.test_losses:
+    #         avg_test_loss = self._aggregate_losses(self.test_losses)
+    #         self.avg_test_loss = avg_test_loss
+    #         self.test_losses.clear()
+
+    #         # Log to TensorBoard with truncated value
+    #         truncated_test_loss = self._truncate_loss(avg_test_loss)
+    #         self.log(
+    #             "test_loss",
+    #             truncated_test_loss,
+    #             on_epoch=True,
+    #             on_step=False,
+    #             logger=True,
+    #         )
 
     def _truncate_loss(self, loss, max_value=5.0):
         return torch.clamp(loss, max=max_value)
@@ -146,10 +193,6 @@ class WindPowerExperiment(pl.LightningModule):
         if isinstance(losses[0], list):
             losses = [item for sublist in losses for item in sublist]
         return torch.stack(losses).mean()
-
-    def log_epoch_end_metrics(self):
-        # Log any additional metrics at the end of the epoch if necessary
-        pass
 
     def process_batch(self, batch, criterion, mask_value=None):
         batch_x, batch_y, batch_x_mark, batch_y_mark = self._prepare_batch(batch)
@@ -197,9 +240,9 @@ class WindPowerExperiment(pl.LightningModule):
             scheduler = {
                 "scheduler": lr_scheduler.OneCycleLR(
                     optimizer=optimizer,
+                    epochs=self.config.train_epochs,
                     steps_per_epoch=self.config.steps_per_epoch,
                     pct_start=self.config.pct_start,
-                    epochs=self.config.train_epochs,
                     max_lr=self.config.learning_rate,
                 ),
                 "interval": "step",

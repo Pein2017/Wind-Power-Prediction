@@ -133,7 +133,6 @@ def save_results(test_data, preds, trues, output_csv_path):
     result_df = pd.DataFrame(
         {
             "time": test_data["time"],
-            "lead_hour": test_data["lead_hour"],
             "True": trues,
             "Prediction": preds,
         }
@@ -155,6 +154,10 @@ def main_inference(exp_result_dir, output_dir):
     # Paths
     config_path = os.path.join(exp_result_dir, "hparams.yaml")
     checkpoint_path = find_checkpoint(os.path.join(exp_result_dir, "checkpoints"))
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
     output_csv_path = os.path.join(output_dir, "inference_results.csv")
 
     # Load the configuration from the YAML file
@@ -163,9 +166,10 @@ def main_inference(exp_result_dir, output_dir):
     # Set seed for reproducibility
     set_seed(config["seed"])
 
-    # Load test data
     test_data_path = os.path.join(config["data_root_dir"], config["test_path"])
     test_data = pd.read_csv(test_data_path)
+    # remove first config['seq_len'] rows of test_data to match the length of the test_dataloader
+    test_data = test_data.iloc[config["seq_len"] :]
 
     # Prepare data module
     data_module = WindPowerDataModule(config)
@@ -173,10 +177,10 @@ def main_inference(exp_result_dir, output_dir):
     data_module.setup("test")
 
     # Ensure data length matches
-    expected_length = len(data_module.test_dataloader().dataset) + config["seq_len"]
+    expected_length = len(data_module.test_dataloader().dataset)
     if len(test_data) != expected_length:
-        print(f"Length of test data: {len(test_data)}")
         print(f"Expected length based on dataloader dataset: {expected_length}")
+        print(f"But actual length of test data: {len(test_data)}")
         raise AssertionError("Length mismatch between test data and dataloader.")
 
     # Load model from checkpoint
@@ -185,32 +189,38 @@ def main_inference(exp_result_dir, output_dir):
     # Run inference
     preds, trues = collect_preds(model, data_module.test_dataloader())
 
+    # Set all the negative values of preds to 0
+    preds[preds < 0] = 0
+
     # Check if predictions match the true values after inverse transformation
     if data_module.scaler_y:
         inversed_preds, inversed_trues = inverse_transform(
             preds, trues, data_module.scaler_y
         )
-        assert np.allclose(
-            inversed_trues, test_data["power"].values[config["seq_len"] :], atol=1e-5
-        ), (
+        assert np.allclose(inversed_trues, test_data["power"].values, atol=1e-5), (
             "Mismatch between inverse transformed true values and test data power column. "
-            f"Max difference: {np.max(np.abs(inversed_trues - test_data['power'].values[config['seq_len']:]))}"
+            f"Max difference: {np.max(np.abs(inversed_trues - test_data['power'].values))}"
         )
     else:
         inversed_preds, inversed_trues = preds, trues
-        assert np.allclose(
-            trues, test_data["power"].values[config["seq_len"] :], atol=1e-5
-        ), (
+        assert np.allclose(trues, test_data["power"].values, atol=1e-5), (
             "Mismatch between true values and test data power column. "
-            f"Max difference: {np.max(np.abs(trues - test_data['power'].values[config['seq_len']:]))}"
+            f"Max difference: {np.max(np.abs(trues - test_data['power'].values))}"
         )
 
+    print(f"debug: output_csv_path is {output_csv_path}")
     # Save results
     save_results(test_data, inversed_preds, inversed_trues, output_csv_path)
 
+    # rmse
+    print(f"\n\nRMSE: {np.sqrt(np.mean((inversed_preds - inversed_trues) ** 2))}")
+
 
 if __name__ == "__main__":
-    exp_result_dir = "/data3/lsf/Pein/Power-Prediction/output/24-07-16/seq_len-8-lr-0.05-d-32-hid_d-64-last_d-128-time_d-32-e_layers-8-comb_type-add-bs-1100/version_0/"
-    output_dir = "/data3/lsf/Pein/Power-Prediction/output/24-07-16_result/best_preds/"
+    time_str = "24-07-17"
+    exp_result_dir = f"/data3/lsf/Pein/Power-Prediction/output/{time_str}/seq_len-36-lr-0.1-d-256-hid_d-32-last_d-256-time_d-128-e_layers-8-comb_type-add-bs-1100/version_0/"
+    output_dir = (
+        f"/data3/lsf/Pein/Power-Prediction/output/{time_str}_result/best_preds/"
+    )
 
     main_inference(exp_result_dir, output_dir)

@@ -4,6 +4,7 @@ import time
 import traceback
 from datetime import timedelta
 
+import numpy as np
 import pathos.multiprocessing as mp
 import torch
 
@@ -16,15 +17,16 @@ from utils.exp_search import generate_hyperparameter_combinations
 
 # Define the search space for hyperparameters
 SEARCH_SPACE = {
-    "d_model": [32, 64, 128],
+    "d_model": [64, 256],
     "hidden_dim": [64, 256],
-    "last_hidden_dim": [32, 64, 256],
-    "time_d_model": [32],
-    "e_layers": [2, 8],
-    "learning_rate": [0.01, 0.05, 0.1, 0.2],
-    "combine_type": ["add", "concat"],
-    "train_epochs": [100],
-    "seq_len": [8],
+    "last_hidden_dim": [64, 512],
+    "time_d_model": [64, 128, 256],
+    "e_layers": [8, 16, 32],
+    # from 1e-4 to 1e-1, with 50 steps
+    "learning_rate": np.logspace(-4, -3, 10),
+    "combine_type": ["add"],
+    "train_epochs": [60],
+    "seq_len": [8, 24],
 }
 
 

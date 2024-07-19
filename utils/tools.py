@@ -42,30 +42,6 @@ def transform(scaler, data):
         return data
 
 
-def adjust_learning_rate(optimizer, scheduler, epoch, args, printout=True):
-    # lr = args.learning_rate * (0.2 ** (epoch // 2))
-    if args.lradj == "type1":
-        lr_adjust = {epoch: args.learning_rate * (0.5 ** ((epoch - 1) // 1))}
-    elif args.lradj == "type2":
-        lr_adjust = {2: 5e-5, 4: 1e-5, 6: 5e-6, 8: 1e-6, 10: 5e-7, 15: 1e-7, 20: 5e-8}
-    elif args.lradj == "type3":
-        lr_adjust = {
-            epoch: args.learning_rate
-            if epoch < 3
-            else args.learning_rate * (0.9 ** ((epoch - 3) // 1))
-        }
-    elif args.lradj == "PEMS":
-        lr_adjust = {epoch: args.learning_rate * (0.95 ** (epoch // 1))}
-    elif args.lradj == "TST":
-        lr_adjust = {epoch: scheduler.get_last_lr()[0]}
-    if epoch in lr_adjust.keys():
-        lr = lr_adjust[epoch]
-        for param_group in optimizer.param_groups:
-            param_group["lr"] = lr
-        if printout:
-            print(f"\nUpdating learning rate to {lr}\n")
-
-
 def visual(true, preds=None, name_base="./pic/test", skip_plot=False):
     """
     Results visualization

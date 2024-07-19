@@ -17,22 +17,28 @@ def get_callbacks(config):
         filename="best_model-{epoch:02d}-{val_loss:.2f}",
         save_top_k=1,
         mode="min",
+        save_on_train_epoch_end=False,
     )
 
     early_stopping_callback = EarlyStopping(
         monitor="Loss/val",
         patience=config.early_stop_patience,
         mode="min",
-        verbose=True,
+        verbose=False,
+        check_on_train_epoch_end=False,
     )
 
-    lr_monitor = LearningRateMonitor(logging_interval="step")
+    lr_monitor = LearningRateMonitor(logging_interval="epoch")
     if checkpoint_callback:
         pass
     if lr_monitor:
         pass
 
-    return [early_stopping_callback, checkpoint_callback, lr_monitor]
+    # lr_monitor
+    return [
+        early_stopping_callback,
+        checkpoint_callback,
+    ]
 
 
 class MetricsCallback(Callback):
@@ -115,9 +121,12 @@ class MetricsCallback(Callback):
         test_rmse,
         test_custom_acc,
     ):
-        improved_metrics = []
+        # Determine if there is any improvement
+        train_improved = current_train_loss < pl_module.curr_min_train_loss
+        val_improved = current_val_loss < pl_module.curr_min_vali_loss
+        test_improved = current_test_loss < pl_module.curr_min_test_loss
 
-        if current_train_loss < pl_module.curr_min_train_loss:
+        if train_improved:
             self._update_train_metrics(
                 pl_module,
                 current_train_loss,
@@ -128,9 +137,8 @@ class MetricsCallback(Callback):
                 test_rmse,
                 test_custom_acc,
             )
-            improved_metrics.append(f"train loss improved to {current_train_loss:.5f}")
 
-        if current_val_loss < pl_module.curr_min_vali_loss:
+        if val_improved:
             self._update_val_metrics(
                 pl_module,
                 current_val_loss,
@@ -141,9 +149,8 @@ class MetricsCallback(Callback):
                 test_rmse,
                 test_custom_acc,
             )
-            improved_metrics.append(f"val loss improved to {current_val_loss:.5f}")
 
-        if current_test_loss < pl_module.curr_min_test_loss:
+        if test_improved:
             self._update_test_metrics(
                 pl_module,
                 current_test_loss,
@@ -154,16 +161,116 @@ class MetricsCallback(Callback):
                 test_rmse,
                 test_custom_acc,
             )
-            improved_metrics.append(f"test loss improved to {current_test_loss:.5f}")
 
-        if improved_metrics:
+            # Print the updated metrics
             print(f"Epoch {pl_module.current_epoch + 1}:")
-            for metric in improved_metrics:
-                print(metric)
+            if train_improved:
+                print(f"train loss improved to {current_train_loss:.5f}")
+            if val_improved:
+                print(f"val loss improved to {current_val_loss:.5f}")
+            if test_improved:
+                print(f"test loss improved to {current_test_loss:.5f}")
+
             print(
                 f"train loss: {pl_module.curr_min_train_loss:.5f} | val loss: {pl_module.curr_min_vali_loss:.5f} | test loss: {pl_module.curr_min_test_loss:.5f}"
             )
             self._output_best_metrics(pl_module, log_to_console=True)
+
+    def _update_train_metrics(
+        self,
+        pl_module,
+        current_train_loss,
+        train_rmse,
+        train_custom_acc,
+        val_rmse,
+        val_custom_acc,
+        test_rmse,
+        test_custom_acc,
+    ):
+        # Ensure the metric is improved before updating
+        if train_rmse < pl_module.best_metrics.get("train_rmse", float("inf")):
+            # scaled loss, without inverse transform
+            pl_module.curr_min_train_loss = current_train_loss
+            # unscaled loss, with inverse transform
+            pl_module.best_metrics["train_rmse"] = train_rmse
+            pl_module.best_metrics["train_custom_acc"] = train_custom_acc
+            pl_module.best_metrics["val_rmse_for_best_train"] = val_rmse
+            pl_module.best_metrics["val_custom_acc_for_best_train"] = val_custom_acc
+            pl_module.best_metrics["test_rmse_for_best_train"] = test_rmse
+            pl_module.best_metrics["test_custom_acc_for_best_train"] = test_custom_acc
+            pl_module.best_metrics["train_epoch_for_best_train"] = (
+                pl_module.current_epoch + 1
+            )
+        else:
+            print(
+                f"Warning: Train RMSE ({train_rmse}) is not less than the current best ({pl_module.best_metrics.get('train_rmse', float('inf'))})."
+            )
+
+    def _update_val_metrics(
+        self,
+        pl_module,
+        current_val_loss,
+        train_rmse,
+        train_custom_acc,
+        val_rmse,
+        val_custom_acc,
+        test_rmse,
+        test_custom_acc,
+    ):
+        # Ensure the metric is improved before updating
+        if val_rmse < pl_module.best_metrics.get("val_rmse", float("inf")):
+            pl_module.curr_min_vali_loss = current_val_loss
+            pl_module.best_metrics["val_rmse"] = val_rmse
+            pl_module.best_metrics["val_custom_acc"] = val_custom_acc
+            pl_module.best_metrics["train_rmse_for_best_val"] = train_rmse
+            pl_module.best_metrics["train_custom_acc_for_best_val"] = train_custom_acc
+            pl_module.best_metrics["test_rmse_for_best_val"] = test_rmse
+            pl_module.best_metrics["test_custom_acc_for_best_val"] = test_custom_acc
+            pl_module.best_metrics["val_epoch_for_best_val"] = (
+                pl_module.current_epoch + 1
+            )
+        else:
+            print(
+                f"Warning: Val RMSE ({val_rmse}) is not less than the current best ({pl_module.best_metrics.get('val_rmse', float('inf'))})."
+            )
+
+    def _update_test_metrics(
+        self,
+        pl_module,
+        current_test_loss,
+        train_rmse,
+        train_custom_acc,
+        val_rmse,
+        val_custom_acc,
+        test_rmse,
+        test_custom_acc,
+    ):
+        # Ensure the metric is improved before updating
+        if test_rmse < pl_module.best_metrics.get("test_rmse", float("inf")):
+            pl_module.curr_min_test_loss = current_test_loss
+            pl_module.best_metrics["test_rmse"] = test_rmse
+            pl_module.best_metrics["test_custom_acc"] = test_custom_acc
+            pl_module.best_metrics["train_rmse_for_best_test"] = train_rmse
+            pl_module.best_metrics["train_custom_acc_for_best_test"] = train_custom_acc
+            pl_module.best_metrics["val_rmse_for_best_test"] = val_rmse
+            pl_module.best_metrics["val_custom_acc_for_best_test"] = val_custom_acc
+            pl_module.best_metrics["test_epoch_for_best_test"] = (
+                pl_module.current_epoch + 1
+            )
+        else:
+            print(
+                f"Warning: Test RMSE ({test_rmse}) is not less than the current best ({pl_module.best_metrics.get('test_rmse', float('inf'))})."
+            )
+
+    def get_last_order_number(self):
+        if not os.path.exists(self.log_path):
+            return 0
+        with open(self.log_path, "r") as f:
+            lines = f.readlines()[-50:]  # Read only the last 50 lines
+            for line in reversed(lines):
+                if line.strip().startswith("Exp:"):
+                    return int(line.split(":")[1].strip())
+        return 0
 
     def _output_best_metrics(self, pl_module, log_to_console=False, log_to_file=False):
         exp_settings = pl_module.config.exp_settings
@@ -194,21 +301,21 @@ class MetricsCallback(Callback):
             (
                 "Best Train Custom Accuracy",
                 best_metrics["train_custom_acc"],
-                None,
-                None,
+                best_metrics["val_custom_acc_for_best_train"],
+                best_metrics["test_custom_acc_for_best_train"],
                 best_metrics["train_epoch_for_best_train"],
             ),
             (
                 "Best Val Custom Accuracy",
-                None,
+                best_metrics["train_custom_acc_for_best_val"],
                 best_metrics["val_custom_acc"],
-                None,
+                best_metrics["test_custom_acc_for_best_val"],
                 best_metrics["val_epoch_for_best_val"],
             ),
             (
                 "Best Test Custom Accuracy",
-                None,
-                None,
+                best_metrics["train_custom_acc_for_best_test"],
+                best_metrics["val_custom_acc_for_best_test"],
                 best_metrics["test_custom_acc"],
                 best_metrics["test_epoch_for_best_test"],
             ),
@@ -247,6 +354,16 @@ class MetricsCallback(Callback):
                 print(line)
 
         if log_to_file:
+            # Ensure the directory exists
+            log_dir = os.path.dirname(self.log_path)
+            if not os.path.exists(log_dir):
+                os.makedirs(log_dir)
+
+            # # Check if the log file exists, create it if it does not
+            # if not os.path.isfile(self.log_path):
+            #     with open(self.log_path, "w") as f:
+            #         f.write("")  # Create an empty file
+
             last_order_number = self.get_last_order_number()
             order_number = last_order_number + 1
             with open(self.log_path, "a") as f:
@@ -254,75 +371,3 @@ class MetricsCallback(Callback):
                 for line in output:
                     f.write(line + "\n")
                 f.write("\n")
-
-    def _update_train_metrics(
-        self,
-        pl_module,
-        current_train_loss,
-        train_rmse,
-        train_custom_acc,
-        val_rmse,
-        val_custom_acc,
-        test_rmse,
-        test_custom_acc,
-    ):
-        pl_module.curr_min_train_loss = current_train_loss
-        pl_module.best_metrics["train_rmse"] = train_rmse
-        pl_module.best_metrics["train_custom_acc"] = train_custom_acc
-        pl_module.best_metrics["val_rmse_for_best_train"] = val_rmse
-        # pl_module.best_metrics["val_custom_acc_for_best_train"] = val_custom_acc
-        pl_module.best_metrics["test_rmse_for_best_train"] = test_rmse
-        # pl_module.best_metrics["test_custom_acc_for_best_train"] = test_custom_acc
-        pl_module.best_metrics["train_epoch_for_best_train"] = (
-            pl_module.current_epoch + 1
-        )
-
-    def _update_val_metrics(
-        self,
-        pl_module,
-        current_val_loss,
-        train_rmse,
-        train_custom_acc,
-        val_rmse,
-        val_custom_acc,
-        test_rmse,
-        test_custom_acc,
-    ):
-        pl_module.curr_min_vali_loss = current_val_loss
-        pl_module.best_metrics["val_rmse"] = val_rmse
-        pl_module.best_metrics["val_custom_acc"] = val_custom_acc
-        pl_module.best_metrics["train_rmse_for_best_val"] = train_rmse
-        # pl_module.best_metrics["train_custom_acc_for_best_val"] = train_custom_acc
-        pl_module.best_metrics["test_rmse_for_best_val"] = test_rmse
-        # pl_module.best_metrics["test_custom_acc_for_best_val"] = test_custom_acc
-        pl_module.best_metrics["val_epoch_for_best_val"] = pl_module.current_epoch + 1
-
-    def _update_test_metrics(
-        self,
-        pl_module,
-        current_test_loss,
-        train_rmse,
-        train_custom_acc,
-        val_rmse,
-        val_custom_acc,
-        test_rmse,
-        test_custom_acc,
-    ):
-        pl_module.curr_min_test_loss = current_test_loss
-        pl_module.best_metrics["test_rmse"] = test_rmse
-        pl_module.best_metrics["test_custom_acc"] = test_custom_acc
-        pl_module.best_metrics["train_rmse_for_best_test"] = train_rmse
-        # pl_module.best_metrics["train_custom_acc_for_best_test"] = train_custom_acc
-        pl_module.best_metrics["val_rmse_for_best_test"] = val_rmse
-        # pl_module.best_metrics["val_custom_acc_for_best_test"] = val_custom_acc
-        pl_module.best_metrics["test_epoch_for_best_test"] = pl_module.current_epoch + 1
-
-    def get_last_order_number(self):
-        if not os.path.exists(self.log_path):
-            return 0
-        with open(self.log_path, "r") as f:
-            lines = f.readlines()[-50:]  # Read only the last 50 lines
-            for line in reversed(lines):
-                if line.strip().startswith("Exp:"):
-                    return int(line.split(":")[1].strip())
-        return 0

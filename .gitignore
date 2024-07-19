@@ -9,4 +9,4 @@ __pycache__/
 
 # Ignore everything under log_output and output directories
 /log_output/
-/output/
+/tb_output/
