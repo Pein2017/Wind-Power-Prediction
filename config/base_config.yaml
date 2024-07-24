@@ -1,78 +1,87 @@
 # General settings
-seed: 17
-is_training: 1
-task_name: "default"
-des: "train"
-comment: "optuna search"
+general:
+  seed: 17
+  is_training: 1
+  task_name: "default"
+  description: "train"
+  comment: "base configuration"
 
+# Experiment time string
 # exp_time_str: 'exp_time_str'
 
 # Output Paths
-train_log_dir: "/data3/lsf/Pein/Power-Prediction/train_log/exp_time_str"
-res_output_dir: "/data3/lsf/Pein/Power-Prediction/res_output/grid/exp_time_str"
-final_best_metrics_log_path: "/data3/lsf/Pein/Power-Prediction/final_best_metric/exp_time_str.log"
+output_paths:
+  train_log_dir: "/data3/lsf/Pein/Power-Prediction/train_log/exp_time_str"
+  res_output_dir: "/data3/lsf/Pein/Power-Prediction/res_output/grid/exp_time_str"
+  final_best_metrics_log_path: "/data3/lsf/Pein/Power-Prediction/final_best_metric/exp_time_str.log"
 
 # Data paths
-data_root_dir: "/data3/lsf/Pein/Power-Prediction/data"
-train_path: "train_data_89_withTime.csv"
-test_path: "test_data_89_withTime.csv"
+data_paths:
+  data_root_dir: "/data3/lsf/Pein/Power-Prediction/data"
+  train_path: "train_data_89_withTime.csv"
+  test_path: "test_data_89_withTime.csv"
 
 # Model settings
-model: "SimpleMLP"
-token_emb_kernel_size: 3
-input_dim: 75
-dec_in: 75
-output_dim: 1
-d_model: 16
-n_heads: 4
-e_layers: 2
-d_layers: 1
-hidden_dim: 32
-last_hidden_dim: 16
-top_k: 5
-num_kernels: 6
-activation: "gelu"
-time_d_model: 128
-combine_type: "add"
-seq_len: 8
-pred_len: 1
+model:
+  name: "SimpleMLP"
+  token_emb_kernel_size: 3
+  input_dim: 75
+  dec_in: 75
+  output_dim: 1
+  d_model: 16
+  n_heads: 4
+  e_layers: 2
+  d_layers: 1
+  hidden_dim: 32
+  last_hidden_dim: 16
+  top_k: 5
+  num_kernels: 6
+  activation: "gelu"
+  time_d_model: 128
+  combine_type: "add"
+  seq_len: 8
+  pred_len: 1
 
 # Training settings
-warmup_steps_ratio: 0.001
-exp_settings: null
-gradient_clip_val: 5
-train_epochs: 120
-batch_size: 1100
-early_stop_patience: 10
-learning_rate: 0.01
-loss: "MSE"
-lradj: "TST"
-pct_start: 0.3
-use_amp: false
-moving_avg: 25
-dropout: 0.1
-decomp_method: "moving_avg"
-use_norm: 1
-down_sampling_layers: 2
-down_sampling_window: 2
-down_sampling_method: "avg"
-
+training:
+  warmup_steps_ratio: 0.001
+  exp_settings: null
+  gradient_clip_val: 5
+  train_epochs: 120
+  batch_size: 1100
+  early_stop_patience: 10
+  learning_rate: 0.01
+  loss: "MSE"
+  lradj: "TST"
+  pct_start: 0.3
+  use_amp: false
+  moving_avg: 25
+  dropout: 0.1
+  decomp_method: "moving_avg"
+  use_norm: 1
+  down_sampling_layers: 2
+  down_sampling_window: 2
+  down_sampling_method: "avg"
 
 # Scheduler settings
-scheduler_type: "OneCycleLR"
-T_max: 20
-weight_decay: 0.0001
-patience: 5
-Reduce_factor: 0.2
+scheduler:
+  type: "OneCycleLR"
+  T_max: 20
+  weight_decay: 0.0001
+  patience: 5
+  reduce_factor: 0.2
 
 # GPU settings
-use_gpu: True
-gpu: 1
-use_multi_gpu: False
-use_all_gpus_for_search: True
+gpu:
+  use_gpu: True
+  gpu_id: 0
+  use_multi_gpu: False
+  use_all_gpus_for_search: False
 
 # Additional settings
-min_y_value: 0.0
+additional:
+  min_y_value: 0.0
 
-# Logging
-use_wandb: False
+# Logging settings
+logging:
+  use_wandb: False
