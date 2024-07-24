@@ -41,8 +41,8 @@ scale_y_type = "standard"
 use_multi_gpu = "False"
 gpu = 0
 data = "WindPower"
-output_dir = "/data3/lsf/Pein/Power-Prediction/output/debug"
-os.makedirs(output_dir, exist_ok=True)
+res_output_dir = "/data3/lsf/Pein/Power-Prediction/output/debug"
+os.makedirs(res_output_dir, exist_ok=True)
 checkpoint_dir = "/data3/lsf/Pein/Power-Prediction/output/checkpoint"
 tb_log_dir = "/data3/lsf/Pein/Power-Prediction/output/tb_log"
 
@@ -76,8 +76,8 @@ def build_command(search_params, gpu_id):
         str(scale_x_type),
         "--scale_y_type",
         str(scale_y_type),
-        "--output_dir",
-        output_dir,
+        "--res_output_dir",
+        res_output_dir,
         "--comment",
         comment,
         "--loss",
@@ -133,7 +133,7 @@ def build_command(search_params, gpu_id):
     ]
 
     log_file = os.path.join(
-        output_dir, f"seq_len-{seq_len}-lr-{learning_rate}gpu-{gpu_id}.log"
+        res_output_dir, f"seq_len-{seq_len}-lr-{learning_rate}gpu-{gpu_id}.log"
     )
     return cmd, log_file
 

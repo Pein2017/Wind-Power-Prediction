@@ -50,14 +50,19 @@ class Model(nn.Module):
         output_dim = configs.output_dim
         e_layers = configs.e_layers
         dropout = configs.dropout
+        token_emb_kernel_size = configs.token_emb_kernel_size
         self.min_y_value = configs.min_y_value
-        print(f"\nmin_y_value has been set to {self.min_y_value}\n")
+        # print(f"\nmin_y_value has been set to {self.min_y_value}\n")
         self.min_y_value = torch.tensor(
             configs.min_y_value, dtype=torch.float32, device=torch.device("cuda:0")
         )
 
         self.initial_embedding = FinalEmbedding(
-            input_dim, token_d_model, time_d_model, combine_type=combine_type
+            input_dim,
+            token_d_model,
+            time_d_model,
+            combine_type=combine_type,
+            token_emb_kernel_size=token_emb_kernel_size,
         )
 
         # Adjust the input dimension for the first MLPBlock based on combine_type

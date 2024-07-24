@@ -9,13 +9,22 @@ comment: "optuna search"
 
 # Output Paths
 train_log_dir: "/data3/lsf/Pein/Power-Prediction/train_log/exp_time_str"
-res_output_dir: "/data3/lsf/Pein/Power-Prediction/res_output/grid/exp_time_str"
+res_output_dir: "/data3/lsf/Pein/Power-Prediction/res_output/exp_time_str"
 final_best_metrics_log_path: "/data3/lsf/Pein/Power-Prediction/final_best_metric/exp_time_str.log"
+optuna_study_dir: "/data3/lsf/Pein/Power-Prediction/optuna_study/exp_time_str"
+wandb_output_dir: "/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/exp_time_str"
 
 # Data paths
 data_root_dir: "/data3/lsf/Pein/Power-Prediction/data"
 train_path: "train_data_89_withTime.csv"
 test_path: "test_data_89_withTime.csv"
+
+# Data settings
+train_val_split: 0.2
+target: "power"
+inverse: true
+num_workers: 8
+data: "WindPower"
 
 # Model settings
 model: "SimpleMLP"
@@ -67,9 +76,9 @@ Reduce_factor: 0.2
 
 # GPU settings
 use_gpu: True
-gpu: 1
+gpu: 0
 use_multi_gpu: False
-use_all_gpus_for_search: True
+use_all_gpus_for_search: False
 
 # Additional settings
 min_y_value: 0.0

@@ -1,0 +1,411 @@
+[I 2024-07-23 19:11:51,620] Using an existing study with name '24-07-21-search' instead of creating a new one.
+  0%|          | 0/40 [00:00<?, ?it/s]                                        0%|          | 0/40 [00:03<?, ?it/s]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 19.8 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+19.8 M    Trainable params
+0         Non-trainable params
+19.8 M    Total params
+79.149    Total estimated model params size (MB)
+                                        0%|          | 0/40 [02:58<?, ?it/s]Best trial: 4. Best value: 0.0390353:   0%|          | 0/40 [02:58<?, ?it/s]Best trial: 4. Best value: 0.0390353:   2%|▎         | 1/40 [02:58<1:56:20, 179.00s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 29.9 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+29.9 M    Trainable params
+0         Non-trainable params
+29.9 M    Total params
+119.673   Total estimated model params size (MB)
+                                                                                       Best trial: 4. Best value: 0.0390353:   2%|▎         | 1/40 [05:26<1:56:20, 179.00s/it]Best trial: 4. Best value: 0.0390353:   2%|▎         | 1/40 [05:26<1:56:20, 179.00s/it]Best trial: 4. Best value: 0.0390353:   5%|▌         | 2/40 [05:26<1:41:35, 160.41s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 4.5 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+4.5 M     Trainable params
+0         Non-trainable params
+4.5 M     Total params
+18.086    Total estimated model params size (MB)
+                                                                                       Best trial: 4. Best value: 0.0390353:   5%|▌         | 2/40 [09:28<1:41:35, 160.41s/it]Best trial: 4. Best value: 0.0390353:   5%|▌         | 2/40 [09:28<1:41:35, 160.41s/it]Best trial: 4. Best value: 0.0390353:   8%|▊         | 3/40 [09:28<2:01:55, 197.71s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 22.1 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+22.1 M    Trainable params
+0         Non-trainable params
+22.1 M    Total params
+88.224    Total estimated model params size (MB)
+                                                                                       Best trial: 4. Best value: 0.0390353:   8%|▊         | 3/40 [12:35<2:01:55, 197.71s/it]Best trial: 4. Best value: 0.0390353:   8%|▊         | 3/40 [12:35<2:01:55, 197.71s/it]Best trial: 4. Best value: 0.0390353:  10%|█         | 4/40 [12:35<1:56:00, 193.36s/it][W 2024-07-23 19:11:55,176] `CmaEsSampler` does not support dynamic search space. `RandomSampler` is used instead of `CmaEsSampler`.
+
+Running experiment with config:
+Namespace(seed=17, is_training=1, task_name='default', des='train', comment='optuna search', train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-07-21', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-07-21', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-07-21.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-07-21', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-07-21', data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_data_89_withTime.csv', test_path='test_data_89_withTime.csv', train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', model='SimpleMLP', token_emb_kernel_size=14, input_dim=75, dec_in=75, output_dim=1, d_model=383, n_heads=4, e_layers=16, d_layers=1, hidden_dim=635, last_hidden_dim=802, top_k=5, num_kernels=6, activation='gelu', time_d_model=94, combine_type='add', seq_len=45, pred_len=1, warmup_steps_ratio=0.001, exp_settings='seq_len-45-lr-0.0242-d-383-hid_d-635-last_d-802-time_d-94-e_layers-16-token_emb_kernel_size-14-dropout-0.5-comb_type-add-bs-128', gradient_clip_val=5, train_epochs=120, batch_size=128, early_stop_patience=10, learning_rate=0.0242, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=25, dropout=0.5, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg', scheduler_type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, Reduce_factor=0.2, use_gpu=True, gpu=0, use_multi_gpu=False, use_all_gpus_for_search=False, min_y_value=0.0, use_wandb=False)
+
+
+[I 2024-07-23 19:14:50,606] Trial 1324 pruned. 
+
+Running experiment with config:
+Namespace(seed=17, is_training=1, task_name='default', des='train', comment='optuna search', train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-07-21', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-07-21', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-07-21.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-07-21', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-07-21', data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_data_89_withTime.csv', test_path='test_data_89_withTime.csv', train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', model='SimpleMLP', token_emb_kernel_size=10, input_dim=75, dec_in=75, output_dim=1, d_model=331, n_heads=4, e_layers=13, d_layers=1, hidden_dim=886, last_hidden_dim=826, top_k=5, num_kernels=6, activation='gelu', time_d_model=96, combine_type='add', seq_len=21, pred_len=1, warmup_steps_ratio=0.001, exp_settings='seq_len-21-lr-0.0802-d-331-hid_d-886-last_d-826-time_d-96-e_layers-13-token_emb_kernel_size-10-dropout-0.5-comb_type-add-bs-1024', gradient_clip_val=5, train_epochs=120, batch_size=1024, early_stop_patience=10, learning_rate=0.0802, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=25, dropout=0.5, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg', scheduler_type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, Reduce_factor=0.2, use_gpu=True, gpu=0, use_multi_gpu=False, use_all_gpus_for_search=False, min_y_value=0.0, use_wandb=False)
+
+
+[I 2024-07-23 19:17:18,007] Trial 1325 pruned. 
+
+Running experiment with config:
+Namespace(seed=17, is_training=1, task_name='default', des='train', comment='optuna search', train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-07-21', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-07-21', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-07-21.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-07-21', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-07-21', data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_data_89_withTime.csv', test_path='test_data_89_withTime.csv', train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', model='SimpleMLP', token_emb_kernel_size=13, input_dim=75, dec_in=75, output_dim=1, d_model=359, n_heads=4, e_layers=4, d_layers=1, hidden_dim=574, last_hidden_dim=922, top_k=5, num_kernels=6, activation='gelu', time_d_model=91, combine_type='add', seq_len=46, pred_len=1, warmup_steps_ratio=0.001, exp_settings='seq_len-46-lr-0.0077-d-359-hid_d-574-last_d-922-time_d-91-e_layers-4-token_emb_kernel_size-13-dropout-0.5-comb_type-add-bs-128', gradient_clip_val=5, train_epochs=120, batch_size=128, early_stop_patience=10, learning_rate=0.0077, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=25, dropout=0.5, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg', scheduler_type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, Reduce_factor=0.2, use_gpu=True, gpu=0, use_multi_gpu=False, use_all_gpus_for_search=False, min_y_value=0.0, use_wandb=False)
+
+
+[I 2024-07-23 19:21:20,109] Trial 1326 finished with value: 0.04839903488755226 and parameters: {'d_model': 359, 'hidden_dim': 574, 'token_emb_kernel_size': 13, 'last_hidden_dim': 922, 'time_d_model': 91, 'e_layers': 4, 'learning_rate': 0.007731696628681432, 'batch_size': 128, 'train_epochs': 120, 'seq_len': 46, 'dropout': 0.5}. Best is trial 4 with value: 0.039035286847501995.
+
+Running experiment with config:
+Namespace(seed=17, is_training=1, task_name='default', des='train', comment='optuna search', train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-07-21', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-07-21', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-07-21.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-07-21', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-07-21', data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_data_89_withTime.csv', test_path='test_data_89_withTime.csv', train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', model='SimpleMLP', token_emb_kernel_size=10, input_dim=75, dec_in=75, output_dim=1, d_model=486, n_heads=4, e_layers=17, d_layers=1, hidden_dim=649, last_hidden_dim=854, top_k=5, num_kernels=6, activation='gelu', time_d_model=93, combine_type='add', seq_len=55, pred_len=1, warmup_steps_ratio=0.001, exp_settings='seq_len-55-lr-0.017-d-486-hid_d-649-last_d-854-time_d-93-e_layers-17-token_emb_kernel_size-10-dropout-0.5-comb_type-add-bs-128', gradient_clip_val=5, train_epochs=120, batch_size=128, early_stop_patience=10, learning_rate=0.017, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=25, dropout=0.5, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg', scheduler_type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, Reduce_factor=0.2, use_gpu=True, gpu=0, use_multi_gpu=False, use_all_gpus_for_search=False, min_y_value=0.0, use_wandb=False)
+
+
+[I 2024-07-23 19:24:26,787] Trial 1328 pruned. 
+Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 18.0 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+18.0 M    Trainable params
+0         Non-trainable params
+18.0 M    Total params
+72.168    Total estimated model params size (MB)
+                                                                                       Best trial: 4. Best value: 0.0390353:  10%|█         | 4/40 [17:11<1:56:00, 193.36s/it]Best trial: 4. Best value: 0.0390353:  10%|█         | 4/40 [17:11<1:56:00, 193.36s/it]Best trial: 4. Best value: 0.0390353:  12%|█▎        | 5/40 [17:11<2:10:10, 223.15s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 15.0 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+15.0 M    Trainable params
+0         Non-trainable params
+15.0 M    Total params
+60.177    Total estimated model params size (MB)
+                                                                                       Best trial: 4. Best value: 0.0390353:  12%|█▎        | 5/40 [18:15<2:10:10, 223.15s/it]Best trial: 4. Best value: 0.0390353:  12%|█▎        | 5/40 [18:16<2:10:10, 223.15s/it]Best trial: 4. Best value: 0.0390353:  15%|█▌        | 6/40 [18:16<1:35:57, 169.33s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 7.5 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+7.5 M     Trainable params
+0         Non-trainable params
+7.5 M     Total params
+30.184    Total estimated model params size (MB)
+                                                                                       Best trial: 4. Best value: 0.0390353:  15%|█▌        | 6/40 [21:20<1:35:57, 169.33s/it]Best trial: 4. Best value: 0.0390353:  15%|█▌        | 6/40 [21:20<1:35:57, 169.33s/it]Best trial: 4. Best value: 0.0390353:  18%|█▊        | 7/40 [21:20<1:35:53, 174.34s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 5.8 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+5.8 M     Trainable params
+0         Non-trainable params
+5.8 M     Total params
+23.210    Total estimated model params size (MB)
+                                                                                       Best trial: 4. Best value: 0.0390353:  18%|█▊        | 7/40 [22:08<1:35:53, 174.34s/it]Best trial: 4. Best value: 0.0390353:  18%|█▊        | 7/40 [22:08<1:35:53, 174.34s/it]Best trial: 4. Best value: 0.0390353:  20%|██        | 8/40 [22:08<1:11:28, 134.02s/it]
+Running experiment with config:
+Namespace(seed=17, is_training=1, task_name='default', des='train', comment='optuna search', train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-07-21', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-07-21', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-07-21.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-07-21', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-07-21', data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_data_89_withTime.csv', test_path='test_data_89_withTime.csv', train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', model='SimpleMLP', token_emb_kernel_size=13, input_dim=75, dec_in=75, output_dim=1, d_model=201, n_heads=4, e_layers=8, d_layers=1, hidden_dim=884, last_hidden_dim=1000, top_k=5, num_kernels=6, activation='gelu', time_d_model=97, combine_type='add', seq_len=25, pred_len=1, warmup_steps_ratio=0.001, exp_settings='seq_len-25-lr-0.0298-d-201-hid_d-884-last_d-1000-time_d-97-e_layers-8-token_emb_kernel_size-13-dropout-0.5-comb_type-add-bs-128', gradient_clip_val=5, train_epochs=120, batch_size=128, early_stop_patience=10, learning_rate=0.0298, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=25, dropout=0.5, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg', scheduler_type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, Reduce_factor=0.2, use_gpu=True, gpu=0, use_multi_gpu=False, use_all_gpus_for_search=False, min_y_value=0.0, use_wandb=False)
+
+
+[I 2024-07-23 19:29:02,764] Trial 1330 finished with value: 0.0412078183144331 and parameters: {'d_model': 201, 'hidden_dim': 884, 'token_emb_kernel_size': 13, 'last_hidden_dim': 1000, 'time_d_model': 97, 'e_layers': 8, 'learning_rate': 0.02980135444818306, 'batch_size': 128, 'train_epochs': 120, 'seq_len': 25, 'dropout': 0.5}. Best is trial 4 with value: 0.039035286847501995.
+
+Running experiment with config:
+Namespace(seed=17, is_training=1, task_name='default', des='train', comment='optuna search', train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-07-21', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-07-21', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-07-21.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-07-21', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-07-21', data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_data_89_withTime.csv', test_path='test_data_89_withTime.csv', train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', model='SimpleMLP', token_emb_kernel_size=14, input_dim=75, dec_in=75, output_dim=1, d_model=236, n_heads=4, e_layers=11, d_layers=1, hidden_dim=673, last_hidden_dim=925, top_k=5, num_kernels=6, activation='gelu', time_d_model=91, combine_type='add', seq_len=46, pred_len=1, warmup_steps_ratio=0.001, exp_settings='seq_len-46-lr-0.0489-d-236-hid_d-673-last_d-925-time_d-91-e_layers-11-token_emb_kernel_size-14-dropout-0.5-comb_type-add-bs-1024', gradient_clip_val=5, train_epochs=120, batch_size=1024, early_stop_patience=10, learning_rate=0.0489, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=25, dropout=0.5, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg', scheduler_type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, Reduce_factor=0.2, use_gpu=True, gpu=0, use_multi_gpu=False, use_all_gpus_for_search=False, min_y_value=0.0, use_wandb=False)
+
+
+[I 2024-07-23 19:30:07,624] Trial 1333 pruned. 
+
+Running experiment with config:
+Namespace(seed=17, is_training=1, task_name='default', des='train', comment='optuna search', train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-07-21', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-07-21', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-07-21.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-07-21', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-07-21', data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_data_89_withTime.csv', test_path='test_data_89_withTime.csv', train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', model='SimpleMLP', token_emb_kernel_size=12, input_dim=75, dec_in=75, output_dim=1, d_model=425, n_heads=4, e_layers=4, d_layers=1, hidden_dim=795, last_hidden_dim=851, top_k=5, num_kernels=6, activation='gelu', time_d_model=93, combine_type='add', seq_len=34, pred_len=1, warmup_steps_ratio=0.001, exp_settings='seq_len-34-lr-0.0325-d-425-hid_d-795-last_d-851-time_d-93-e_layers-4-token_emb_kernel_size-12-dropout-0.5-comb_type-add-bs-128', gradient_clip_val=5, train_epochs=120, batch_size=128, early_stop_patience=10, learning_rate=0.0325, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=25, dropout=0.5, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg', scheduler_type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, Reduce_factor=0.2, use_gpu=True, gpu=0, use_multi_gpu=False, use_all_gpus_for_search=False, min_y_value=0.0, use_wandb=False)
+
+
+[I 2024-07-23 19:33:12,288] Trial 1334 finished with value: 0.04427045527845622 and parameters: {'d_model': 425, 'hidden_dim': 795, 'token_emb_kernel_size': 12, 'last_hidden_dim': 851, 'time_d_model': 93, 'e_layers': 4, 'learning_rate': 0.03252602645768106, 'batch_size': 128, 'train_epochs': 120, 'seq_len': 34, 'dropout': 0.5}. Best is trial 4 with value: 0.039035286847501995.
+
+Running experiment with config:
+Namespace(seed=17, is_training=1, task_name='default', des='train', comment='optuna search', train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-07-21', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-07-21', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-07-21.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-07-21', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-07-21', data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_data_89_withTime.csv', test_path='test_data_89_withTime.csv', train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', model='SimpleMLP', token_emb_kernel_size=10, input_dim=75, dec_in=75, output_dim=1, d_model=449, n_heads=4, e_layers=4, d_layers=1, hidden_dim=661, last_hidden_dim=984, top_k=5, num_kernels=6, activation='gelu', time_d_model=90, combine_type='add', seq_len=31, pred_len=1, warmup_steps_ratio=0.001, exp_settings='seq_len-31-lr-0.0054-d-449-hid_d-661-last_d-984-time_d-90-e_layers-4-token_emb_kernel_size-10-dropout-0.5-comb_type-add-bs-512', gradient_clip_val=5, train_epochs=120, batch_size=512, early_stop_patience=10, learning_rate=0.0054, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=25, dropout=0.5, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg', scheduler_type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, Reduce_factor=0.2, use_gpu=True, gpu=0, use_multi_gpu=False, use_all_gpus_for_search=False, min_y_value=0.0, use_wandb=False)
+
+
+[I 2024-07-23 19:33:59,966] Trial 1335 pruned. 
+Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 40.6 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+40.6 M    Trainable params
+0         Non-trainable params
+40.6 M    Total params
+162.586   Total estimated model params size (MB)
+                                                                                       
+Running experiment with config:
+Namespace(seed=17, is_training=1, task_name='default', des='train', comment='optuna search', train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-07-21', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-07-21', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-07-21.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-07-21', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-07-21', data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_data_89_withTime.csv', test_path='test_data_89_withTime.csv', train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', model='SimpleMLP', token_emb_kernel_size=14, input_dim=75, dec_in=75, output_dim=1, d_model=412, n_heads=4, e_layers=18, d_layers=1, hidden_dim=867, last_hidden_dim=996, top_k=5, num_kernels=6, activation='gelu', time_d_model=90, combine_type='add', seq_len=56, pred_len=1, warmup_steps_ratio=0.001, exp_settings='seq_len-56-lr-0.0188-d-412-hid_d-867-last_d-996-time_d-90-e_layers-18-token_emb_kernel_size-14-dropout-0.5-comb_type-add-bs-1024', gradient_clip_val=5, train_epochs=120, batch_size=1024, early_stop_patience=10, learning_rate=0.0188, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=25, dropout=0.5, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg', scheduler_type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, Reduce_factor=0.2, use_gpu=True, gpu=0, use_multi_gpu=False, use_all_gpus_for_search=False, min_y_value=0.0, use_wandb=False)
+
+
+[W 2024-07-23 19:34:08,071] Trial 1337 failed with parameters: {'d_model': 412, 'hidden_dim': 867, 'token_emb_kernel_size': 14, 'last_hidden_dim': 996, 'time_d_model': 90, 'e_layers': 18, 'learning_rate': 0.018768539237372376, 'batch_size': 1024, 'train_epochs': 120, 'seq_len': 56, 'dropout': 0.5} because of the following error: OutOfMemoryError('CUDA out of memory. Tried to allocate 190.00 MiB. GPU ').
+Traceback (most recent call last):
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/study/_optimize.py", line 196, in _run_trial
+    value_or_values = func(trial)
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py", line 317, in <lambda>
+    lambda trial: objective(trial, config_path),
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py", line 184, in objective
+    training_duration = run_training(
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py", line 100, in run_training
+    trainer.fit(
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/trainer.py", line 543, in fit
+    call._call_and_handle_interrupt(
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/call.py", line 44, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/trainer.py", line 579, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/trainer.py", line 986, in _run
+    results = self._run_stage()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/trainer.py", line 1030, in _run_stage
+    self.fit_loop.run()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/fit_loop.py", line 205, in run
+    self.advance()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/fit_loop.py", line 363, in advance
+    self.epoch_loop.run(self._data_fetcher)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 140, in run
+    self.advance(data_fetcher)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 250, in advance
+    batch_output = self.automatic_optimization.run(trainer.optimizers[0], batch_idx, kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 190, in run
+    self._optimizer_step(batch_idx, closure)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 268, in _optimizer_step
+    call._call_lightning_module_hook(
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/call.py", line 159, in _call_lightning_module_hook
+    output = fn(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/core/module.py", line 1308, in optimizer_step
+    optimizer.step(closure=optimizer_closure)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/core/optimizer.py", line 153, in step
+    step_output = self._strategy.optimizer_step(self._optimizer, closure, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/strategies/strategy.py", line 238, in optimizer_step
+    return self.precision_plugin.optimizer_step(optimizer, model=model, closure=closure, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/plugins/precision/precision.py", line 122, in optimizer_step
+    return optimizer.step(closure=closure, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/optim/lr_scheduler.py", line 75, in wrapper
+    return wrapped(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/optim/optimizer.py", line 391, in wrapper
+    out = func(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/optim/optimizer.py", line 76, in _use_grad
+    ret = func(self, *args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/optim/adamw.py", line 165, in step
+    loss = closure()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/plugins/precision/precision.py", line 108, in _wrap_closure
+    closure_result = closure()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 144, in __call__
+    self._result = self.closure(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 129, in closure
+    step_output = self._step_fn()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 317, in _training_step
+    training_step_output = call._call_strategy_hook(trainer, "training_step", *kwargs.values())
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/call.py", line 311, in _call_strategy_hook
+    output = fn(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/strategies/strategy.py", line 390, in training_step
+    return self.lightning_module.training_step(*args, **kwargs)
+  File "/data3/lsf/Pein/Power-Prediction/exp/pl_exp.py", line 95, in training_step
+    return self.common_step(batch, batch_idx, "train")
+  File "/data3/lsf/Pein/Power-Prediction/exp/pl_exp.py", line 74, in common_step
+    loss = self.process_batch(batch, self.criterion)
+  File "/data3/lsf/Pein/Power-Prediction/exp/pl_exp.py", line 167, in process_batch
+    outputs = self(batch_x, batch_x_mark, dec_inp, batch_y_mark)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data3/lsf/Pein/Power-Prediction/exp/pl_exp.py", line 235, in forward
+    return self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data3/lsf/Pein/Power-Prediction/models/SimpleMLP.py", line 97, in forward
+    x = block(x)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data3/lsf/Pein/Power-Prediction/models/SimpleMLP.py", line 26, in forward
+    out = self.bn1(out.transpose(1, 2)).transpose(1, 2)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/batchnorm.py", line 175, in forward
+    return F.batch_norm(
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/functional.py", line 2509, in batch_norm
+    return torch.batch_norm(
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 190.00 MiB. GPU Best trial: 4. Best value: 0.0390353:  20%|██        | 8/40 [22:16<1:11:28, 134.02s/it]                                                                                       Best trial: 4. Best value: 0.0390353:  20%|██        | 8/40 [22:16<1:11:28, 134.02s/it]Best trial: 4. Best value: 0.0390353:  20%|██        | 8/40 [22:16<1:29:05, 167.06s/it]
+
+[W 2024-07-23 19:34:08,087] Trial 1337 failed with value None.
+Traceback (most recent call last):
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py", line 394, in <module>
+    main()
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py", line 387, in main
+    run_optuna_study(args)
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py", line 330, in run_optuna_study
+    run_optimization(study, args.config, args.n_trials, args.timeout)
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py", line 316, in run_optimization
+    study.optimize(
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/study/study.py", line 451, in optimize
+    _optimize(
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/study/_optimize.py", line 62, in _optimize
+    _optimize_sequential(
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/study/_optimize.py", line 159, in _optimize_sequential
+    frozen_trial = _run_trial(study, func, catch)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/study/_optimize.py", line 247, in _run_trial
+    raise func_err
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/study/_optimize.py", line 196, in _run_trial
+    value_or_values = func(trial)
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py", line 317, in <lambda>
+    lambda trial: objective(trial, config_path),
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py", line 184, in objective
+    training_duration = run_training(
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py", line 100, in run_training
+    trainer.fit(
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/trainer.py", line 543, in fit
+    call._call_and_handle_interrupt(
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/call.py", line 44, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/trainer.py", line 579, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/trainer.py", line 986, in _run
+    results = self._run_stage()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/trainer.py", line 1030, in _run_stage
+    self.fit_loop.run()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/fit_loop.py", line 205, in run
+    self.advance()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/fit_loop.py", line 363, in advance
+    self.epoch_loop.run(self._data_fetcher)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 140, in run
+    self.advance(data_fetcher)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 250, in advance
+    batch_output = self.automatic_optimization.run(trainer.optimizers[0], batch_idx, kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 190, in run
+    self._optimizer_step(batch_idx, closure)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 268, in _optimizer_step
+    call._call_lightning_module_hook(
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/call.py", line 159, in _call_lightning_module_hook
+    output = fn(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/core/module.py", line 1308, in optimizer_step
+    optimizer.step(closure=optimizer_closure)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/core/optimizer.py", line 153, in step
+    step_output = self._strategy.optimizer_step(self._optimizer, closure, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/strategies/strategy.py", line 238, in optimizer_step
+    return self.precision_plugin.optimizer_step(optimizer, model=model, closure=closure, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/plugins/precision/precision.py", line 122, in optimizer_step
+    return optimizer.step(closure=closure, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/optim/lr_scheduler.py", line 75, in wrapper
+    return wrapped(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/optim/optimizer.py", line 391, in wrapper
+    out = func(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/optim/optimizer.py", line 76, in _use_grad
+    ret = func(self, *args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/optim/adamw.py", line 165, in step
+    loss = closure()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/plugins/precision/precision.py", line 108, in _wrap_closure
+    closure_result = closure()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 144, in __call__
+    self._result = self.closure(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 129, in closure
+    step_output = self._step_fn()
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 317, in _training_step
+    training_step_output = call._call_strategy_hook(trainer, "training_step", *kwargs.values())
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/trainer/call.py", line 311, in _call_strategy_hook
+    output = fn(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/pytorch_lightning/strategies/strategy.py", line 390, in training_step
+    return self.lightning_module.training_step(*args, **kwargs)
+  File "/data3/lsf/Pein/Power-Prediction/exp/pl_exp.py", line 95, in training_step
+    return self.common_step(batch, batch_idx, "train")
+  File "/data3/lsf/Pein/Power-Prediction/exp/pl_exp.py", line 74, in common_step
+    loss = self.process_batch(batch, self.criterion)
+  File "/data3/lsf/Pein/Power-Prediction/exp/pl_exp.py", line 167, in process_batch
+    outputs = self(batch_x, batch_x_mark, dec_inp, batch_y_mark)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data3/lsf/Pein/Power-Prediction/exp/pl_exp.py", line 235, in forward
+    return self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data3/lsf/Pein/Power-Prediction/models/SimpleMLP.py", line 97, in forward
+    x = block(x)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data3/lsf/Pein/Power-Prediction/models/SimpleMLP.py", line 26, in forward
+    out = self.bn1(out.transpose(1, 2)).transpose(1, 2)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/modules/batchnorm.py", line 175, in forward
+    return F.batch_norm(
+  File "/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/torch/nn/functional.py", line 2509, in batch_norm
+    return torch.batch_norm(
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 190.00 MiB. GPU 

@@ -43,9 +43,9 @@ parser.add_argument("--scale_y_type", type=str, default="standard", help="scale_
 # seed
 parser.add_argument("--seed", type=int, default=17, help="random seed")
 
-# output_dir
+# res_output_dir
 parser.add_argument(
-    "--output_dir", type=str, default="./output", help="output dir for model"
+    "--res_output_dir", type=str, default="./output", help="output dir for model"
 )
 
 

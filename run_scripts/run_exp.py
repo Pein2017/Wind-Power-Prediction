@@ -46,9 +46,9 @@ def execute_experiment_with_logging(config):
     else:
         log_filename += f"-gpu-{config.gpu}.log"
 
-    os.makedirs(config.log_output_dir, exist_ok=True)
+    os.makedirs(config.train_log_dir, exist_ok=True)
 
-    log_filepath = os.path.join(config.log_output_dir, log_filename)
+    log_filepath = os.path.join(config.train_log_dir, log_filename)
 
     with redirect_stdout_stderr(log_filepath) as log_file:  # noqa
         print(f"Running experiment with config: {config}\n")
@@ -80,7 +80,7 @@ def run_experiments_in_order(configurations):
         print(f"Running {i+1}/{total_experiments} of the experiments.")
         try:
             exp_start_time = time.time()
-            elapsed_time = worker(config)
+            # elapsed_time = worker(config)
             exp_end_time = time.time()
             total_elapsed_time = exp_end_time - exp_start_time
             print(
@@ -94,7 +94,7 @@ def run_experiments_in_parallel(configurations, num_devices):
     start_time = time.time()
     with mp.Pool(processes=num_devices) as pool:
         try:
-            results = pool.starmap(
+            _ = pool.starmap(
                 worker,
                 [(config, i % num_devices) for i, config in enumerate(configurations)],
             )

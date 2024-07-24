@@ -152,39 +152,6 @@ class WindPowerExperiment(pl.LightningModule):
     #     #     self.trainer.optimizers[0], scheduler, self.current_epoch, self.config
     #     # )
 
-    # def on_validation_epoch_end(self):
-    #     if self.val_losses:
-    #         avg_val_loss = self._aggregate_losses(self.val_losses)
-    #         self.avg_val_loss = avg_val_loss
-    #         self.val_losses.clear()
-
-    #         # Log to TensorBoard with truncated value
-    #         truncated_val_loss = self._truncate_loss(avg_val_loss)
-    #         if truncated_val_loss > 10:
-    #             raise ValueError("Val loss is too large, check the model.")
-    #         self.log(
-    #             "val_loss",
-    #             truncated_val_loss,
-    #             on_epoch=True,
-    #             on_step=False,
-    #             logger=True,
-    #         )
-
-    #     if self.test_losses:
-    #         avg_test_loss = self._aggregate_losses(self.test_losses)
-    #         self.avg_test_loss = avg_test_loss
-    #         self.test_losses.clear()
-
-    #         # Log to TensorBoard with truncated value
-    #         truncated_test_loss = self._truncate_loss(avg_test_loss)
-    #         self.log(
-    #             "test_loss",
-    #             truncated_test_loss,
-    #             on_epoch=True,
-    #             on_step=False,
-    #             logger=True,
-    #         )
-
     def _truncate_loss(self, loss, max_value=5.0):
         return torch.clamp(loss, max=max_value)
 

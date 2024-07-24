@@ -5,7 +5,7 @@ import sys
 
 import pytorch_lightning as pl
 import torch
-from pytorch_lightning.loggers import TensorBoardLogger
+from pytorch_lightning.loggers import TensorBoardLogger, WandbLogger
 from pytorch_lightning.strategies import DDPStrategy
 
 sys.path.append("/data3/lsf/Pein/Power-Prediction")
@@ -13,6 +13,7 @@ sys.path.append("/data3/lsf/Pein/Power-Prediction")
 from dataset.datamodule import WindPowerDataModule
 from exp.pl_exp import WindPowerExperiment
 from utils.callback import MetricsCallback, get_callbacks
+from utils.config import dict_to_namespace
 from utils.results import custom_test
 from utils.tools import get_next_version
 
@@ -27,6 +28,9 @@ def set_seed(seed):
 
 def setup_device_and_strategy(args):
     """Setup device and strategy for training."""
+
+    if isinstance(args, dict):
+        args = dict_to_namespace(args)
     if args.use_multi_gpu:
         devices = torch.cuda.device_count()
         strategy = DDPStrategy(find_unused_parameters=False)
@@ -36,45 +40,84 @@ def setup_device_and_strategy(args):
     return devices, strategy
 
 
+def prepare_output_directory(args):
+    """Prepare the output directory for the experiment."""
+
+    if isinstance(args, dict):
+        args = dict_to_namespace(args)
+
+    exp_output_dir = os.path.join(args.res_output_dir, args.exp_settings)
+    os.makedirs(exp_output_dir, exist_ok=True)
+    return exp_output_dir
+
+
+def setup_logging(exp_output_dir, version=None, use_wandb=False):
+    """Setup logger for the experiment."""
+    if version is None:
+        version = get_next_version(exp_output_dir)
+
+    if use_wandb:
+        os.environ["WANDB_DISABLED"] = "false"
+        logger = WandbLogger(
+            project="wind_power_prediction",
+            save_dir=exp_output_dir,
+            log_model=False,
+        )
+    else:
+        logger = TensorBoardLogger(save_dir=exp_output_dir, name=None, version=version)
+    return logger, version
+
+
+def prepare_data_module(args):
+    """Prepare the data module."""
+    data_module = WindPowerDataModule(args)
+    data_module.prepare_data()
+    data_module.setup("fit")
+    return data_module
+
+
+def setup_trainer(args, devices, strategy, logger, callbacks):
+    """Setup PyTorch Lightning Trainer."""
+
+    if isinstance(args, dict):
+        args = dict_to_namespace(args)
+
+    sync_batchnorm_flag = (isinstance(devices, int) and devices > 1) or (
+        isinstance(devices, list) and len(devices) > 1
+    )
+
+    trainer = pl.Trainer(
+        max_epochs=args.train_epochs,
+        accelerator="gpu",
+        devices=devices,
+        strategy=strategy,
+        callbacks=callbacks,
+        logger=logger,
+        enable_progress_bar=False,
+        sync_batchnorm=sync_batchnorm_flag,
+        gradient_clip_val=getattr(args, "gradient_clip_val", None),
+    )
+    return trainer
+
+
 def execute_experiment(args):
     """Run a single experiment with the given configuration."""
     set_seed(args.seed)
 
-    exp_output_dir = os.path.join(args.output_dir, args.exp_settings)
-    os.makedirs(exp_output_dir, exist_ok=True)
-
-    # Get the next version
+    exp_output_dir = prepare_output_directory(args)
     version = get_next_version(exp_output_dir)
 
-    # # Initialize wandb logger
-    # os.environ["WANDB_DISABLED"] = "true"
-    # wandb.init(project="wind_power_prediction")
-    # wandb_logger = WandbLogger(
-    #     project="Wind-Solar-Power",
-    #     name=None,
-    #     save_dir=exp_output_dir,
-    #     log_model=False,
-    #     offline=True,
-    # )
-    tb_logger = TensorBoardLogger(save_dir=exp_output_dir, name=None, version=version)
+    use_wandb = getattr(args, "use_wandb", False)
+    logger, version = setup_logging(exp_output_dir, version, use_wandb)
 
     devices, strategy = setup_device_and_strategy(args)
+    data_module = prepare_data_module(args)
 
-    data_module = WindPowerDataModule(args)
-    data_module.prepare_data()
-    data_module.setup("fit")
-
-    # Calculate steps_per_epoch from train_dataloader
     train_dataloader = data_module.train_dataloader()
     args.steps_per_epoch = len(train_dataloader)
-
-    # Create validation dataloaders list
     val_dataloaders = [data_module.val_dataloader(), data_module.test_dataloader()]
 
-    # Initialize model
     wind_power_module = WindPowerExperiment(args)
-
-    # Get callbacks
     callbacks = get_callbacks(args)
     callbacks.append(
         MetricsCallback(
@@ -83,41 +126,21 @@ def execute_experiment(args):
         )
     )
 
-    # Determine sync_batchnorm_flag
-    sync_batchnorm_flag = (isinstance(devices, int) and devices > 1) or (
-        isinstance(devices, list) and len(devices) > 1
-    )
-
-    # Initialize trainer
-    trainer = pl.Trainer(
-        max_epochs=args.train_epochs,
-        accelerator="gpu",
-        devices=devices,
-        strategy=strategy,
-        callbacks=callbacks,
-        logger=tb_logger,
-        enable_progress_bar=False,
-        sync_batchnorm=sync_batchnorm_flag,
-        # log_every_n_steps=3 * args.batch_size,
-        gradient_clip_val=getattr(args, "gradient_clip_val", None),
-    )
-
+    trainer = setup_trainer(args, devices, strategy, logger, callbacks)
     trainer.scaler_y = data_module.scaler_y
 
-    # Train the model
     trainer.fit(
-        wind_power_module,
+        model=wind_power_module,
         train_dataloaders=train_dataloader,
         val_dataloaders=val_dataloaders,
     )
 
-    # Custom test the model and visualize results
     custom_test(
         trainer=trainer,
         model_class=WindPowerExperiment,
         data_module=data_module,
         exp_settings=args.exp_settings,
-        device=torch.device("cpu"),
+        device=torch.device("cuda"),
         best_metrics_dir=os.path.join(exp_output_dir, f"version_{version}"),
         plot_dir=os.path.join(exp_output_dir, f"version_{version}"),
         config=args,

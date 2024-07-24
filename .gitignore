@@ -3,10 +3,12 @@
 
 # Ignore all .pth files
 *.pth
+*.db
+*.json
 
 # Ignore __pycache__ directories
 __pycache__/
 
-# Ignore everything under log_output and output directories
-/log_output/
-/tb_output/
+# Ignore everything under train_log and output directories
+/train_log/
+/res_output/

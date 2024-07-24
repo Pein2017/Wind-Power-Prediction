@@ -1,6 +1,7 @@
 import datetime
 import os
 
+import optuna
 from pytorch_lightning.callbacks import (
     Callback,
     EarlyStopping,
@@ -8,10 +9,14 @@ from pytorch_lightning.callbacks import (
     ModelCheckpoint,
 )
 
+from utils.config import dict_to_namespace
 from utils.inference import full_inference
 
 
 def get_callbacks(config):
+    if isinstance(config, dict):
+        config = dict_to_namespace(config)
+
     checkpoint_callback = ModelCheckpoint(
         monitor="Loss/val",
         filename="best_model-{epoch:02d}-{val_loss:.2f}",
@@ -45,7 +50,8 @@ class MetricsCallback(Callback):
     def __init__(self, criterion, final_best_metrics_log_path):
         super().__init__()
         self.criterion = criterion
-        self.log_path = final_best_metrics_log_path
+
+        self.log_path = final_best_metrics_log_path or "/final_best_metrics.log"
 
     def on_validation_epoch_end(self, trainer, pl_module):
         self._update_metrics(trainer, pl_module)
@@ -359,11 +365,6 @@ class MetricsCallback(Callback):
             if not os.path.exists(log_dir):
                 os.makedirs(log_dir)
 
-            # # Check if the log file exists, create it if it does not
-            # if not os.path.isfile(self.log_path):
-            #     with open(self.log_path, "w") as f:
-            #         f.write("")  # Create an empty file
-
             last_order_number = self.get_last_order_number()
             order_number = last_order_number + 1
             with open(self.log_path, "a") as f:
@@ -371,3 +372,26 @@ class MetricsCallback(Callback):
                 for line in output:
                     f.write(line + "\n")
                 f.write("\n")
+
+
+class OptunaPruningCallback(Callback):
+    def __init__(self, trial):
+        self.trial = trial
+
+    def on_validation_end(self, trainer, pl_module):
+        # Check if 'Loss/train' is in callback_metrics and is not None
+        if (
+            "Loss/train" not in trainer.callback_metrics
+            or trainer.callback_metrics["Loss/train"] is None
+        ):
+            return  # Skip this epoch if 'Loss/train' is not set
+
+        train_loss = trainer.callback_metrics["Loss/train"].item()
+        val_loss = trainer.callback_metrics["Loss/val"].item()
+        test_loss = trainer.callback_metrics["Loss/test"].item()
+
+        weighted_loss = 0.2 * train_loss + 0.4 * val_loss + 0.4 * test_loss
+
+        self.trial.report(weighted_loss, trainer.current_epoch)
+        if self.trial.should_prune():
+            raise optuna.exceptions.TrialPruned()

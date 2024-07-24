@@ -167,13 +167,13 @@ class EarlyStopping:
         self.val_loss_min = val_loss
 
 
-def get_next_version(output_dir):
+def get_next_version(res_output_dir):
     """Get the next version number for the logger."""
     version = 0
-    if os.path.exists(output_dir):
+    if os.path.exists(res_output_dir):
         existing_versions = [
             int(d.split("_")[-1])
-            for d in os.listdir(output_dir)
+            for d in os.listdir(res_output_dir)
             if d.startswith("version_") and d.split("_")[-1].isdigit()
         ]
         if existing_versions:

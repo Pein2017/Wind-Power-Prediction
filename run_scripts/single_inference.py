@@ -46,7 +46,7 @@ def execute_experiment(args):
     """Run a single experiment with the given configuration."""
     set_seed(args.seed)
 
-    exp_output_dir = os.path.join(args.output_dir, args.exp_settings)
+    exp_output_dir = os.path.join(args.res_output_dir, args.exp_settings)
     os.makedirs(exp_output_dir, exist_ok=True)
 
     # Get the next version
@@ -149,16 +149,16 @@ def find_checkpoint(checkpoints_dir):
     raise FileNotFoundError("No checkpoint file found in the directory.")
 
 
-def main_inference(exp_result_dir, output_dir):
+def main_inference(exp_result_dir, res_output_dir):
     """Main function to conduct inference and save predictions to a CSV file."""
     # Paths
     config_path = os.path.join(exp_result_dir, "hparams.yaml")
     checkpoint_path = find_checkpoint(os.path.join(exp_result_dir, "checkpoints"))
 
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    if not os.path.exists(res_output_dir):
+        os.makedirs(res_output_dir)
 
-    output_csv_path = os.path.join(output_dir, "inference_results.csv")
+    output_csv_path = os.path.join(res_output_dir, "inference_results.csv")
 
     # Load the configuration from the YAML file
     config = load_config(config_path)
@@ -219,8 +219,8 @@ def main_inference(exp_result_dir, output_dir):
 if __name__ == "__main__":
     time_str = "24-07-17"
     exp_result_dir = f"/data3/lsf/Pein/Power-Prediction/output/{time_str}/seq_len-36-lr-0.1-d-256-hid_d-32-last_d-256-time_d-128-e_layers-8-comb_type-add-bs-1100/version_0/"
-    output_dir = (
+    res_output_dir = (
         f"/data3/lsf/Pein/Power-Prediction/output/{time_str}_result/best_preds/"
     )
 
-    main_inference(exp_result_dir, output_dir)
+    main_inference(exp_result_dir, res_output_dir)

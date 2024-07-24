@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 class PositionalEmbedding(nn.Module):
@@ -83,14 +84,14 @@ class TemporalEmbedding(nn.Module):
 
 
 class TokenEmbedding(nn.Module):
-    def __init__(self, input_dim, d_model):
+    def __init__(self, input_dim, d_model, token_emb_kernel_size=3):
         super(TokenEmbedding, self).__init__()
-        padding = 1 if torch.__version__ >= "1.5.0" else 2
+        self.token_emb_kernel_size = token_emb_kernel_size
         self.tokenConv = nn.Conv1d(
             in_channels=input_dim,
             out_channels=d_model,
-            kernel_size=3,
-            padding=padding,
+            kernel_size=token_emb_kernel_size,
+            padding=0,  # Set padding to 0, we will handle it manually
             padding_mode="zeros",
             bias=False,
         )
@@ -101,7 +102,15 @@ class TokenEmbedding(nn.Module):
                 )
 
     def forward(self, x):
-        x = self.tokenConv(x.permute(0, 2, 1)).transpose(1, 2)
+        # Calculate the padding size
+        padding_left = (self.token_emb_kernel_size - 1) // 2
+        padding_right = self.token_emb_kernel_size // 2
+
+        # Apply padding
+        x = F.pad(
+            x.permute(0, 2, 1), (padding_left, padding_right), mode="constant", value=0
+        )
+        x = self.tokenConv(x).transpose(1, 2)
         return x
 
 
@@ -323,7 +332,14 @@ class TemporalFeatureEmbedding(nn.Module):
 
 
 class FinalEmbedding(nn.Module):
-    def __init__(self, input_dim, token_d_model, time_d_model=-1, combine_type="add"):
+    def __init__(
+        self,
+        input_dim,
+        token_d_model,
+        time_d_model=-1,
+        combine_type="add",
+        token_emb_kernel_size=3,
+    ):
         super(FinalEmbedding, self).__init__()
         if time_d_model == -1:
             time_d_model = token_d_model
@@ -331,7 +347,11 @@ class FinalEmbedding(nn.Module):
                 f"time_d_model is not set, defaulting to token_d_model: {time_d_model}"
             )
 
-        self.token_embedding = TokenEmbedding(input_dim, token_d_model)
+        self.token_embedding = TokenEmbedding(
+            input_dim,
+            token_d_model,
+            token_emb_kernel_size=token_emb_kernel_size,
+        )
         self.temporal_embedding = TemporalFeatureEmbedding(time_d_model, combine_type)
         self.combine_type = combine_type
         self.token_d_model = token_d_model
@@ -357,6 +377,9 @@ class FinalEmbedding(nn.Module):
         else:
             if self.token_d_model != self.time_d_model:
                 temporal_emb = self.temporal_to_token_dim(temporal_emb)
+
+            # check the shape before adding
+
             combined_emb = token_emb + temporal_emb
             # combined_emb: [batch, Seq_len, token_d_model]
 
