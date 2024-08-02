@@ -4,30 +4,20 @@ import time
 import traceback
 from datetime import timedelta
 
-import numpy as np
+import numpy as np  # noqa
 import pathos.multiprocessing as mp
 import torch
 
 sys.path.append("/data3/lsf/Pein/Power-Prediction")
 
 
+from run_scripts.run_optuna import suggest_hyperparameters
 from run_scripts.single_exp import execute_experiment
 from utils.config import dict_to_namespace, load_config, parse_args
 from utils.exp_search import generate_hyperparameter_combinations
 
-# Define the search space for hyperparameters
-SEARCH_SPACE = {
-    "d_model": [64, 256],
-    "hidden_dim": [64, 256],
-    "last_hidden_dim": [64, 512],
-    "time_d_model": [64, 128, 256],
-    "e_layers": [8, 16, 32],
-    # from 1e-4 to 1e-1, with 50 steps
-    "learning_rate": np.logspace(-4, -3, 10),
-    "combine_type": ["add"],
-    "train_epochs": [60],
-    "seq_len": [8, 24],
-}
+# Use the suggest_hyperparameters function for defining the search space
+SEARCH_SPACE = suggest_hyperparameters(return_search_space=True)
 
 
 def redirect_stdout_stderr(log_filepath):
@@ -40,15 +30,28 @@ def redirect_stdout_stderr(log_filepath):
 
 def execute_experiment_with_logging(config):
     """Execute experiment with logging redirection."""
-    log_filename = f"seq_len-{config.seq_len}-lr-{config.learning_rate}-d-{config.d_model}-last_d-{config.last_hidden_dim}-time_d-{config.time_d_model}"
-    if config.use_multi_gpu:
+
+    # Build the log filename
+    output_paths = config.output_paths
+    model_settings = config.model_settings
+    training_settings = config.training_settings
+
+    log_filename = (
+        f"seq_len-{model_settings.seq_len}-"
+        f"lr-{training_settings.learning_rate}-"
+        f"d-{model_settings.d_model}-"
+        f"last_d-{model_settings.last_hidden_dim}-"
+        f"time_d-{model_settings.time_d_model}"
+    )
+
+    if config.gpu_settings.use_multi_gpu:
         log_filename += "-allgpu.log"
     else:
-        log_filename += f"-gpu-{config.gpu}.log"
+        log_filename += f"-gpu-{config.gpu_settings.gpu_id}.log"
 
-    os.makedirs(config.train_log_dir, exist_ok=True)
+    os.makedirs(output_paths.train_log_dir, exist_ok=True)
 
-    log_filepath = os.path.join(config.train_log_dir, log_filename)
+    log_filepath = os.path.join(output_paths.train_log_dir, log_filename)
 
     with redirect_stdout_stderr(log_filepath) as log_file:  # noqa
         print(f"Running experiment with config: {config}\n")
@@ -66,7 +69,7 @@ def execute_experiment_with_logging(config):
 def worker(config, device_id=None):
     """Worker function to run an experiment."""
     if device_id is not None:
-        config.gpu = device_id
+        config.gpu_settings.gpu_id = device_id
     start_time = time.time()
     execute_experiment_with_logging(config)
     end_time = time.time()
@@ -80,7 +83,7 @@ def run_experiments_in_order(configurations):
         print(f"Running {i+1}/{total_experiments} of the experiments.")
         try:
             exp_start_time = time.time()
-            # elapsed_time = worker(config)
+            _ = worker(config)
             exp_end_time = time.time()
             total_elapsed_time = exp_end_time - exp_start_time
             print(
@@ -113,7 +116,7 @@ def run_experiments_in_parallel(configurations, num_devices):
 
 def main():
     args = parse_args()
-    base_config = load_config(args.config)
+    base_config = load_config(args.config, args.exp_time_str)
 
     # Generate hyperparameter combinations
     configurations = list(
@@ -123,10 +126,17 @@ def main():
 
     print(f"Total number of experiments: {len(configurations)}")
 
+    # Get the number of CUDA devices
     num_devices = torch.cuda.device_count()
-    use_multi_gpu = base_config.get("use_multi_gpu", False)
-    use_gpu = base_config.get("use_gpu", False)
-    use_all_gpus_for_search = base_config.get("use_all_gpus_for_search", False)
+
+    # Convert gpu_settings dictionary to argparse.Namespace
+    base_config = dict_to_namespace(base_config, False)
+    gpu_settings = getattr(base_config, "gpu_settings")
+    gpu_settings = dict_to_namespace(gpu_settings, False)
+
+    use_multi_gpu = getattr(gpu_settings, "use_multi_gpu", False)
+    use_gpu = getattr(gpu_settings, "use_gpu", False)
+    use_all_gpus_for_search = getattr(gpu_settings, "use_all_gpus_for_search", False)
 
     if use_multi_gpu:
         print("Using multiple GPUs for each experiment.")

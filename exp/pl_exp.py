@@ -15,18 +15,18 @@ from utils.config import dict_to_namespace
 
 
 class WindPowerExperiment(pl.LightningModule):
-    def __init__(self, config: Namespace | Dict):
+    def __init__(self, args: Namespace | Dict):
         super(WindPowerExperiment, self).__init__()
-        if isinstance(config, dict):
-            config = dict_to_namespace(config)
-        self.config = config
+        if isinstance(args, dict):
+            args = dict_to_namespace(args, False)
+        self.args = args
         self.model_dict = {
             "TimeMixer": TimeMixer,
             "SimpleMLP": SimpleMLP,
         }
 
-        if config:
-            self.save_hyperparameters(config)
+        if args:
+            self.save_hyperparameters(args)
             # self.save_hyperparameters(vars(config))
 
         self.model = self._build_model()
@@ -146,7 +146,7 @@ class WindPowerExperiment(pl.LightningModule):
     #     # todo check if this is necessary
     #     # # Adjust the learning rate at the end of each epoch
     #     # scheduler = (
-    #     #     self.lr_schedulers() if self.config.scheduler_type == "OneCycleLR" else None
+    #     #     self.lr_schedulers() if self.config.type == "OneCycleLR" else None
     #     # )
     #     # adjust_learning_rate(
     #     #     self.trainer.optimizers[0], scheduler, self.current_epoch, self.config
@@ -188,37 +188,46 @@ class WindPowerExperiment(pl.LightningModule):
         return criterion(outputs[mask], batch_y[mask])
 
     def _build_model(self):
-        model = self.model_dict[self.config.model].Model(self.config).float()
+        model_settings = self.args.model_settings
+        model = self.model_dict[model_settings.name].Model(model_settings).float()
         return model
 
     def _select_optimizer(self):
+        training_settings = self.args.training_settings
+        scheduler_settings = self.args.scheduler_settings
         return optim.AdamW(
             self.model.parameters(),
-            lr=self.config.learning_rate,
-            weight_decay=self.config.weight_decay,
+            lr=training_settings.learning_rate,
+            weight_decay=scheduler_settings.weight_decay,
         )
 
     def _select_criterion(self):
-        return nn.MSELoss() if self.config.data != "PEMS" else nn.L1Loss()
+        return (
+            nn.MSELoss() if self.args.training_settings.loss == "MSE" else nn.L1Loss()
+        )
 
     def configure_optimizers(self):
         optimizer = self._select_optimizer()
-        if self.config.scheduler_type == "OneCycleLR":
+        training_settings = self.args.training_settings
+        scheduler_settings = self.args.scheduler_settings
+        if scheduler_settings.type == "OneCycleLR":
             scheduler = {
                 "scheduler": lr_scheduler.OneCycleLR(
                     optimizer=optimizer,
-                    epochs=self.config.train_epochs,
-                    steps_per_epoch=self.config.steps_per_epoch,
-                    pct_start=self.config.pct_start,
-                    max_lr=self.config.learning_rate,
+                    epochs=training_settings.train_epochs,
+                    steps_per_epoch=training_settings.steps_per_epoch,
+                    pct_start=scheduler_settings.pct_start,
+                    max_lr=training_settings.learning_rate,
                 ),
                 "interval": "step",
                 "frequency": 1,
             }
-        elif self.config.scheduler_type == "CosineAnnealingLR":
+        elif self.args.type == "CosineAnnealingLR":
             scheduler = {
                 "scheduler": lr_scheduler.CosineAnnealingLR(
-                    optimizer=optimizer, T_max=self.config.T_max, eta_min=1e-6
+                    optimizer=optimizer,
+                    T_max=scheduler_settings.T_max,
+                    eta_min=int(scheduler_settings.eta_min),
                 ),
                 "interval": "epoch",
                 "frequency": 1,

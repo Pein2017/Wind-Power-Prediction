@@ -2,9 +2,9 @@
 
 # Function to convert seconds to hours, minutes, and seconds
 convertsecs() {
-    ((h=${1}/3600))
-    ((m=(${1}%3600)/60))
-    ((s=${1}%60))
+    ((h = ${1} / 3600))
+    ((m = (${1} % 3600) / 60))
+    ((s = ${1} % 60))
     printf "%02d hours %02d minutes %02d seconds" $h $m $s
 }
 
@@ -15,10 +15,10 @@ start_time=$(date +%s)
 source activate Pein_310
 
 # Run the first instance with GPU 0 in the background
-CUDA_VISIBLE_DEVICES=0 python /data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py > /data3/lsf/Pein/Power-Prediction/tmux_console_0.log 2>&1 &
+CUDA_VISIBLE_DEVICES=0 python /data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py >/data3/lsf/Pein/Power-Prediction/tmux_console_0.log 2>&1 &
 
 # Run the second instance with GPU 1 in the background
-CUDA_VISIBLE_DEVICES=1 python /data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py > /data3/lsf/Pein/Power-Prediction/tmux_console_1.log 2>&1 &
+CUDA_VISIBLE_DEVICES=1 python /data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py >/data3/lsf/Pein/Power-Prediction/tmux_console_1.log 2>&1 &
 
 # Wait for both background processes to finish
 wait

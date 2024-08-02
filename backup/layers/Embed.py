@@ -111,68 +111,167 @@ class TemporalFeatureEmbedding(nn.Module):
         self.d_model = time_d_model
         self.combine_type = combine_type
 
-        # Embeddings for mins_position and hour
-        self.mins_position_embed = nn.Embedding(96, time_d_model)
+        # Embeddings for categorical time features
         self.hour_embed = nn.Embedding(24, time_d_model)
+        self.quarter_hour_embed = nn.Embedding(4, time_d_model)
+        self.day_embed = nn.Embedding(31, time_d_model)
+        self.day_in_week_embed = nn.Embedding(7, time_d_model)
 
         # Linear layers for sine and cosine transformations
-        self.linear_pos_sin = nn.Linear(1, time_d_model)
-        self.linear_pos_cos = nn.Linear(1, time_d_model)
         self.linear_hour_sin = nn.Linear(1, time_d_model)
         self.linear_hour_cos = nn.Linear(1, time_d_model)
+        self.linear_quarter_hour_sin = nn.Linear(1, time_d_model)
+        self.linear_quarter_hour_cos = nn.Linear(1, time_d_model)
+        self.linear_day_sin = nn.Linear(1, time_d_model)
+        self.linear_day_cos = nn.Linear(1, time_d_model)
+        self.linear_day_in_week_sin = nn.Linear(1, time_d_model)
+        self.linear_day_in_week_cos = nn.Linear(1, time_d_model)
 
-        # if self.combine_type == "concat":
-        #     self.combine_linear = nn.Linear(6 * d_model, d_model)
-
-        self.dropout = nn.Dropout(0.1)  # Dropout rate (optional)
+        # Dropout (optional)
+        self.dropout = nn.Dropout(0.1)
 
     def forward(self, x):
-        # x: [batch, Seq_Len, 6] - containing mins_position, mins_position_sin, mins_position_cos, hour, hour_sin, hour_cos
+        # x: [batch, Seq_len, num_features] - containing hour, quarter_hour, day, day_in_week, hour_sin, hour_cos, quarter_hour_sin, quarter_hour_cos, day_sin, day_cos, day_in_week_sin, day_in_week_cos
 
         # Extract features
-        mins_position = x[:, :, 0].long()
-        mins_position_sin = x[:, :, 1].unsqueeze(-1)
-        mins_position_cos = x[:, :, 2].unsqueeze(-1)
-        hour = x[:, :, 3].long()
+        hour = x[:, :, 0].long()
+        quarter_hour = x[:, :, 1].long()
+        day = x[:, :, 2].long()
+        day_in_week = x[:, :, 3].long()
+
         hour_sin = x[:, :, 4].unsqueeze(-1)
         hour_cos = x[:, :, 5].unsqueeze(-1)
+        quarter_hour_sin = x[:, :, 6].unsqueeze(-1)
+        quarter_hour_cos = x[:, :, 7].unsqueeze(-1)
+        day_sin = x[:, :, 8].unsqueeze(-1)
+        day_cos = x[:, :, 9].unsqueeze(-1)
+        day_in_week_sin = x[:, :, 10].unsqueeze(-1)
+        day_in_week_cos = x[:, :, 11].unsqueeze(-1)
 
         # Apply embeddings and linear layers
-        pos_embedding = self.mins_position_embed(mins_position)
-        pos_sin_embedding = self.linear_pos_sin(mins_position_sin)
-        pos_cos_embedding = self.linear_pos_cos(mins_position_cos)
         hour_embedding = self.hour_embed(hour)
+        quarter_hour_embedding = self.quarter_hour_embed(quarter_hour)
+        day_embedding = self.day_embed(day)
+        day_in_week_embedding = self.day_in_week_embed(day_in_week)
+
         hour_sin_embedding = self.linear_hour_sin(hour_sin)
         hour_cos_embedding = self.linear_hour_cos(hour_cos)
+        quarter_hour_sin_embedding = self.linear_quarter_hour_sin(quarter_hour_sin)
+        quarter_hour_cos_embedding = self.linear_quarter_hour_cos(quarter_hour_cos)
+        day_sin_embedding = self.linear_day_sin(day_sin)
+        day_cos_embedding = self.linear_day_cos(day_cos)
+        day_in_week_sin_embedding = self.linear_day_in_week_sin(day_in_week_sin)
+        day_in_week_cos_embedding = self.linear_day_in_week_cos(day_in_week_cos)
 
         # Combine embeddings
         if self.combine_type == "concat":
             combined_embedding = torch.cat(
                 [
-                    pos_embedding,
-                    pos_sin_embedding,
-                    pos_cos_embedding,
                     hour_embedding,
+                    quarter_hour_embedding,
+                    day_embedding,
+                    day_in_week_embedding,
                     hour_sin_embedding,
                     hour_cos_embedding,
+                    quarter_hour_sin_embedding,
+                    quarter_hour_cos_embedding,
+                    day_sin_embedding,
+                    day_cos_embedding,
+                    day_in_week_sin_embedding,
+                    day_in_week_cos_embedding,
                 ],
                 dim=-1,
             )
-            # combined_embedding = self.combine_linear(combined_embedding)
         else:
             combined_embedding = (
-                pos_embedding
-                + pos_sin_embedding
-                + pos_cos_embedding
-                + hour_embedding
+                hour_embedding
+                + quarter_hour_embedding
+                + day_embedding
+                + day_in_week_embedding
                 + hour_sin_embedding
                 + hour_cos_embedding
+                + quarter_hour_sin_embedding
+                + quarter_hour_cos_embedding
+                + day_sin_embedding
+                + day_cos_embedding
+                + day_in_week_sin_embedding
+                + day_in_week_cos_embedding
             )
 
         # Apply dropout (optional)
         combined_embedding = self.dropout(combined_embedding)
 
         return combined_embedding
+
+
+# class TemporalFeatureEmbedding(nn.Module):
+#     def __init__(self, time_d_model, combine_type="add"):
+#         super(TemporalFeatureEmbedding, self).__init__()
+#         self.d_model = time_d_model
+#         self.combine_type = combine_type
+
+#         # Embeddings for mins_position and hour
+#         self.mins_position_embed = nn.Embedding(96, time_d_model)
+#         self.hour_embed = nn.Embedding(24, time_d_model)
+
+#         # Linear layers for sine and cosine transformations
+#         self.linear_pos_sin = nn.Linear(1, time_d_model)
+#         self.linear_pos_cos = nn.Linear(1, time_d_model)
+#         self.linear_hour_sin = nn.Linear(1, time_d_model)
+#         self.linear_hour_cos = nn.Linear(1, time_d_model)
+
+#         # if self.combine_type == "concat":
+#         #     self.combine_linear = nn.Linear(6 * d_model, d_model)
+
+#         self.dropout = nn.Dropout(0.1)  # Dropout rate (optional)
+
+#     def forward(self, x):
+#         # x: [batch, Seq_Len, 6] - containing mins_position, mins_position_sin, mins_position_cos, hour, hour_sin, hour_cos
+
+#         # Extract features
+#         mins_position = x[:, :, 0].long()
+#         mins_position_sin = x[:, :, 1].unsqueeze(-1)
+#         mins_position_cos = x[:, :, 2].unsqueeze(-1)
+#         hour = x[:, :, 3].long()
+#         hour_sin = x[:, :, 4].unsqueeze(-1)
+#         hour_cos = x[:, :, 5].unsqueeze(-1)
+
+#         # Apply embeddings and linear layers
+#         pos_embedding = self.mins_position_embed(mins_position)
+#         pos_sin_embedding = self.linear_pos_sin(mins_position_sin)
+#         pos_cos_embedding = self.linear_pos_cos(mins_position_cos)
+#         hour_embedding = self.hour_embed(hour)
+#         hour_sin_embedding = self.linear_hour_sin(hour_sin)
+#         hour_cos_embedding = self.linear_hour_cos(hour_cos)
+
+#         # Combine embeddings
+#         if self.combine_type == "concat":
+#             combined_embedding = torch.cat(
+#                 [
+#                     pos_embedding,
+#                     pos_sin_embedding,
+#                     pos_cos_embedding,
+#                     hour_embedding,
+#                     hour_sin_embedding,
+#                     hour_cos_embedding,
+#                 ],
+#                 dim=-1,
+#             )
+#             # combined_embedding = self.combine_linear(combined_embedding)
+#         else:
+#             combined_embedding = (
+#                 pos_embedding
+#                 + pos_sin_embedding
+#                 + pos_cos_embedding
+#                 + hour_embedding
+#                 + hour_sin_embedding
+#                 + hour_cos_embedding
+#             )
+
+#         # Apply dropout (optional)
+#         combined_embedding = self.dropout(combined_embedding)
+
+#         return combined_embedding
 
 
 class FinalEmbedding(nn.Module):

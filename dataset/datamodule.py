@@ -16,16 +16,24 @@ class WindPowerDataModule(LightningDataModule):
     def __init__(self, args: Namespace | Dict):
         super().__init__()
         if isinstance(args, dict):
-            args = dict_to_namespace(args)
+            args = dict_to_namespace(args, False)
+
+        # Store the arguments
         self.args = args
-        self.data_root_dir = args.data_root_dir
-        self.train_path = os.path.join(self.data_root_dir, args.train_path)
-        self.test_path = os.path.join(self.data_root_dir, args.test_path)
-        self.seq_len = args.seq_len
-        self.batch_size = args.batch_size
-        self.train_val_split = getattr(args, "train_val_split", 0.2)
-        self.scale_x_type = getattr(args, "scale_x_type", "standard")
-        self.scale_y_type = getattr(args, "scale_y_type", "min_max")
+
+        # Extract necessary attributes
+        self.data_root_dir = args.data_paths.data_root_dir
+        self.train_path = os.path.join(self.data_root_dir, args.data_paths.train_path)
+        self.test_path = os.path.join(self.data_root_dir, args.data_paths.test_path)
+        self.seq_len = args.model_settings.seq_len
+        self.batch_size = args.training_settings.batch_size
+
+        # Optional attributes with defaults
+        self.train_val_split = getattr(args.data_settings, "train_val_split", 0.2)
+        self.scale_x_type = getattr(args.data_settings, "scale_x_type", "standard")
+        self.scale_y_type = getattr(args.data_settings, "scale_y_type", "min_max")
+
+        # Initializing scalers
         self.scaler_x = None
         self.scaler_y = None
 

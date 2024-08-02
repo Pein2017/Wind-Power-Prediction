@@ -13,9 +13,9 @@ from utils.config import dict_to_namespace
 from utils.inference import full_inference
 
 
-def get_callbacks(config):
-    if isinstance(config, dict):
-        config = dict_to_namespace(config)
+def get_callbacks(callback_settings):
+    if isinstance(callback_settings, dict):
+        callback_settings = dict_to_namespace(callback_settings)
 
     checkpoint_callback = ModelCheckpoint(
         monitor="Loss/val",
@@ -27,9 +27,9 @@ def get_callbacks(config):
 
     early_stopping_callback = EarlyStopping(
         monitor="Loss/val",
-        patience=config.early_stop_patience,
+        patience=callback_settings.early_stop_patience,
         mode="min",
-        verbose=False,
+        verbose=True,
         check_on_train_epoch_end=False,
     )
 
@@ -51,7 +51,7 @@ class MetricsCallback(Callback):
         super().__init__()
         self.criterion = criterion
 
-        self.log_path = final_best_metrics_log_path or "/final_best_metrics.log"
+        self.log_path = final_best_metrics_log_path
 
     def on_validation_epoch_end(self, trainer, pl_module):
         self._update_metrics(trainer, pl_module)
@@ -279,7 +279,7 @@ class MetricsCallback(Callback):
         return 0
 
     def _output_best_metrics(self, pl_module, log_to_console=False, log_to_file=False):
-        exp_settings = pl_module.config.exp_settings
+        exp_settings = pl_module.args.exp_settings
         best_metrics = pl_module.best_metrics
 
         metrics = [

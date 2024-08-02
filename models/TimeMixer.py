@@ -189,7 +189,7 @@ class Model(nn.Module):
     ):
         super(Model, self).__init__()
         self.configs = configs
-        self.task_name = configs.task_name
+        # self.task_name = configs.task_name
         self.seq_len = configs.seq_len
         self.label_len = configs.label_len
         self.pred_len = configs.pred_len

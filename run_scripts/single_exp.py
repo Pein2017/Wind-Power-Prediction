@@ -18,35 +18,39 @@ from utils.results import custom_test
 from utils.tools import get_next_version
 
 
-def set_seed(seed):
+def set_seed(seed: int):
     """Set random seed for reproducibility."""
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
+
+    # torch.backends.cudnn.enabled = False
     pl.seed_everything(seed, workers=True)
 
 
-def setup_device_and_strategy(args):
+def setup_device_and_strategy(gpu_settings):
     """Setup device and strategy for training."""
-
-    if isinstance(args, dict):
-        args = dict_to_namespace(args)
-    if args.use_multi_gpu:
+    if isinstance(gpu_settings, dict):
+        gpu_settings = dict_to_namespace(gpu_settings, False)
+        print("Warning: args is still a dict, converting it to namespace")
+    if gpu_settings.use_multi_gpu:
         devices = torch.cuda.device_count()
         strategy = DDPStrategy(find_unused_parameters=False)
     else:
-        devices = [int(args.gpu)]
+        devices = [int(gpu_settings.gpu_id)]
         strategy = "auto"
     return devices, strategy
 
 
 def prepare_output_directory(args):
     """Prepare the output directory for the experiment."""
-
     if isinstance(args, dict):
-        args = dict_to_namespace(args)
+        args = dict_to_namespace(args, False)
 
-    exp_output_dir = os.path.join(args.res_output_dir, args.exp_settings)
+    if args.exp_settings is None:
+        raise ValueError("exp_settings is not specified in the config file.")
+
+    exp_output_dir = os.path.join(args.output_paths.res_output_dir, args.exp_settings)
     os.makedirs(exp_output_dir, exist_ok=True)
     return exp_output_dir
 
@@ -78,16 +82,29 @@ def prepare_data_module(args):
 
 def setup_trainer(args, devices, strategy, logger, callbacks):
     """Setup PyTorch Lightning Trainer."""
-
     if isinstance(args, dict):
-        args = dict_to_namespace(args)
+        args = dict_to_namespace(args, False)
+
+    # Check if the specified GPU (global ID 1, local ID 0) is available
+    visible_devices = torch.cuda.device_count()
+    if visible_devices < 1:
+        raise RuntimeError(
+            "No GPUs are available. Please check your CUDA_VISIBLE_DEVICES setting."
+        )
+
+    # Check if the intended GPU ID is within the available range
+    intended_gpu_id = 0  # Local ID when CUDA_VISIBLE_DEVICES=1
+    if intended_gpu_id >= visible_devices:
+        raise RuntimeError(
+            f"GPU with ID {intended_gpu_id} (global ID 1) is not available. Please check your CUDA_VISIBLE_DEVICES setting."
+        )
 
     sync_batchnorm_flag = (isinstance(devices, int) and devices > 1) or (
         isinstance(devices, list) and len(devices) > 1
     )
 
     trainer = pl.Trainer(
-        max_epochs=args.train_epochs,
+        max_epochs=args.training_settings.train_epochs,
         accelerator="gpu",
         devices=devices,
         strategy=strategy,
@@ -95,34 +112,35 @@ def setup_trainer(args, devices, strategy, logger, callbacks):
         logger=logger,
         enable_progress_bar=False,
         sync_batchnorm=sync_batchnorm_flag,
-        gradient_clip_val=getattr(args, "gradient_clip_val", None),
+        gradient_clip_val=args.training_settings.gradient_clip_val,
     )
     return trainer
 
 
 def execute_experiment(args):
     """Run a single experiment with the given configuration."""
-    set_seed(args.seed)
+    set_seed(args.general.seed)
 
     exp_output_dir = prepare_output_directory(args)
     version = get_next_version(exp_output_dir)
 
-    use_wandb = getattr(args, "use_wandb", False)
+    use_wandb = args.logging.use_wandb  # Accessing use_wandb from logging settings
     logger, version = setup_logging(exp_output_dir, version, use_wandb)
 
-    devices, strategy = setup_device_and_strategy(args)
+    devices, strategy = setup_device_and_strategy(args.gpu_settings)
+
     data_module = prepare_data_module(args)
 
     train_dataloader = data_module.train_dataloader()
-    args.steps_per_epoch = len(train_dataloader)
+    args.training_settings.steps_per_epoch = len(train_dataloader)
     val_dataloaders = [data_module.val_dataloader(), data_module.test_dataloader()]
 
     wind_power_module = WindPowerExperiment(args)
-    callbacks = get_callbacks(args)
+    callbacks = get_callbacks(args.training_settings)
     callbacks.append(
         MetricsCallback(
             criterion=wind_power_module.criterion,
-            final_best_metrics_log_path=args.final_best_metrics_log_path,
+            final_best_metrics_log_path=args.output_paths.final_best_metrics_log_path,
         )
     )
 
@@ -140,7 +158,7 @@ def execute_experiment(args):
         model_class=WindPowerExperiment,
         data_module=data_module,
         exp_settings=args.exp_settings,
-        device=torch.device("cuda"),
+        device=torch.device("cuda" if args.gpu_settings.use_gpu else "cpu"),
         best_metrics_dir=os.path.join(exp_output_dir, f"version_{version}"),
         plot_dir=os.path.join(exp_output_dir, f"version_{version}"),
         config=args,

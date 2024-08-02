@@ -1,5 +1,6 @@
 import argparse
 import datetime
+from argparse import Namespace
 
 import yaml
 
@@ -10,7 +11,7 @@ def parse_args():
     parser.add_argument(
         "--config",
         type=str,
-        default="/data3/lsf/Pein/Power-Prediction/config/optuna_config.yaml",
+        default="/data3/lsf/Pein/Power-Prediction/config/base_config.yaml",
         help="Path to base configuration file",
     )
     parser.add_argument(
@@ -27,36 +28,80 @@ def load_config(config_path, time_str):
     with open(config_path, "r") as file:
         config = yaml.safe_load(file)
 
-    # Substitute paths with the time string
-    for key, value in config.items():
-        if isinstance(value, str) and "exp_time_str" in value:
-            config[key] = value.replace("exp_time_str", time_str)
+    # Function to recursively substitute placeholders
+    def substitute_placeholders(config):
+        if isinstance(config, dict):
+            for key, value in config.items():
+                if isinstance(value, str) and "exp_time_str" in value:
+                    config[key] = value.replace("exp_time_str", time_str)
+                elif isinstance(value, (dict, list)):
+                    config[key] = substitute_placeholders(value)
+        elif isinstance(config, list):
+            for i, item in enumerate(config):
+                config[i] = substitute_placeholders(item)
+        return config
 
-    return config
+    config = substitute_placeholders(config)
+
+    # Convert the final dictionary to Namespace
+    return dict_to_namespace(config, False)
 
 
 def create_exp_settings(args):
     """Create experiment setting string if not provided."""
     if not hasattr(args, "exp_settings") or not args.exp_settings:
+        # Ensure model_settings and training_settings are Namespace objects
+        model_settings = args.model_settings
+        training_settings = args.training_settings
+
+        # Round the learning rate to 4 decimal places
+        learning_rate_rounded = round(training_settings.learning_rate, 3)
+
+        # Build the exp_settings string based on nested attributes
         args.exp_settings = (
-            f"seq_len-{args.seq_len}-"
-            f"lr-{args.learning_rate}-"
-            f"d-{args.d_model}-"
-            f"hid_d-{args.hidden_dim}-"
-            f"last_d-{args.last_hidden_dim}-"
-            f"time_d-{args.time_d_model}-"
-            f"e_layers-{args.e_layers}-"
-            f"token_emb_kernel_size-{args.token_emb_kernel_size}-"
-            f"dropout-{args.dropout}-"
-            f"comb_type-{args.combine_type}-"
-            f"bs-{args.batch_size}"
+            f"seq_len-{model_settings.seq_len}-"
+            f"lr-{learning_rate_rounded}-"
+            f"d-{model_settings.d_model}-"
+            f"hid_d-{model_settings.hidden_dim}-"
+            f"last_d-{model_settings.last_hidden_dim}-"
+            f"time_d-{model_settings.time_d_model}-"
+            f"e_layers-{model_settings.e_layers}-"
+            f"token_emb_kernel_size-{model_settings.token_emb_kernel_size}-"
+            f"dropout-{model_settings.dropout}-"
+            f"comb_type-{model_settings.combine_type}-"
+            f"bs-{training_settings.batch_size}"
         )
+
     return args
 
 
-def dict_to_namespace(d, if_create_exp_settings=True):
-    """Convert a dictionary to an argparse.Namespace and complete exp_settings if necessary."""
-    args = argparse.Namespace(**d)
+def namespace_to_dict(namespace):
+    """Convert a Namespace to a dictionary."""
+    if isinstance(namespace, Namespace):
+        return {key: namespace_to_dict(value) for key, value in vars(namespace).items()}
+    elif isinstance(namespace, list):
+        return [namespace_to_dict(item) for item in namespace]
+    else:
+        return namespace
+
+
+def dict_to_namespace(dictionary, if_create_exp_settings=False):
+    """Convert a dictionary to a Namespace and complete exp_settings if necessary."""
+
+    def recursive_dict_to_namespace(d):
+        if isinstance(d, dict):
+            for key, value in d.items():
+                if isinstance(value, dict):
+                    d[key] = recursive_dict_to_namespace(value)
+                elif isinstance(value, list):
+                    d[key] = [
+                        recursive_dict_to_namespace(v) if isinstance(v, dict) else v
+                        for v in value
+                    ]
+            return Namespace(**d)
+        return d
+
+    args = recursive_dict_to_namespace(dictionary)
     if if_create_exp_settings:
         args = create_exp_settings(args)
     return args
@@ -65,5 +110,5 @@ def dict_to_namespace(d, if_create_exp_settings=True):
 if __name__ == "__main__":
     args = parse_args()
     config = load_config(args.config, args.exp_time_str)
-    args = dict_to_namespace(config)
-    print(args)
+    # args = dict_to_namespace(config)
+    print(config)

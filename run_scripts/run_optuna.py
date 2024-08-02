@@ -30,40 +30,43 @@ from run_scripts.single_exp import (
     setup_trainer,
 )
 from utils.callback import MetricsCallback, get_callbacks, OptunaPruningCallback
-from utils.config import load_config, dict_to_namespace
+from utils.config import (
+    load_config,
+    namespace_to_dict,
+    dict_to_namespace,
+)
 from utils.results import custom_test
 from utils.tools import get_next_version
 
 
-def setup_environment(trial, base_config):
+def setup_environment(trial, args):
     """Set up the environment for the experiment based on the trial and configuration."""
-    set_seed(base_config.seed)
-    exp_output_dir = prepare_output_directory(base_config)
+    set_seed(args.general_settings.seed)
+    exp_output_dir = prepare_output_directory(args)
     version = get_next_version(exp_output_dir)
 
-    use_wandb = getattr(base_config, "use_wandb", False)
+    use_wandb = getattr(args.logging_settings, "use_wandb", False)
     logger, version = setup_logging(exp_output_dir, version, use_wandb)
 
-    devices, strategy = setup_device_and_strategy(base_config)
-    data_module = prepare_data_module(base_config)
+    devices, strategy = setup_device_and_strategy(args.gpu_settings)
+    data_module = prepare_data_module(args)
 
     train_dataloader = data_module.train_dataloader()
-    base_config.steps_per_epoch = len(train_dataloader)
+    args.training_settings.steps_per_epoch = len(train_dataloader)
+
     val_dataloaders = [data_module.val_dataloader(), data_module.test_dataloader()]
 
-    wind_power_module = WindPowerExperiment(base_config)
-    callbacks = get_callbacks(base_config)
+    wind_power_module = WindPowerExperiment(args)
+    callbacks = get_callbacks(args.training_settings)
     callbacks.append(
         MetricsCallback(
             criterion=wind_power_module.criterion,
-            final_best_metrics_log_path=getattr(
-                base_config, "final_best_metrics_log_path", None
-            ),
+            final_best_metrics_log_path=args.output_paths.final_best_metrics_log_path,
         )
     )
     callbacks.append(OptunaPruningCallback(trial))
 
-    trainer = setup_trainer(base_config, devices, strategy, logger, callbacks)
+    trainer = setup_trainer(args, devices, strategy, logger, callbacks)
     trainer.scaler_y = data_module.scaler_y
 
     return (
@@ -75,21 +78,82 @@ def setup_environment(trial, base_config):
         exp_output_dir,
         version,
         data_module,
-        base_config,
+        args,
     )
 
 
-def _load_and_update_config(config_path, trial):
+# Define the mapping of hyperparameters to the nested paths
+hyperparam_path_map = {
+    # Model settings
+    "model_settings": {
+        "d_model": "d_model",
+        "hidden_dim": "hidden_dim",
+        "token_emb_kernel_size": "token_emb_kernel_size",
+        "last_hidden_dim": "last_hidden_dim",
+        "time_d_model": "time_d_model",
+        "e_layers": "e_layers",
+        "seq_len": "seq_len",
+        "dropout": "dropout",
+    },
+    # Training settings
+    "training_settings": {
+        "learning_rate": "learning_rate",
+        "batch_size": "batch_size",
+        "train_epochs": "train_epochs",
+    },
+}
+
+
+def update_nested_dict(base_dict, updates, path_map):
+    """Update nested dictionary based on the path map."""
+    # Convert base_dict's nested Namespace objects to dictionaries
+    base_dict = namespace_to_dict(base_dict)
+
+    for section, params in path_map.items():
+        for key, sub_key in params.items():
+            if key in updates:
+                if section in base_dict:
+                    base_dict[section][sub_key] = updates[key]
+                else:
+                    raise KeyError(
+                        f"Section '{section}' not found in base configuration."
+                    )
+
+    # Convert base_dict back to Namespace
+    return dict_to_namespace(base_dict, True)
+
+
+def _load_and_update_config(config_path, trial, time_str):
     """Load configuration and update with suggested hyperparameters."""
-    base_config = load_config(config_path)
+    # Load the base configuration from YAML and replace time placeholders
+    base_config = load_config(config_path, time_str=time_str)
+
+    # Convert the base_config Namespace to a dictionary for updating
+    base_config_dict = namespace_to_dict(base_config)
+
+    # Get suggested hyperparameters from the trial
     suggested_hyperparams = suggest_hyperparameters(trial)
-    base_config.update(suggested_hyperparams)
-    return dict_to_namespace(base_config, if_create_exp_settings=True)
+
+    # Debug: Print keys
+    print("Base config keys:", base_config_dict.keys())
+    print("Suggested hyperparameters keys:", suggested_hyperparams.keys())
+
+    # Update the base_config dictionary with the suggested hyperparameters
+    updated_config_dict = update_nested_dict(
+        base_config_dict, suggested_hyperparams, hyperparam_path_map
+    )
+
+    # Convert the updated dictionary back to Namespace
+    updated_config = dict_to_namespace(updated_config_dict, True)
+
+    return updated_config
 
 
 def _prepare_logging(base_config):
     """Prepare log file path and ensure directory exists."""
-    log_file_path = Path(base_config.train_log_dir) / f"{base_config.exp_settings}.log"
+    log_file_path = (
+        Path(base_config.output_paths.train_log_dir) / f"{base_config.exp_settings}.log"
+    )
     log_file_path.parent.mkdir(parents=True, exist_ok=True)
     return log_file_path
 
@@ -157,9 +221,9 @@ def _log_metrics(trainer, use_wandb):
     return weighted_loss
 
 
-def objective(trial, config_path: str):
+def objective(trial, config_path: str, time_str):
     """Objective function for Optuna to minimize."""
-    base_config = _load_and_update_config(config_path, trial)
+    base_config = _load_and_update_config(config_path, trial, time_str)
     print(f"\nRunning experiment with config:\n{base_config}\n\n")
 
     (
@@ -228,6 +292,8 @@ def retry_on_lock(func):
 def create_study(args):
     """Create an Optuna study with the specified configuration."""
     storage_name = f"sqlite:///{os.path.join(args.output_dir, f'{args.study_name}.db')}"
+
+    print(f'Creating study "{args.study_name}" with storage "{storage_name}"...')
 
     sampler = get_sampler(args)
     pruner = get_pruner(args)
@@ -311,10 +377,10 @@ def save_top_trials(study, output_dir, study_name):
     print(f"Top {top_N} trials saved to {best_hyperparams_filepath}")
 
 
-def run_optimization(study, config_path, n_trials, timeout):
+def run_optimization(study, config_path, n_trials, timeout, time_str):
     """Run the optimization process."""
     study.optimize(
-        lambda trial: objective(trial, config_path),
+        lambda trial: objective(trial, config_path, time_str=time_str),
         n_trials=n_trials,
         timeout=timeout,
         show_progress_bar=True,
@@ -327,7 +393,9 @@ def run_optuna_study(args):
     ensure_output_dir(args.output_dir)
 
     study = create_study(args)
-    run_optimization(study, args.config, args.n_trials, args.timeout)
+    run_optimization(
+        study, args.config_path, args.n_trials, args.timeout, args.time_str
+    )
 
     print(f"Number of finished trials: {len(study.trials)}")
     print_best_trial(study)
@@ -336,53 +404,81 @@ def run_optuna_study(args):
 
 def suggest_hyperparameters(trial=None, return_search_space=False):
     """Suggest hyperparameters using Optuna trial or return search space."""
+    search_space = {
+        "d_model": list(range(128, 513)),  # Range from 128 to 512
+        "hidden_dim": list(range(512, 1043)),  # Range from 512 to 1042
+        "token_emb_kernel_size": list(range(7, 16)),
+        "last_hidden_dim": list(range(512, 1025)),  # Range from 512 to 1024
+        "time_d_model": [64, 128, 256],
+        "e_layers": list(range(7, 21)),  # Range from 7 to 20
+        "learning_rate": [
+            5e-3,
+            1e-2,
+            2e-2,
+            5e-2,
+            1e-1,
+            2e-1,
+        ],  # Example discrete values
+        "batch_size": [128, 256, 512, 1024],
+        "train_epochs": [40, 100],
+        "seq_len": [16, 20, 24, 28],
+        "dropout": [0.4, 0.5, 0.6, 0.7, 0.8],
+    }
 
     if return_search_space:
-        search_space = {
-            "d_model": [128, 256, 384, 512],
-            "hidden_dim": [512, 640, 768, 896],
-            "token_emb_kernel_size": [7, 8, 9, 10, 11, 12, 13, 14, 15],
-            "last_hidden_dim": [512, 640, 768, 896],
-            "time_d_model": [64, 128, 256],
-            "e_layers": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-            "learning_rate": [5e-3, 1e-2, 5e-2, 1e-1, 2e-1],
-            "batch_size": [128, 256, 512, 1024],
-            "train_epochs": [120],
-            "seq_len": [20, 24, 32, 36, 48, 56],
-            "dropout": [0.4, 0.5, 0.6, 0.7, 0.8],
-        }
         return search_space
 
     hyperparams = {
-        "d_model": trial.suggest_categorical("d_model", [128, 256, 384, 512]),
-        "hidden_dim": trial.suggest_categorical("hidden_dim", [512, 640, 768, 896]),
-        "token_emb_kernel_size": trial.suggest_int("token_emb_kernel_size", 7, 15),
-        "last_hidden_dim": trial.suggest_categorical(
-            "last_hidden_dim", [512, 640, 768, 896]
+        "d_model": trial.suggest_int("d_model", 128, 512, step=2),
+        "hidden_dim": trial.suggest_int("hidden_dim", 512, 1042, step=2),
+        "token_emb_kernel_size": trial.suggest_int(
+            "token_emb_kernel_size",
+            min(search_space["token_emb_kernel_size"]),
+            max(search_space["token_emb_kernel_size"]),
         ),
-        "time_d_model": trial.suggest_categorical("time_d_model", [64, 128, 256]),
+        "last_hidden_dim": trial.suggest_int("last_hidden_dim", 512, 1024, step=2),
+        "time_d_model": trial.suggest_categorical(
+            "time_d_model", search_space["time_d_model"]
+        ),
         "e_layers": trial.suggest_int("e_layers", 7, 20),
-        "learning_rate": round(
-            trial.suggest_float("learning_rate", 5e-3, 2e-1, log=True), 4
+        "learning_rate": trial.suggest_float(
+            "learning_rate",
+            1e-3,
+            2e-1,
+            log=True,
         ),
-        "batch_size": trial.suggest_categorical("batch_size", [128, 256, 512, 1024]),
-        # "combine_type": trial.suggest_categorical("combine_type", ["add"]),
-        "train_epochs": trial.suggest_int("train_epochs", 120, 120),
-        "seq_len": trial.suggest_categorical("seq_len", [20, 24, 32, 36, 48, 56]),
-        "dropout": trial.suggest_float("dropout", 0.4, 0.8),
+        "batch_size": trial.suggest_categorical(
+            "batch_size", search_space["batch_size"]
+        ),
+        "train_epochs": trial.suggest_int(
+            "train_epochs",
+            min(search_space["train_epochs"]),
+            max(search_space["train_epochs"]),
+            step=10,
+        ),
+        "seq_len": trial.suggest_categorical("seq_len", search_space["seq_len"]),
+        "dropout": trial.suggest_float(
+            "dropout",
+            min(search_space["dropout"]),
+            max(search_space["dropout"]),
+            step=0.01,
+        ),
     }
+
     return hyperparams
 
 
 def main():
-    time_str = "24-07-21"
-    study_name = f"{time_str}-search"
+    time_str = "24-08-02"
+    study_name = f"{time_str}-12_timefeatures-scale_1e-4"
+    n_trails = 30 * 3
     args = {
+        "time_str": time_str,
         "study_name": study_name,
         "timeout": None,  # * keep this argument
-        "n_trials": int(20 * 2),
+        "n_trials": int(n_trails),
         "output_dir": f"/data3/lsf/Pein/Power-Prediction/optuna_results/{time_str}",
-        "config": "/data3/lsf/Pein/Power-Prediction/config/optuna_config.yaml",
+        "config_path": "/data3/lsf/Pein/Power-Prediction/config/optuna_config.yaml",
         "sampler_name": "cma",
         "seed": np.random.randint(10000),
         "pruner_type": "hyperband",

@@ -1,12 +1,3 @@
-# General settings
-general:
-  seed: 17
-  is_training: 1
-  task_name: "default"
-  description: "train"
-  comment: "base configuration"
-
-# Experiment time string
 # exp_time_str: 'exp_time_str'
 
 # Output Paths
@@ -15,17 +6,12 @@ output_paths:
   res_output_dir: "/data3/lsf/Pein/Power-Prediction/res_output/grid/exp_time_str"
   final_best_metrics_log_path: "/data3/lsf/Pein/Power-Prediction/final_best_metric/exp_time_str.log"
 
-# Data paths
-data_paths:
-  data_root_dir: "/data3/lsf/Pein/Power-Prediction/data"
-  train_path: "train_data_89_withTime.csv"
-  test_path: "test_data_89_withTime.csv"
-
 # Model settings
-model:
+model_settings:
   name: "SimpleMLP"
-  token_emb_kernel_size: 3
+  token_emb_kernel_size: 7
   input_dim: 75
+  enc_in: 75
   dec_in: 75
   output_dim: 1
   d_model: 16
@@ -41,22 +27,22 @@ model:
   combine_type: "add"
   seq_len: 8
   pred_len: 1
+  dropout: 0.1
+  min_y_value: 0.0
 
 # Training settings
-training:
+training_settings:
+  steps_per_epoch: null # need to be calculated based on the size of the dataset
   warmup_steps_ratio: 0.001
-  exp_settings: null
   gradient_clip_val: 5
-  train_epochs: 120
+  train_epochs: 2
   batch_size: 1100
   early_stop_patience: 10
   learning_rate: 0.01
   loss: "MSE"
   lradj: "TST"
-  pct_start: 0.3
   use_amp: false
   moving_avg: 25
-  dropout: 0.1
   decomp_method: "moving_avg"
   use_norm: 1
   down_sampling_layers: 2
@@ -64,23 +50,50 @@ training:
   down_sampling_method: "avg"
 
 # Scheduler settings
-scheduler:
+scheduler_settings:
   type: "OneCycleLR"
   T_max: 20
   weight_decay: 0.0001
   patience: 5
   reduce_factor: 0.2
+  pct_start: 0.3
+  eta_min: 1e-6
+
+# Data settings
+data_settings:
+  train_val_split: 0.2
+  target: "power"
+  inverse: true
+  num_workers: 8
+  data: "WindPower"
+  scale_x_type: "standard"
+  scale_y_type: "standard"
+
+# Data paths
+data_paths:
+  data_root_dir: "/data3/lsf/Pein/Power-Prediction/data"
+  train_path: "train_data_89_withTime.csv"
+  test_path: "test_data_89_withTime.csv"
 
 # GPU settings
-gpu:
+gpu_settings:
   use_gpu: True
   gpu_id: 0
   use_multi_gpu: False
   use_all_gpus_for_search: False
+# Global Settings for experiment
+exp_settings: null
+
+# General settings
+general:
+  seed: 17
+  is_training: 1
+  task_name: "wind-power-forecasting"
+  description: "debugging"
+  comment: "base configuration"
 
 # Additional settings
 additional:
-  min_y_value: 0.0
 
 # Logging settings
 logging:

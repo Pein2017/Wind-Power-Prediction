@@ -115,7 +115,7 @@ class TokenEmbedding(nn.Module):
 
 
 """
-when time featues are 6 for solar pwoer prediction.
+when time featues are 6 for pwoer prediction. 6 = (Hour and quater_hour) * 3
 """
 # class TemporalFeatureEmbedding(nn.Module):
 #     def __init__(self, time_d_model, combine_type="add"):
@@ -123,62 +123,58 @@ when time featues are 6 for solar pwoer prediction.
 #         self.d_model = time_d_model
 #         self.combine_type = combine_type
 
-#         # Embeddings for mins_position and hour
-#         self.mins_position_embed = nn.Embedding(96, time_d_model)
+#         # Embeddings for discrete time features
 #         self.hour_embed = nn.Embedding(24, time_d_model)
+#         self.quarter_hour_embed = nn.Embedding(4, time_d_model)
 
 #         # Linear layers for sine and cosine transformations
-#         self.linear_pos_sin = nn.Linear(1, time_d_model)
-#         self.linear_pos_cos = nn.Linear(1, time_d_model)
 #         self.linear_hour_sin = nn.Linear(1, time_d_model)
 #         self.linear_hour_cos = nn.Linear(1, time_d_model)
-
-#         # if self.combine_type == "concat":
-#         #     self.combine_linear = nn.Linear(6 * d_model, d_model)
+#         self.linear_quarter_hour_sin = nn.Linear(1, time_d_model)
+#         self.linear_quarter_hour_cos = nn.Linear(1, time_d_model)
 
 #         self.dropout = nn.Dropout(0.1)  # Dropout rate (optional)
 
 #     def forward(self, x):
-#         # x: [batch, Seq_Len, 6] - containing mins_position, mins_position_sin, mins_position_cos, hour, hour_sin, hour_cos
+#         # x: [batch, Seq_Len, 6] - containing hour, quarter_hour, hour_sin, hour_cos, quarter_hour_sin, quarter_hour_cos
 
 #         # Extract features
-#         mins_position = x[:, :, 0].long()
-#         mins_position_sin = x[:, :, 1].unsqueeze(-1)
-#         mins_position_cos = x[:, :, 2].unsqueeze(-1)
-#         hour = x[:, :, 3].long()
-#         hour_sin = x[:, :, 4].unsqueeze(-1)
-#         hour_cos = x[:, :, 5].unsqueeze(-1)
+#         hour = x[:, :, 0].long()
+#         quarter_hour = x[:, :, 1].long()
+#         hour_sin = x[:, :, 2].unsqueeze(-1)
+#         hour_cos = x[:, :, 3].unsqueeze(-1)
+#         quarter_hour_sin = x[:, :, 4].unsqueeze(-1)
+#         quarter_hour_cos = x[:, :, 5].unsqueeze(-1)
 
 #         # Apply embeddings and linear layers
-#         pos_embedding = self.mins_position_embed(mins_position)
-#         pos_sin_embedding = self.linear_pos_sin(mins_position_sin)
-#         pos_cos_embedding = self.linear_pos_cos(mins_position_cos)
 #         hour_embedding = self.hour_embed(hour)
+#         quarter_hour_embedding = self.quarter_hour_embed(quarter_hour)
 #         hour_sin_embedding = self.linear_hour_sin(hour_sin)
 #         hour_cos_embedding = self.linear_hour_cos(hour_cos)
+#         quarter_hour_sin_embedding = self.linear_quarter_hour_sin(quarter_hour_sin)
+#         quarter_hour_cos_embedding = self.linear_quarter_hour_cos(quarter_hour_cos)
 
 #         # Combine embeddings
 #         if self.combine_type == "concat":
 #             combined_embedding = torch.cat(
 #                 [
-#                     pos_embedding,
-#                     pos_sin_embedding,
-#                     pos_cos_embedding,
 #                     hour_embedding,
+#                     quarter_hour_embedding,
 #                     hour_sin_embedding,
 #                     hour_cos_embedding,
+#                     quarter_hour_sin_embedding,
+#                     quarter_hour_cos_embedding,
 #                 ],
 #                 dim=-1,
 #             )
-#             # combined_embedding = self.combine_linear(combined_embedding)
 #         else:
 #             combined_embedding = (
-#                 pos_embedding
-#                 + pos_sin_embedding
-#                 + pos_cos_embedding
-#                 + hour_embedding
+#                 hour_embedding
+#                 + quarter_hour_embedding
 #                 + hour_sin_embedding
 #                 + hour_cos_embedding
+#                 + quarter_hour_sin_embedding
+#                 + quarter_hour_cos_embedding
 #             )
 
 #         # Apply dropout (optional)
@@ -228,7 +224,7 @@ when time featues are 6 for solar pwoer prediction.
 #         return combined_emb
 
 """
-when time featues are 12 for wind power prediction.
+when time featues are 12 for power prediction.
 """
 
 
@@ -377,8 +373,6 @@ class FinalEmbedding(nn.Module):
         else:
             if self.token_d_model != self.time_d_model:
                 temporal_emb = self.temporal_to_token_dim(temporal_emb)
-
-            # check the shape before adding
 
             combined_emb = token_emb + temporal_emb
             # combined_emb: [batch, Seq_len, token_d_model]
