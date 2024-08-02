@@ -419,9 +419,9 @@ def suggest_hyperparameters(trial=None, return_search_space=False):
             1e-1,
             2e-1,
         ],  # Example discrete values
-        "batch_size": [128, 256, 512, 1024],
-        "train_epochs": [40, 100],
-        "seq_len": [16, 20, 24, 28],
+        "batch_size": [512, 1024],
+        "train_epochs": [20, 50, 80],
+        "seq_len": [8,16,28],
         "dropout": [0.4, 0.5, 0.6, 0.7, 0.8],
     }
 
@@ -429,14 +429,14 @@ def suggest_hyperparameters(trial=None, return_search_space=False):
         return search_space
 
     hyperparams = {
-        "d_model": trial.suggest_int("d_model", 128, 512, step=2),
-        "hidden_dim": trial.suggest_int("hidden_dim", 512, 1042, step=2),
+        "d_model": trial.suggest_int("d_model", 128, 512, step=20),
+        "hidden_dim": trial.suggest_int("hidden_dim", 512, 1042, step=20),
         "token_emb_kernel_size": trial.suggest_int(
             "token_emb_kernel_size",
             min(search_space["token_emb_kernel_size"]),
             max(search_space["token_emb_kernel_size"]),
         ),
-        "last_hidden_dim": trial.suggest_int("last_hidden_dim", 512, 1024, step=2),
+        "last_hidden_dim": trial.suggest_int("last_hidden_dim", 512, 1024, step=20),
         "time_d_model": trial.suggest_categorical(
             "time_d_model", search_space["time_d_model"]
         ),
@@ -470,8 +470,8 @@ def suggest_hyperparameters(trial=None, return_search_space=False):
 
 def main():
     time_str = "24-08-02"
-    study_name = f"{time_str}-12_timefeatures-scale_1e-4"
-    n_trails = 30 * 3
+    study_name = f"{time_str}-farm_97"
+    n_trails = 30 * 14
     args = {
         "time_str": time_str,
         "study_name": study_name,

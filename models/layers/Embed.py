@@ -229,10 +229,13 @@ when time featues are 12 for power prediction.
 
 
 class TemporalFeatureEmbedding(nn.Module):
-    def __init__(self, time_d_model, combine_type="add"):
+    def __init__(
+        self, time_d_model, combine_type="add", max_len=5000, use_pos_enc=True
+    ):
         super(TemporalFeatureEmbedding, self).__init__()
         self.d_model = time_d_model
         self.combine_type = combine_type
+        self.use_pos_enc = use_pos_enc
 
         # Embeddings for discrete time features
         self.hour_embed = nn.Embedding(24, time_d_model)
@@ -253,6 +256,10 @@ class TemporalFeatureEmbedding(nn.Module):
         self.linear_day_in_week_cos = nn.Linear(1, time_d_model)
 
         self.dropout = nn.Dropout(0.1)  # Dropout rate (optional)
+
+        # Positional encoding
+        if self.use_pos_enc:
+            self.positional_embedding = PositionalEmbedding(time_d_model, max_len)
 
     def forward(self, x):
         # x: [batch, Seq_Len, 12] - containing hour, quarter_hour, day, day_in_week, hour_sin, hour_cos,
@@ -320,6 +327,11 @@ class TemporalFeatureEmbedding(nn.Module):
                 + day_in_week_sin_embedding
                 + day_in_week_cos_embedding
             )
+
+        # Apply positional encoding if enabled
+        if self.use_pos_enc:
+            positional_embedding = self.positional_embedding(x)
+            combined_embedding += positional_embedding
 
         # Apply dropout (optional)
         combined_embedding = self.dropout(combined_embedding)

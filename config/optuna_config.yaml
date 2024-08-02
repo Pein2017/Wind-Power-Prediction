@@ -19,8 +19,8 @@ output_paths:
 # Data paths
 data_paths:
   data_root_dir: "/data3/lsf/Pein/Power-Prediction/data"
-  train_path: "train_farm_76_withTime-1e-4.csv"
-  test_path: "test_farm_76_withTime-1e-4.csv"
+  train_path: "train_farm_97_withTime.csv"
+  test_path: "test_farm_97_withTime.csv"
 
 # Data settings
 data_settings:
@@ -36,8 +36,8 @@ data_settings:
 model_settings:
   name: "SimpleMLP"
   token_emb_kernel_size: 3
-  input_dim: 62
-  dec_in: 62
+  input_dim: 83
+  dec_in: 83
   output_dim: 1
   d_model: 16
   n_heads: 4

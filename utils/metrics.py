@@ -66,7 +66,7 @@ def metric(pred, true):
 
 
 class AccuracyMetricLoss(nn.Module):
-    def __init__(self, device: torch.device, cap=300400.0 * 1e-4):
+    def __init__(self, device: torch.device, cap=300400.0):
         super(AccuracyMetricLoss, self).__init__()
         self.cap = cap
         self.device = device
