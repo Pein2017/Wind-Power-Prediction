@@ -1,3 +1,4 @@
+import logging
 import math
 
 import matplotlib.pyplot as plt
@@ -6,6 +7,30 @@ import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
+# Create a custom logger
+logger = logging.getLogger(__name__)
+
+# Set the default log level to DEBUG to capture all levels of logs
+logger.setLevel(logging.INFO)
+
+# Create a console handler and set the log level to DEBUG
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.DEBUG)
+
+# Create a file handler and set the log level to DEBUG
+log_file = "embed_debug.log"
+file_handler = logging.FileHandler(log_file)
+file_handler.setLevel(logging.DEBUG)
+
+# Create a formatter and set it for both the handlers
+formatter = logging.Formatter("%(asctime)s %(message)s")
+console_handler.setFormatter(formatter)
+file_handler.setFormatter(formatter)
+
+# Add the handlers to the logger
+logger.addHandler(console_handler)
+logger.addHandler(file_handler)
 
 
 class PositionalEmbedding(nn.Module):
@@ -224,18 +249,27 @@ when time featues are 6 for pwoer prediction. 6 = (Hour and quater_hour) * 3
 #         return combined_emb
 
 """
-when time featues are 12 for power prediction.
+when time featues are n_time_feature for power prediction.
 """
 
 
 class TemporalFeatureEmbedding(nn.Module):
     def __init__(
-        self, time_d_model, combine_type="add", max_len=5000, use_pos_enc=True
+        self,
+        time_d_model,
+        combine_type="add",
+        max_len=5000,
+        use_pos_enc=True,
+        time_features=[
+            "hour",
+            "quarter_hour",
+        ],  # "day"
     ):
         super(TemporalFeatureEmbedding, self).__init__()
         self.d_model = time_d_model
         self.combine_type = combine_type
         self.use_pos_enc = use_pos_enc
+        self.time_features = time_features
 
         # Embeddings for discrete time features
         self.hour_embed = nn.Embedding(24, time_d_model)
@@ -246,14 +280,8 @@ class TemporalFeatureEmbedding(nn.Module):
         self.day_in_week_embed = nn.Embedding(7, time_d_model)
 
         # Linear layers for sine and cosine transformations
-        self.linear_hour_sin = nn.Linear(1, time_d_model)
-        self.linear_hour_cos = nn.Linear(1, time_d_model)
-        self.linear_quarter_hour_sin = nn.Linear(1, time_d_model)
-        self.linear_quarter_hour_cos = nn.Linear(1, time_d_model)
-        self.linear_day_sin = nn.Linear(1, time_d_model)
-        self.linear_day_cos = nn.Linear(1, time_d_model)
-        self.linear_day_in_week_sin = nn.Linear(1, time_d_model)
-        self.linear_day_in_week_cos = nn.Linear(1, time_d_model)
+        self.linear_sin = nn.Linear(1, time_d_model)
+        self.linear_cos = nn.Linear(1, time_d_model)
 
         self.dropout = nn.Dropout(0.1)  # Dropout rate (optional)
 
@@ -262,79 +290,57 @@ class TemporalFeatureEmbedding(nn.Module):
             self.positional_embedding = PositionalEmbedding(time_d_model, max_len)
 
     def forward(self, x):
-        # x: [batch, Seq_Len, 12] - containing hour, quarter_hour, day, day_in_week, hour_sin, hour_cos,
-        # quarter_hour_sin, quarter_hour_cos, day_sin, day_cos, day_in_week_sin, day_in_week_cos
+        embeddings = []
 
-        # Extract features
-        hour = x[:, :, 0].long()
-        quarter_hour = x[:, :, 1].long()
-        day = x[:, :, 2].long()
-        day_in_week = x[:, :, 3].long()
-        hour_sin = x[:, :, 4].unsqueeze(-1)
-        hour_cos = x[:, :, 5].unsqueeze(-1)
-        quarter_hour_sin = x[:, :, 6].unsqueeze(-1)
-        quarter_hour_cos = x[:, :, 7].unsqueeze(-1)
-        day_sin = x[:, :, 8].unsqueeze(-1)
-        day_cos = x[:, :, 9].unsqueeze(-1)
-        day_in_week_sin = x[:, :, 10].unsqueeze(-1)
-        day_in_week_cos = x[:, :, 11].unsqueeze(-1)
+        # Embedding and linear layers application based on selected time features
+        feature_idx = {"hour": 0, "quarter_hour": 1, "day": 2, "day_in_week": 3}
 
-        # Apply embeddings and linear layers
-        hour_embedding = self.hour_embed(hour)
-        quarter_hour_embedding = self.quarter_hour_embed(quarter_hour)
-        day_embedding = self.day_embed(day)
-        day_in_week_embedding = self.day_in_week_embed(day_in_week)
-        hour_sin_embedding = self.linear_hour_sin(hour_sin)
-        hour_cos_embedding = self.linear_hour_cos(hour_cos)
-        quarter_hour_sin_embedding = self.linear_quarter_hour_sin(quarter_hour_sin)
-        quarter_hour_cos_embedding = self.linear_quarter_hour_cos(quarter_hour_cos)
-        day_sin_embedding = self.linear_day_sin(day_sin)
-        day_cos_embedding = self.linear_day_cos(day_cos)
-        day_in_week_sin_embedding = self.linear_day_in_week_sin(day_in_week_sin)
-        day_in_week_cos_embedding = self.linear_day_in_week_cos(day_in_week_cos)
+        for feature in self.time_features:
+            idx = feature_idx[feature]
+            discrete_feature = x[:, :, idx].long()
+            sin_feature = x[:, :, idx + 4].unsqueeze(-1)
+            cos_feature = x[:, :, idx + 5].unsqueeze(-1)
+
+            if feature == "hour":
+                embeddings.append(self.hour_embed(discrete_feature))
+            elif feature == "quarter_hour":
+                embeddings.append(self.quarter_hour_embed(discrete_feature))
+            elif feature == "day":
+                embeddings.append(self.day_embed(discrete_feature))
+            elif feature == "day_in_week":
+                embeddings.append(self.day_in_week_embed(discrete_feature))
+
+            embeddings.append(self.linear_sin(sin_feature))
+            embeddings.append(self.linear_cos(cos_feature))
 
         # Combine embeddings
         if self.combine_type == "concat":
-            combined_embedding = torch.cat(
-                [
-                    hour_embedding,
-                    quarter_hour_embedding,
-                    day_embedding,
-                    day_in_week_embedding,
-                    hour_sin_embedding,
-                    hour_cos_embedding,
-                    quarter_hour_sin_embedding,
-                    quarter_hour_cos_embedding,
-                    day_sin_embedding,
-                    day_cos_embedding,
-                    day_in_week_sin_embedding,
-                    day_in_week_cos_embedding,
-                ],
-                dim=-1,
-            )
+            combined_embedding = torch.cat(embeddings, dim=-1)
         else:
-            combined_embedding = (
-                hour_embedding
-                + quarter_hour_embedding
-                + day_embedding
-                + day_in_week_embedding
-                + hour_sin_embedding
-                + hour_cos_embedding
-                + quarter_hour_sin_embedding
-                + quarter_hour_cos_embedding
-                + day_sin_embedding
-                + day_cos_embedding
-                + day_in_week_sin_embedding
-                + day_in_week_cos_embedding
-            )
+            combined_embedding = sum(embeddings)
 
         # Apply positional encoding if enabled
         if self.use_pos_enc:
             positional_embedding = self.positional_embedding(x)
-            combined_embedding += positional_embedding
+            if self.combine_type == "concat":
+                positional_embedding = positional_embedding.expand(x.size(0), -1, -1)
+                combined_embedding = torch.cat(
+                    [combined_embedding, positional_embedding], dim=-1
+                )
+            else:
+                # Ensure positional_embedding and combined_embedding have the same dimensions
+                if positional_embedding.size(-1) != combined_embedding.size(-1):
+                    positional_embedding = positional_embedding.expand_as(
+                        combined_embedding
+                    )
+                combined_embedding += positional_embedding
 
         # Apply dropout (optional)
         combined_embedding = self.dropout(combined_embedding)
+
+        logger.debug(
+            f"debug: temporal.shape of combined_embedding is {combined_embedding.shape}"
+        )
 
         return combined_embedding
 
@@ -347,11 +353,15 @@ class FinalEmbedding(nn.Module):
         time_d_model=-1,
         combine_type="add",
         token_emb_kernel_size=3,
+        time_features=[
+            "hour",
+            "quarter_hour",
+        ],  # "day"
     ):
         super(FinalEmbedding, self).__init__()
         if time_d_model == -1:
             time_d_model = token_d_model
-            print(
+            logger.debug(
                 f"time_d_model is not set, defaulting to token_d_model: {time_d_model}"
             )
 
@@ -360,7 +370,9 @@ class FinalEmbedding(nn.Module):
             token_d_model,
             token_emb_kernel_size=token_emb_kernel_size,
         )
-        self.temporal_embedding = TemporalFeatureEmbedding(time_d_model, combine_type)
+        self.temporal_embedding = TemporalFeatureEmbedding(
+            time_d_model, combine_type=combine_type, time_features=time_features
+        )
         self.combine_type = combine_type
         self.token_d_model = token_d_model
         self.time_d_model = time_d_model
@@ -370,22 +382,22 @@ class FinalEmbedding(nn.Module):
 
     def forward(self, x, x_mark):
         # x: [batch, Seq_len, input_dim]
-        token_emb = self.token_embedding(
-            x
-        )  # token embedding -> [batch, Seq_len, token_d_model]
+        token_emb = self.token_embedding(x)
+        logger.debug(f"shape of token_emb: {token_emb.shape}")  # Debugging
+        # token_emb: [batch, Seq_len, token_d_model]
 
         temporal_emb = self.temporal_embedding(x_mark)
-        # add :   [batch, Seq_len, time_d_model]
-        # concat: [batch, Seq_len, 12 * time_d_model]
+        logger.debug(f"shape of temporal_emb: {temporal_emb.shape}")  # Debugging
+        # temporal_emb: [batch, Seq_len, time_d_model]
 
         # Combine embeddings
         if self.combine_type == "concat":
             combined_emb = torch.cat([token_emb, temporal_emb], dim=-1)
-            # combined_emb: [batch, Seq_len, token_d_model + 12 * time_d_model]
+            logger.debug(f"shape of combined_emb: {combined_emb.shape}")  # Debugging
+            # combined_emb: [batch, Seq_len, token_d_model + time_d_model]
         else:
             if self.token_d_model != self.time_d_model:
                 temporal_emb = self.temporal_to_token_dim(temporal_emb)
-
             combined_emb = token_emb + temporal_emb
             # combined_emb: [batch, Seq_len, token_d_model]
 

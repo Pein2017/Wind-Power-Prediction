@@ -1,12 +1,7 @@
-[I 2024-08-02 15:47:22,950] Using an existing study with name '24-08-02-farm_97' instead of creating a new one.
-Creating study "24-08-02-farm_97" with storage "sqlite:////data3/lsf/Pein/Power-Prediction/optuna_results/24-08-02/24-08-02-farm_97.db"...
-  0%|          | 0/420 [00:00<?, ?it/s]/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [128, 512] and step=20, but the range is not divisible by `step`. It will be replaced by [128, 508].
-  warnings.warn(
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [512, 1042] and step=20, but the range is not divisible by `step`. It will be replaced by [512, 1032].
-  warnings.warn(
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [512, 1024] and step=20, but the range is not divisible by `step`. It will be replaced by [512, 1012].
-  warnings.warn(
-Seed set to 17
+[I 2024-08-07 21:18:59,341] Using an existing study with name '24-08-07-farm_65-simpleMLP-test' instead of creating a new one.
+Creating study "24-08-07-farm_65-simpleMLP-test" with storage "sqlite:////data3/lsf/Pein/Power-Prediction/optuna_results/24-08-07/24-08-07-farm_65-simpleMLP-test.db"...
+Not using pruner
+  0%|          | 0/2 [00:00<?, ?it/s]Seed set to 17
 /home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
 GPU available: True (cuda), used: True
 TPU available: False, using: 0 TPU cores
@@ -16,14 +11,103 @@ LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
 
   | Name      | Type    | Params | Mode 
 ----------------------------------------------
-0 | model     | Model   | 19.8 M | train
+0 | model     | Model   | 9.9 M  | train
 1 | criterion | MSELoss | 0      | train
 ----------------------------------------------
-19.8 M    Trainable params
+9.9 M     Trainable params
 0         Non-trainable params
-19.8 M    Total params
-79.090    Total estimated model params size (MB)
-Metric Loss/val improved. New best score: 1.350
-Metric Loss/val improved by 0.015 >= min_delta = 0.0. New best score: 1.335
-Metric Loss/val improved by 0.087 >= min_delta = 0.0. New best score: 1.248
-Metric Loss/val improved by 0.016 >= min_delta = 0.0. New best score: 1.232
+9.9 M     Total params
+39.675    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 2.704
+Metric Loss/val improved by 1.538 >= min_delta = 0.0. New best score: 1.166
+Metric Loss/val improved by 0.090 >= min_delta = 0.0. New best score: 1.076
+Metric Loss/val improved by 0.017 >= min_delta = 0.0. New best score: 1.059
+Metric Loss/val improved by 0.110 >= min_delta = 0.0. New best score: 0.949
+Metric Loss/val improved by 0.007 >= min_delta = 0.0. New best score: 0.943
+Metric Loss/val improved by 0.044 >= min_delta = 0.0. New best score: 0.899
+Monitored metric Loss/val did not improve in the last 15 records. Best score: 0.899. Signaling Trainer to stop.
+                                       0%|          | 0/2 [04:13<?, ?it/s]Best trial: 0. Best value: 0.780107:   0%|          | 0/2 [04:13<?, ?it/s]Best trial: 0. Best value: 0.780107:  50%|█████     | 1/2 [04:13<04:13, 253.63s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 9.9 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+9.9 M     Trainable params
+0         Non-trainable params
+9.9 M     Total params
+39.675    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.327
+Metric Loss/val improved by 0.156 >= min_delta = 0.0. New best score: 1.171
+Metric Loss/val improved by 0.057 >= min_delta = 0.0. New best score: 1.115
+Metric Loss/val improved by 0.066 >= min_delta = 0.0. New best score: 1.049
+Monitored metric Loss/val did not improve in the last 15 records. Best score: 1.049. Signaling Trainer to stop.
+                                                                                   Best trial: 0. Best value: 0.780107:  50%|█████     | 1/2 [06:53<04:13, 253.63s/it]Best trial: 0. Best value: 0.780107:  50%|█████     | 1/2 [06:53<04:13, 253.63s/it]Best trial: 0. Best value: 0.780107: 100%|██████████| 2/2 [06:53<00:00, 198.71s/it]Best trial: 0. Best value: 0.780107: 100%|██████████| 2/2 [06:53<00:00, 206.94s/it]
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['d_model', 'hidden_dim', 'token_emb_kernel_size', 'last_hidden_dim', 'time_d_model', 'e_layers', 'learning_rate', 'batch_size', 'train_epochs', 'seq_len', 'dropout', 'combine_type'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-07', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-07', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-07.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-07', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-07'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_65_withTime.csv', test_path='test_farm_65_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='SimpleMLP', token_emb_kernel_size=9, input_dim=51, dec_in=51, output_dim=1, d_model=128, n_heads=4, e_layers=12, d_layers=1, hidden_dim=512, last_hidden_dim=1024, top_k=5, num_kernels=6, activation='gelu', time_d_model=32, combine_type='concat', seq_len=8, pred_len=1, min_y_value=0.0, dropout=0.1), exp_settings='seq_len-8-lr-0.001-d-128-hid_d-512-last_d-1024-time_d-32-e_layers-12-token_emb_kernel_size-9-dropout-0.1-comb_type-concat-bs-256', training_settings=Namespace(gradient_clip_val=5, train_epochs=80, batch_size=256, early_stop_patience=15, learning_rate=0.001, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=51, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+******************************
+Data shapes:
+Train X shape: (11673, 51)
+Train y shape: (11673, 1)
+Val X shape: (2919, 51)
+Val y shape: (2919, 1)
+Test X shape: (2880, 51)
+Test y shape: (2880, 1)
+Train X mark shape: (11673, 12)
+Val X mark shape: (2919, 12)
+Test X mark shape: (2880, 12)
+******************************
+train shape: (11673, 51), val shape: (2919, 51), test shape: (2880, 51)
+train_x_mark shape: (11673, 12), val_x_mark shape: (2919, 12), test_x_mark shape: (2880, 12)
+[I 2024-08-07 21:23:12,964] Trial 1 finished with value: 0.82608647570014 and parameters: {'d_model': 128, 'hidden_dim': 512, 'token_emb_kernel_size': 9, 'last_hidden_dim': 1024, 'time_d_model': 32, 'e_layers': 12, 'learning_rate': 0.001, 'batch_size': 256, 'train_epochs': 80, 'seq_len': 8, 'dropout': 0.1, 'combine_type': 'concat'}. Best is trial 0 with value: 0.7801065921783448.
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['d_model', 'hidden_dim', 'token_emb_kernel_size', 'last_hidden_dim', 'time_d_model', 'e_layers', 'learning_rate', 'batch_size', 'train_epochs', 'seq_len', 'dropout', 'combine_type'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-07', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-07', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-07.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-07', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-07'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_65_withTime.csv', test_path='test_farm_65_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='SimpleMLP', token_emb_kernel_size=9, input_dim=51, dec_in=51, output_dim=1, d_model=128, n_heads=4, e_layers=12, d_layers=1, hidden_dim=512, last_hidden_dim=1024, top_k=5, num_kernels=6, activation='gelu', time_d_model=32, combine_type='concat', seq_len=8, pred_len=1, min_y_value=0.0, dropout=0.2), exp_settings='seq_len-8-lr-0.001-d-128-hid_d-512-last_d-1024-time_d-32-e_layers-12-token_emb_kernel_size-9-dropout-0.2-comb_type-concat-bs-256', training_settings=Namespace(gradient_clip_val=1, train_epochs=80, batch_size=256, early_stop_patience=15, learning_rate=0.001, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=51, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+******************************
+Data shapes:
+Train X shape: (11673, 51)
+Train y shape: (11673, 1)
+Val X shape: (2919, 51)
+Val y shape: (2919, 1)
+Test X shape: (2880, 51)
+Test y shape: (2880, 1)
+Train X mark shape: (11673, 12)
+Val X mark shape: (2919, 12)
+Test X mark shape: (2880, 12)
+******************************
+train shape: (11673, 51), val shape: (2919, 51), test shape: (2880, 51)
+train_x_mark shape: (11673, 12), val_x_mark shape: (2919, 12), test_x_mark shape: (2880, 12)
+[I 2024-08-07 21:25:53,227] Trial 3 finished with value: 0.9849585950374604 and parameters: {'d_model': 128, 'hidden_dim': 512, 'token_emb_kernel_size': 9, 'last_hidden_dim': 1024, 'time_d_model': 32, 'e_layers': 12, 'learning_rate': 0.001, 'batch_size': 256, 'train_epochs': 80, 'seq_len': 8, 'dropout': 0.2, 'combine_type': 'concat'}. Best is trial 0 with value: 0.7801065921783448.
+Number of finished trials: 4
+Best trial:
+Value: 0.7801065921783448
+Params: 
+    d_model: 128
+    hidden_dim: 512
+    token_emb_kernel_size: 9
+    last_hidden_dim: 1024
+    time_d_model: 32
+    e_layers: 12
+    learning_rate: 0.001
+    batch_size: 256
+    train_epochs: 80
+    seq_len: 8
+    dropout: 0.1
+    combine_type: add
+Top 4 trials saved to /data3/lsf/Pein/Power-Prediction/optuna_results/24-08-07/24-08-07-farm_65-simpleMLP-test_top4_params.json
+Total time taken:  414.4060 seconds,  6.91 minutes
+Done!

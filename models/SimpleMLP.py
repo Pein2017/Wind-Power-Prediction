@@ -57,17 +57,25 @@ class Model(nn.Module):
             configs.min_y_value, dtype=torch.float32, device=torch.device("cuda:0")
         )
 
+        if getattr(configs, "time_features", None) is not None:
+            self.time_features = configs.time_features
+        else:
+            self.time_features = ["hour", "quarter_hour"]  # "day"
+
         self.initial_embedding = FinalEmbedding(
             input_dim,
             token_d_model,
             time_d_model,
             combine_type=combine_type,
             token_emb_kernel_size=token_emb_kernel_size,
+            time_features=self.time_features,
         )
 
         # Adjust the input dimension for the first MLPBlock based on combine_type
         if combine_type == "concat":
-            first_block_input_dim = token_d_model + 6 * time_d_model
+            first_block_input_dim = token_d_model + time_d_model * (
+                3 * len(self.time_features) + 1
+            )
         else:
             # add mode
             first_block_input_dim = token_d_model
@@ -91,7 +99,8 @@ class Model(nn.Module):
         )
 
     def forward(self, x, x_mark, x_dec, x_dec_mark, mode="norm"):
-        x = self.initial_embedding(x, x_mark)
+        x = self.initial_embedding(x, x_mark)  # [batch , seq_len, token_d_model]
+
         x = self.normalization(x.transpose(1, 2)).transpose(1, 2)
         for block in self.mlp_blocks:
             x = block(x)

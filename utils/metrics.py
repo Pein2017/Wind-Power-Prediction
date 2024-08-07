@@ -65,8 +65,12 @@ def metric(pred, true):
     return mae, mse, rmse, mape, mspe
 
 
+factor = (300 + 400 + 900) / 300 / 1000
+CAP = 300400.0 * factor
+
+
 class AccuracyMetricLoss(nn.Module):
-    def __init__(self, device: torch.device, cap=300400.0):
+    def __init__(self, device: torch.device, cap=CAP):
         super(AccuracyMetricLoss, self).__init__()
         self.cap = cap
         self.device = device

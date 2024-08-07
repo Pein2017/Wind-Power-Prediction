@@ -77,6 +77,15 @@ def prepare_data_module(args):
     data_module = WindPowerDataModule(args)
     data_module.prepare_data()
     data_module.setup("fit")
+
+    # debug
+    print(
+        f"train shape: {data_module.train_X.shape}, val shape: {data_module.val_X.shape}, test shape: {data_module.test_X.shape}"
+    )
+    print(
+        f"train_x_mark shape: {data_module.train_X_mark.shape}, val_x_mark shape: {data_module.val_X_mark.shape}, test_x_mark shape: {data_module.test_X_mark.shape}"
+    )
+
     return data_module
 
 

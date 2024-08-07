@@ -19,8 +19,8 @@ output_paths:
 # Data paths
 data_paths:
   data_root_dir: "/data3/lsf/Pein/Power-Prediction/data"
-  train_path: "train_farm_97_withTime.csv"
-  test_path: "test_farm_97_withTime.csv"
+  train_path: "train_farm_65_withTime.csv"
+  test_path: "test_farm_65_withTime.csv"
 
 # Data settings
 data_settings:
@@ -36,8 +36,8 @@ data_settings:
 model_settings:
   name: "SimpleMLP"
   token_emb_kernel_size: 3
-  input_dim: 83
-  dec_in: 83
+  input_dim: 51
+  dec_in: 51
   output_dim: 1
   d_model: 16
   n_heads: 4
@@ -60,17 +60,16 @@ exp_settings: null
 
 # Training settings
 training_settings:
-  warmup_steps_ratio: 0.001
-  gradient_clip_val: 5
+  gradient_clip_val: 1
   train_epochs: 120
   batch_size: 1100
-  early_stop_patience: 10
+  early_stop_patience: 15
   learning_rate: 0.01
   loss: "MSE"
   lradj: "TST"
   pct_start: 0.3
   use_amp: false
-  moving_avg: 25
+  moving_avg: 51
   decomp_method: "moving_avg"
   use_norm: 1
   down_sampling_layers: 2
@@ -86,6 +85,7 @@ scheduler_settings:
   reduce_factor: 0.2
   pct_start: 0.3
   eta_min: 1e-6
+  warmup_steps: 0
 
 # GPU settings
 gpu_settings:

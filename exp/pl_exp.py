@@ -10,7 +10,7 @@ import torch.nn as nn
 from torch import optim
 from torch.optim import lr_scheduler
 
-from models import SimpleMLP, TimeMixer
+from models import SimpleConv, SimpleMLP, TimeMixer
 from utils.config import dict_to_namespace
 
 
@@ -23,6 +23,7 @@ class WindPowerExperiment(pl.LightningModule):
         self.model_dict = {
             "TimeMixer": TimeMixer,
             "SimpleMLP": SimpleMLP,
+            "SimpleConv": SimpleConv,
         }
 
         if args:
@@ -70,7 +71,7 @@ class WindPowerExperiment(pl.LightningModule):
             "test_epoch_for_best_test": -1,
         }
 
-    def common_step(self, batch, batch_idx, phase, dataloader_idx=None):
+    def common_step(self, batch, batch_idx, phase, dataloader_idx=None, loss_clip=100):
         loss = self.process_batch(batch, self.criterion)
 
         if phase == "train":
@@ -82,9 +83,13 @@ class WindPowerExperiment(pl.LightningModule):
 
             self.log("lr", current_lr, on_epoch=True, on_step=False, logger=True)
         elif phase == "val":
-            self.val_losses.append(loss)
+            clipped_loss = torch.clamp(loss, max=loss_clip)
+            self.val_losses.append(clipped_loss)
+            loss = clipped_loss
         elif phase == "test":
-            self.test_losses.append(loss)
+            clipped_loss = torch.clamp(loss, max=loss_clip)
+            self.test_losses.append(clipped_loss)
+            loss = clipped_loss
 
         # Set the current phase for metric callback
         self.current_phase = phase
@@ -210,6 +215,22 @@ class WindPowerExperiment(pl.LightningModule):
         optimizer = self._select_optimizer()
         training_settings = self.args.training_settings
         scheduler_settings = self.args.scheduler_settings
+
+        def lambda_lr(current_step: int):
+            # Calculate the progress as a float in [0, 1]
+            warmup_steps = scheduler_settings.warmup_steps
+            if current_step < warmup_steps:
+                return float(current_step) / float(max(1, warmup_steps))
+            return 1.0  # Keep the learning rate at the base value after warmup
+
+        # Warmup scheduler
+        warmup_scheduler = {
+            "scheduler": lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda_lr),
+            "interval": "step",
+            "frequency": 1,
+        }
+
+        # Additional schedulers
         if scheduler_settings.type == "OneCycleLR":
             scheduler = {
                 "scheduler": lr_scheduler.OneCycleLR(
@@ -222,7 +243,7 @@ class WindPowerExperiment(pl.LightningModule):
                 "interval": "step",
                 "frequency": 1,
             }
-        elif self.args.type == "CosineAnnealingLR":
+        elif scheduler_settings.type == "CosineAnnealingLR":
             scheduler = {
                 "scheduler": lr_scheduler.CosineAnnealingLR(
                     optimizer=optimizer,
@@ -235,10 +256,11 @@ class WindPowerExperiment(pl.LightningModule):
         else:
             scheduler = None
 
+        # Combine schedulers if both warmup and another scheduler are present
         if scheduler:
-            return [optimizer], [scheduler]
+            return [optimizer], [warmup_scheduler, scheduler]
         else:
-            return optimizer
+            return [optimizer], [warmup_scheduler]
 
     def forward(self, batch_x, batch_x_mark, dec_inp, batch_y_mark):
         return self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)

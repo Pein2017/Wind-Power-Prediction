@@ -1,9 +1,9 @@
 import os
 from argparse import Namespace
+from typing import Union
 
 import pandas as pd  # noqa
 from pytorch_lightning import LightningDataModule
-from sklearn.model_selection import train_test_split
 from sympy import Dict
 from torch.utils.data import DataLoader
 
@@ -13,7 +13,7 @@ from utils.tools import get_scaler, inverse_transform, transform  # noqa
 
 
 class WindPowerDataModule(LightningDataModule):
-    def __init__(self, args: Namespace | Dict):
+    def __init__(self, args: Union[Namespace, Dict]):
         super().__init__()
         if isinstance(args, dict):
             args = dict_to_namespace(args, False)
@@ -30,6 +30,11 @@ class WindPowerDataModule(LightningDataModule):
 
         # Optional attributes with defaults
         self.train_val_split = getattr(args.data_settings, "train_val_split", 0.2)
+
+        # check if train_val_split is smaller than 0.4
+        if self.train_val_split > 0.4:
+            raise ValueError("train_val_split should be smaller than 0.4")
+
         self.scale_x_type = getattr(args.data_settings, "scale_x_type", "standard")
         self.scale_y_type = getattr(args.data_settings, "scale_y_type", "min_max")
 
@@ -39,10 +44,14 @@ class WindPowerDataModule(LightningDataModule):
 
     def prepare_data(self):
         train_data = pd.read_csv(self.train_path)
-        train_data, val_data = train_test_split(
-            train_data, test_size=self.train_val_split, shuffle=False
-        )
         test_data = pd.read_csv(self.test_path)
+
+        # Ensure train-validation split is not random (use first 80% for train and last 20% for val)
+        train_data_size = int(len(train_data) * (1 - self.train_val_split))
+        train_data, val_data = (
+            train_data[:train_data_size],
+            train_data[train_data_size:],
+        )
 
         columns = train_data.columns.tolist()
         power_index = columns.index("power")
@@ -56,11 +65,13 @@ class WindPowerDataModule(LightningDataModule):
         train_X = train_data[self.feature_columns].values
         train_y = train_data[["power"]].values
 
-        self.scaler_x = self.scaler_x.fit(train_X) if self.scaler_x else None
-        self.scaler_y = self.scaler_y.fit(train_y) if self.scaler_y else None
+        if self.scaler_x:
+            self.scaler_x.fit(train_X)
+        if self.scaler_y:
+            self.scaler_y.fit(train_y)
 
-        self.train_X = transform(self.scaler_x, train_data[self.feature_columns].values)
-        self.train_y = transform(self.scaler_y, train_data[["power"]].values)
+        self.train_X = transform(self.scaler_x, train_X)
+        self.train_y = transform(self.scaler_y, train_y)
         self.val_X = transform(self.scaler_x, val_data[self.feature_columns].values)
         self.val_y = transform(self.scaler_y, val_data[["power"]].values)
         self.test_X = transform(self.scaler_x, test_data[self.feature_columns].values)
@@ -69,6 +80,20 @@ class WindPowerDataModule(LightningDataModule):
         self.train_X_mark = train_data[self.time_feature_columns].values
         self.val_X_mark = val_data[self.time_feature_columns].values
         self.test_X_mark = test_data[self.time_feature_columns].values
+
+        print("*" * 30)
+        print("Data shapes:")
+        print("Train X shape:", self.train_X.shape)
+        print("Train y shape:", self.train_y.shape)
+        print("Val X shape:", self.val_X.shape)
+        print("Val y shape:", self.val_y.shape)
+        print("Test X shape:", self.test_X.shape)
+        print("Test y shape:", self.test_y.shape)
+        print(f"Train X mark shape: {self.train_X_mark.shape}")
+        print(f"Val X mark shape: {self.val_X_mark.shape}")
+        print(f"Test X mark shape: {self.test_X_mark.shape}")
+
+        print("*" * 30)
 
     def setup(self, stage=None):
         if stage in (None, "fit"):

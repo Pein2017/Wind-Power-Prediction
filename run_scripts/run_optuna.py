@@ -8,7 +8,6 @@ import sys
 import time
 from pathlib import Path
 
-import numpy as np
 import optuna
 import torch
 from optuna.pruners import HyperbandPruner, MedianPruner, SuccessiveHalvingPruner
@@ -94,6 +93,7 @@ hyperparam_path_map = {
         "e_layers": "e_layers",
         "seq_len": "seq_len",
         "dropout": "dropout",
+        "combine_type": "combine_type",
     },
     # Training settings
     "training_settings": {
@@ -298,6 +298,11 @@ def create_study(args):
     sampler = get_sampler(args)
     pruner = get_pruner(args)
 
+    if pruner is None:
+        print("Not using pruner")
+    else:
+        raise NotImplementedError("Pruner not implemented yet.")
+
     return optuna.create_study(
         direction="minimize",
         study_name=args.study_name,
@@ -311,7 +316,7 @@ def create_study(args):
 def get_pruner(args):
     """Get the appropriate Optuna pruner based on the provided type."""
     if args.pruner_type == "median":
-        return MedianPruner(n_startup_trials=5, n_warmup_steps=0, interval_steps=1)
+        return MedianPruner(n_startup_trials=5, n_warmup_steps=10, interval_steps=1)
     elif args.pruner_type == "hyperband":
         return HyperbandPruner(min_resource=3, max_resource="auto", reduction_factor=3)
     elif args.pruner_type == "successive_halving":
@@ -405,63 +410,51 @@ def run_optuna_study(args):
 def suggest_hyperparameters(trial=None, return_search_space=False):
     """Suggest hyperparameters using Optuna trial or return search space."""
     search_space = {
-        "d_model": list(range(128, 513)),  # Range from 128 to 512
-        "hidden_dim": list(range(512, 1043)),  # Range from 512 to 1042
-        "token_emb_kernel_size": list(range(7, 16)),
-        "last_hidden_dim": list(range(512, 1025)),  # Range from 512 to 1024
-        "time_d_model": [64, 128, 256],
-        "e_layers": list(range(7, 21)),  # Range from 7 to 20
-        "learning_rate": [
-            5e-3,
-            1e-2,
-            2e-2,
-            5e-2,
-            1e-1,
-            2e-1,
-        ],  # Example discrete values
-        "batch_size": [512, 1024],
-        "train_epochs": [20, 50, 80],
-        "seq_len": [8,16,28],
-        "dropout": [0.4, 0.5, 0.6, 0.7, 0.8],
+        "d_model": [128],  # 512, 1024
+        "hidden_dim": [512],  # 1024
+        "token_emb_kernel_size": [9],  # 13
+        "last_hidden_dim": [1024],  # , 2048
+        "time_d_model": [32],
+        "e_layers": [12],  # Reduced range
+        "learning_rate": [1e-3],  # 5e-3, 1e-2
+        "batch_size": [256],
+        "train_epochs": [80],
+        "seq_len": [8],
+        "dropout": [0.1, 0.2],
+        "combine_type": ["add", "concat"],  #
     }
 
     if return_search_space:
         return search_space
 
     hyperparams = {
-        "d_model": trial.suggest_int("d_model", 128, 512, step=20),
-        "hidden_dim": trial.suggest_int("hidden_dim", 512, 1042, step=20),
-        "token_emb_kernel_size": trial.suggest_int(
-            "token_emb_kernel_size",
-            min(search_space["token_emb_kernel_size"]),
-            max(search_space["token_emb_kernel_size"]),
+        "d_model": trial.suggest_categorical("d_model", search_space["d_model"]),
+        "hidden_dim": trial.suggest_categorical(
+            "hidden_dim", search_space["hidden_dim"]
         ),
-        "last_hidden_dim": trial.suggest_int("last_hidden_dim", 512, 1024, step=20),
+        "token_emb_kernel_size": trial.suggest_categorical(
+            "token_emb_kernel_size", search_space["token_emb_kernel_size"]
+        ),
+        "last_hidden_dim": trial.suggest_categorical(
+            "last_hidden_dim", search_space["last_hidden_dim"]
+        ),
         "time_d_model": trial.suggest_categorical(
             "time_d_model", search_space["time_d_model"]
         ),
-        "e_layers": trial.suggest_int("e_layers", 7, 20),
-        "learning_rate": trial.suggest_float(
-            "learning_rate",
-            1e-3,
-            2e-1,
-            log=True,
+        "e_layers": trial.suggest_categorical("e_layers", search_space["e_layers"]),
+        "learning_rate": trial.suggest_categorical(
+            "learning_rate", search_space["learning_rate"]
         ),
         "batch_size": trial.suggest_categorical(
             "batch_size", search_space["batch_size"]
         ),
-        "train_epochs": trial.suggest_int(
-            "train_epochs",
-            min(search_space["train_epochs"]),
-            max(search_space["train_epochs"]),
-            step=10,
+        "train_epochs": trial.suggest_categorical(
+            "train_epochs", search_space["train_epochs"]
         ),
         "seq_len": trial.suggest_categorical("seq_len", search_space["seq_len"]),
-        "dropout": trial.suggest_float(
-            "dropout",
-            min(search_space["dropout"]),
-            max(search_space["dropout"]),
-            step=0.01,
+        "dropout": trial.suggest_categorical("dropout", search_space["dropout"]),
+        "combine_type": trial.suggest_categorical(
+            "combine_type", search_space["combine_type"]
         ),
     }
 
@@ -469,9 +462,9 @@ def suggest_hyperparameters(trial=None, return_search_space=False):
 
 
 def main():
-    time_str = "24-08-02"
-    study_name = f"{time_str}-farm_97"
-    n_trails = 30 * 14
+    time_str = "24-08-07"
+    study_name = f"{time_str}-farm_65-simpleMLP-test"
+    n_trails = 2
     args = {
         "time_str": time_str,
         "study_name": study_name,
@@ -479,9 +472,9 @@ def main():
         "n_trials": int(n_trails),
         "output_dir": f"/data3/lsf/Pein/Power-Prediction/optuna_results/{time_str}",
         "config_path": "/data3/lsf/Pein/Power-Prediction/config/optuna_config.yaml",
-        "sampler_name": "cma",
-        "seed": np.random.randint(10000),
-        "pruner_type": "hyperband",
+        "sampler_name": "grid",
+        "seed": 17,  #  np.random.randint(10000)
+        "pruner_type": None,
     }
     run_optuna_study(args)
 

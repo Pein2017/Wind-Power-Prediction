@@ -13,6 +13,32 @@ from utils.config import dict_to_namespace
 from utils.inference import full_inference
 
 
+class SmoothedEarlyStopping(EarlyStopping):
+    def __init__(self, *args, smoothing_factor=0.9, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.smoothing_factor = smoothing_factor
+        self.smoothed_val_loss = None
+
+    def on_validation_end(self, trainer, pl_module):
+        logs = trainer.callback_metrics
+        current_val_loss = logs.get(self.monitor)
+
+        if current_val_loss is None:
+            return
+
+        if self.smoothed_val_loss is None:
+            self.smoothed_val_loss = current_val_loss
+        else:
+            self.smoothed_val_loss = (
+                self.smoothing_factor * self.smoothed_val_loss
+                + (1 - self.smoothing_factor) * current_val_loss
+            )
+
+        logs[self.monitor] = self.smoothed_val_loss
+
+        super().on_validation_end(trainer, pl_module)
+
+
 def get_callbacks(callback_settings):
     if isinstance(callback_settings, dict):
         callback_settings = dict_to_namespace(callback_settings)
@@ -25,12 +51,13 @@ def get_callbacks(callback_settings):
         save_on_train_epoch_end=False,
     )
 
-    early_stopping_callback = EarlyStopping(
+    early_stopping_callback = SmoothedEarlyStopping(
         monitor="Loss/val",
         patience=callback_settings.early_stop_patience,
         mode="min",
         verbose=True,
         check_on_train_epoch_end=False,
+        smoothing_factor=0.9,
     )
 
     lr_monitor = LearningRateMonitor(logging_interval="epoch")

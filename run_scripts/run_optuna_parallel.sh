@@ -17,6 +17,9 @@ source activate Pein_310
 # Run the first instance with GPU 0 in the background
 CUDA_VISIBLE_DEVICES=0 python /data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py >/data3/lsf/Pein/Power-Prediction/tmux_console_0.log 2>&1 &
 
+# Sleep for 2 seconds to allow the first instance to start
+sleep 5
+
 # Run the second instance with GPU 1 in the background
 CUDA_VISIBLE_DEVICES=1 python /data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py >/data3/lsf/Pein/Power-Prediction/tmux_console_1.log 2>&1 &
 

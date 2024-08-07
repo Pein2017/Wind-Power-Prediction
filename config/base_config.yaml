@@ -34,7 +34,7 @@ model_settings:
 training_settings:
   steps_per_epoch: null # need to be calculated based on the size of the dataset
   warmup_steps_ratio: 0.001
-  gradient_clip_val: 5
+  gradient_clip_val: 1.0
   train_epochs: 2
   batch_size: 1100
   early_stop_patience: 10
