@@ -1,6 +1,6 @@
 Exp: 1
 
-Experiment Settings: seq_len-8-lr-0.01-d-16-hid_d-32-last_d-16-time_d-128-e_layers-2-token_emb_kernel_size-7-dropout-0.1-comb_type-add-bs-1100
+Experiment Settings: seq_len-8-lr-0.01-d-16-hid_d-32-last_d-16-time_d-128-e_layers-2-token_conv_kernel-7-dropout-0.1-comb_type-add-bs-1100
 Experiment time: 2024-07-24 22:20:55.977838
 +------------------------------+---------------+---------------+---------------+-------+
 | Metric                       | Training      | Validation    | Test          | Epoch |
@@ -15,7 +15,7 @@ Experiment time: 2024-07-24 22:20:55.977838
 
 Exp: 2
 
-Experiment Settings: seq_len-8-lr-0.01-d-16-hid_d-32-last_d-16-time_d-128-e_layers-2-token_emb_kernel_size-7-dropout-0.1-comb_type-add-bs-1100
+Experiment Settings: seq_len-8-lr-0.01-d-16-hid_d-32-last_d-16-time_d-128-e_layers-2-token_conv_kernel-7-dropout-0.1-comb_type-add-bs-1100
 Experiment time: 2024-07-24 22:21:10.324145
 +------------------------------+---------------+---------------+---------------+-------+
 | Metric                       | Training      | Validation    | Test          | Epoch |
@@ -30,7 +30,7 @@ Experiment time: 2024-07-24 22:21:10.324145
 
 Exp: 3
 
-Experiment Settings: seq_len-8-lr-0.01-d-16-hid_d-32-last_d-16-time_d-128-e_layers-2-token_emb_kernel_size-3-dropout-0.1-comb_type-add-bs-1100
+Experiment Settings: seq_len-8-lr-0.01-d-16-hid_d-32-last_d-16-time_d-128-e_layers-2-token_conv_kernel-3-dropout-0.1-comb_type-add-bs-1100
 Experiment time: 2024-07-24 23:10:17.870822
 +------------------------------+---------------+---------------+---------------+-------+
 | Metric                       | Training      | Validation    | Test          | Epoch |

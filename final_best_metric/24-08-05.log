@@ -1,6 +1,6 @@
 Exp: 1
 
-Experiment Settings: seq_len-16-lr-0.01-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-4-token_emb_kernel_size-5-dropout-0.4-comb_type-add-bs-256
+Experiment Settings: seq_len-16-lr-0.01-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-4-token_conv_kernel-5-dropout-0.4-comb_type-add-bs-256
 Experiment time: 2024-08-05 23:13:12.415240
 +------------------------------+---------------+---------------+---------------+-------+
 | Metric                       | Training      | Validation    | Test          | Epoch |
@@ -15,7 +15,7 @@ Experiment time: 2024-08-05 23:13:12.415240
 
 Exp: 2
 
-Experiment Settings: seq_len-16-lr-0.01-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-4-token_emb_kernel_size-5-dropout-0.4-comb_type-add-bs-256
+Experiment Settings: seq_len-16-lr-0.01-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-4-token_conv_kernel-5-dropout-0.4-comb_type-add-bs-256
 Experiment time: 2024-08-05 23:13:25.067495
 +------------------------------+---------------+---------------+---------------+-------+
 | Metric                       | Training      | Validation    | Test          | Epoch |
@@ -30,7 +30,7 @@ Experiment time: 2024-08-05 23:13:25.067495
 
 Exp: 3
 
-Experiment Settings: seq_len-16-lr-0.01-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-4-token_emb_kernel_size-5-dropout-0.4-comb_type-add-bs-256
+Experiment Settings: seq_len-16-lr-0.01-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-4-token_conv_kernel-5-dropout-0.4-comb_type-add-bs-256
 Experiment time: 2024-08-05 23:15:37.334355
 +------------------------------+---------------+---------------+---------------+-------+
 | Metric                       | Training      | Validation    | Test          | Epoch |
@@ -45,7 +45,7 @@ Experiment time: 2024-08-05 23:15:37.334355
 
 Exp: 4
 
-Experiment Settings: seq_len-16-lr-0.01-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-4-token_emb_kernel_size-5-dropout-0.4-comb_type-add-bs-256
+Experiment Settings: seq_len-16-lr-0.01-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-4-token_conv_kernel-5-dropout-0.4-comb_type-add-bs-256
 Experiment time: 2024-08-05 23:16:45.417111
 +------------------------------+---------------+---------------+---------------+-------+
 | Metric                       | Training      | Validation    | Test          | Epoch |
@@ -60,7 +60,7 @@ Experiment time: 2024-08-05 23:16:45.417111
 
 Exp: 5
 
-Experiment Settings: seq_len-16-lr-0.01-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-4-token_emb_kernel_size-11-dropout-0.4-comb_type-add-bs-256
+Experiment Settings: seq_len-16-lr-0.01-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-4-token_conv_kernel-11-dropout-0.4-comb_type-add-bs-256
 Experiment time: 2024-08-05 23:19:16.112354
 +------------------------------+---------------+---------------+---------------+-------+
 | Metric                       | Training      | Validation    | Test          | Epoch |

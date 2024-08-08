@@ -10,7 +10,7 @@ import torch.nn as nn
 from torch import optim
 from torch.optim import lr_scheduler
 
-from models import SimpleConv, SimpleMLP, TimeMixer
+from models import SimpleConv, SimpleLSTM, SimpleMLP, SimpleTransformer, TimeMixer
 from utils.config import dict_to_namespace
 
 
@@ -24,6 +24,8 @@ class WindPowerExperiment(pl.LightningModule):
             "TimeMixer": TimeMixer,
             "SimpleMLP": SimpleMLP,
             "SimpleConv": SimpleConv,
+            "SimpleLSTM": SimpleLSTM,
+            "SimpleTransformer": SimpleTransformer,
         }
 
         if args:

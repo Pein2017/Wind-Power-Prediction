@@ -55,7 +55,7 @@ def create_exp_settings(args):
         training_settings = args.training_settings
 
         # Round the learning rate to 4 decimal places
-        learning_rate_rounded = round(training_settings.learning_rate, 3)
+        learning_rate_rounded = round(training_settings.learning_rate, 4)
 
         # Build the exp_settings string based on nested attributes
         args.exp_settings = (
@@ -66,10 +66,10 @@ def create_exp_settings(args):
             f"last_d-{model_settings.last_hidden_dim}-"
             f"time_d-{model_settings.time_d_model}-"
             f"e_layers-{model_settings.e_layers}-"
-            f"token_emb_kernel_size-{model_settings.token_emb_kernel_size}-"
+            f"tok_conv_k-{model_settings.token_conv_kernel}-"
             f"dropout-{model_settings.dropout}-"
-            f"comb_type-{model_settings.combine_type}-"
-            f"bs-{training_settings.batch_size}"
+            f"bs-{training_settings.batch_size}-"
+            f"norm_type-{model_settings.norm_type}"
         )
 
     return args

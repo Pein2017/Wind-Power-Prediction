@@ -50,7 +50,7 @@ class Model(nn.Module):
         output_dim = configs.output_dim
         e_layers = configs.e_layers
         dropout = configs.dropout
-        token_emb_kernel_size = configs.token_emb_kernel_size
+        token_conv_kernel = configs.token_conv_kernel
         self.min_y_value = configs.min_y_value
         # print(f"\nmin_y_value has been set to {self.min_y_value}\n")
         self.min_y_value = torch.tensor(
@@ -60,22 +60,28 @@ class Model(nn.Module):
         if getattr(configs, "time_features", None) is not None:
             self.time_features = configs.time_features
         else:
-            self.time_features = ["hour", "quarter_hour"]  # "day"
+            self.time_features = ["quarter_hour", "day"]  # "quarter_hour","day"
 
         self.initial_embedding = FinalEmbedding(
             input_dim,
             token_d_model,
             time_d_model,
             combine_type=combine_type,
-            token_emb_kernel_size=token_emb_kernel_size,
+            token_conv_kernel=token_conv_kernel,
             time_features=self.time_features,
+            use_pos_enc=configs.use_pos_enc,
         )
 
         # Adjust the input dimension for the first MLPBlock based on combine_type
         if combine_type == "concat":
-            first_block_input_dim = token_d_model + time_d_model * (
-                3 * len(self.time_features) + 1
-            )
+            if configs.use_pos_enc:
+                first_block_input_dim = token_d_model + time_d_model * (
+                    3 * len(self.time_features) + 1
+                )
+            else:
+                first_block_input_dim = token_d_model + time_d_model * (
+                    3 * len(self.time_features)
+                )
         else:
             # add mode
             first_block_input_dim = token_d_model

@@ -65,7 +65,7 @@ class Model(nn.Module):
         output_dim = configs.output_dim
         e_layers = configs.e_layers
         dropout = configs.dropout
-        token_emb_kernel_size = configs.token_emb_kernel_size
+        token_conv_kernel = configs.token_conv_kernel
         self.min_y_value = configs.min_y_value
 
         self.min_y_value = torch.tensor(
@@ -77,7 +77,7 @@ class Model(nn.Module):
             token_d_model,
             time_d_model,
             combine_type=combine_type,
-            token_emb_kernel_size=token_emb_kernel_size,
+            token_conv_kernel=token_conv_kernel,
         )
 
         if combine_type == "concat":

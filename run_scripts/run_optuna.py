@@ -87,13 +87,18 @@ hyperparam_path_map = {
     "model_settings": {
         "d_model": "d_model",
         "hidden_dim": "hidden_dim",
-        "token_emb_kernel_size": "token_emb_kernel_size",
+        "token_conv_kernel": "token_conv_kernel",
         "last_hidden_dim": "last_hidden_dim",
         "time_d_model": "time_d_model",
+        "seq_layers": "seq_layers",
         "e_layers": "e_layers",
         "seq_len": "seq_len",
         "dropout": "dropout",
         "combine_type": "combine_type",
+        "use_pos_enc": "use_pos_enc",
+        "bidirectional": "bidirectional",
+        "norm_type": "norm_type",
+        "num_heads": "num_heads",
     },
     # Training settings
     "training_settings": {
@@ -410,18 +415,21 @@ def run_optuna_study(args):
 def suggest_hyperparameters(trial=None, return_search_space=False):
     """Suggest hyperparameters using Optuna trial or return search space."""
     search_space = {
-        "d_model": [128],  # 512, 1024
-        "hidden_dim": [512],  # 1024
-        "token_emb_kernel_size": [9],  # 13
+        "d_model": [4],  # 512, 1024
+        "hidden_dim": [16, 32, 256],  # 1024
+        "token_conv_kernel": [9],  # 13
         "last_hidden_dim": [1024],  # , 2048
-        "time_d_model": [32],
-        "e_layers": [12],  # Reduced range
-        "learning_rate": [1e-3],  # 5e-3, 1e-2
+        "time_d_model": [3],
+        "e_layers": [2, 16],  # Reduced range
+        "learning_rate": [1e-2, 1e-3],  # 5e-3, 1e-2
         "batch_size": [256],
-        "train_epochs": [80],
-        "seq_len": [8],
-        "dropout": [0.1, 0.2],
-        "combine_type": ["add", "concat"],  #
+        "train_epochs": [40],
+        "seq_len": [16],
+        "dropout": [0.2],
+        "combine_type": ["add"],  #
+        "use_pos_enc": [False],
+        "norm_type": ["batch", "layer"],
+        "num_heads": [12, 24],
     }
 
     if return_search_space:
@@ -432,8 +440,8 @@ def suggest_hyperparameters(trial=None, return_search_space=False):
         "hidden_dim": trial.suggest_categorical(
             "hidden_dim", search_space["hidden_dim"]
         ),
-        "token_emb_kernel_size": trial.suggest_categorical(
-            "token_emb_kernel_size", search_space["token_emb_kernel_size"]
+        "token_conv_kernel": trial.suggest_categorical(
+            "token_conv_kernel", search_space["token_conv_kernel"]
         ),
         "last_hidden_dim": trial.suggest_categorical(
             "last_hidden_dim", search_space["last_hidden_dim"]
@@ -456,15 +464,20 @@ def suggest_hyperparameters(trial=None, return_search_space=False):
         "combine_type": trial.suggest_categorical(
             "combine_type", search_space["combine_type"]
         ),
+        "use_pos_enc": trial.suggest_categorical(
+            "use_pos_enc", search_space["use_pos_enc"]
+        ),
+        "norm_type": trial.suggest_categorical("norm_type", search_space["norm_type"]),
+        "num_heads": trial.suggest_categorical("num_heads", search_space["num_heads"]),
     }
 
     return hyperparams
 
 
 def main():
-    time_str = "24-08-07"
-    study_name = f"{time_str}-farm_65-simpleMLP-test"
-    n_trails = 2
+    time_str = "24-08-08"
+    study_name = f"{time_str}-farm_65-simpleLSTM-test"
+    n_trails = 10
     args = {
         "time_str": time_str,
         "study_name": study_name,

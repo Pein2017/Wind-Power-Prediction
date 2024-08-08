@@ -34,26 +34,30 @@ data_settings:
 
 # Model settings
 model_settings:
-  name: "SimpleMLP"
-  token_emb_kernel_size: 3
+  name: "SimpleTransformer"
+  token_conv_kernel: 3
   input_dim: 51
   dec_in: 51
   output_dim: 1
-  d_model: 16
+  d_model: 5
   n_heads: 4
   e_layers: 2
-  d_layers: 1
   hidden_dim: 32
+  seq_layers: 2
   last_hidden_dim: 16
   top_k: 5
   num_kernels: 6
   activation: "gelu"
-  time_d_model: 128
+  time_d_model: 3
   combine_type: "add"
   seq_len: 8
   pred_len: 1
   min_y_value: 0.0
   dropout: 0.1
+  use_pos_enc: true
+  bidirectional: false
+  norm_type: "batch"
+  num_heads: 8
 
 # Global Settings
 exp_settings: null

@@ -77,9 +77,9 @@ class FixedEmbedding(nn.Module):
         return self.emb(x).detach()
 
 
-class TemporalEmbedding(nn.Module):
+class TimeEmbedding(nn.Module):
     def __init__(self, d_model, embed_type="fixed", freq="h"):
-        super(TemporalEmbedding, self).__init__()
+        super(TimeEmbedding, self).__init__()
 
         minute_size = 4
         hour_size = 24
@@ -108,145 +108,39 @@ class TemporalEmbedding(nn.Module):
         return hour_x + weekday_x + day_x + month_x + minute_x
 
 
-class TokenEmbedding(nn.Module):
-    def __init__(self, input_dim, d_model, token_emb_kernel_size=3):
-        super(TokenEmbedding, self).__init__()
-        self.token_emb_kernel_size = token_emb_kernel_size
-        self.tokenConv = nn.Conv1d(
-            in_channels=input_dim,
-            out_channels=d_model,
-            kernel_size=token_emb_kernel_size,
-            padding=0,  # Set padding to 0, we will handle it manually
-            padding_mode="zeros",
-            bias=False,
-        )
-        for m in self.modules():
-            if isinstance(m, nn.Conv1d):
-                nn.init.kaiming_normal_(
-                    m.weight, mode="fan_in", nonlinearity="leaky_relu"
-                )
-
-    def forward(self, x):
-        # Calculate the padding size
-        padding_left = (self.token_emb_kernel_size - 1) // 2
-        padding_right = self.token_emb_kernel_size // 2
-
-        # Apply padding
-        x = F.pad(
-            x.permute(0, 2, 1), (padding_left, padding_right), mode="constant", value=0
-        )
-        x = self.tokenConv(x).transpose(1, 2)
-        return x
-
-
 """
-when time featues are 6 for pwoer prediction. 6 = (Hour and quater_hour) * 3
+This is the original code for TokenEmbedding with Conv
 """
-# class TemporalFeatureEmbedding(nn.Module):
-#     def __init__(self, time_d_model, combine_type="add"):
-#         super(TemporalFeatureEmbedding, self).__init__()
-#         self.d_model = time_d_model
-#         self.combine_type = combine_type
-
-#         # Embeddings for discrete time features
-#         self.hour_embed = nn.Embedding(24, time_d_model)
-#         self.quarter_hour_embed = nn.Embedding(4, time_d_model)
-
-#         # Linear layers for sine and cosine transformations
-#         self.linear_hour_sin = nn.Linear(1, time_d_model)
-#         self.linear_hour_cos = nn.Linear(1, time_d_model)
-#         self.linear_quarter_hour_sin = nn.Linear(1, time_d_model)
-#         self.linear_quarter_hour_cos = nn.Linear(1, time_d_model)
-
-#         self.dropout = nn.Dropout(0.1)  # Dropout rate (optional)
+# class TokenEmbedding(nn.Module):
+#     def __init__(self, input_dim, d_model, token_conv_kernel=3):
+#         super(TokenEmbedding, self).__init__()
+#         self.token_conv_kernel = token_conv_kernel
+#         self.tokenConv = nn.Conv1d(
+#             in_channels=input_dim,
+#             out_channels=d_model,
+#             kernel_size=token_conv_kernel,
+#             padding=0,  # Set padding to 0, we will handle it manually
+#             padding_mode="zeros",
+#             bias=False,
+#         )
+#         for m in self.modules():
+#             if isinstance(m, nn.Conv1d):
+#                 nn.init.kaiming_normal_(
+#                     m.weight, mode="fan_in", nonlinearity="leaky_relu"
+#                 )
 
 #     def forward(self, x):
-#         # x: [batch, Seq_Len, 6] - containing hour, quarter_hour, hour_sin, hour_cos, quarter_hour_sin, quarter_hour_cos
+#         # Calculate the padding size
+#         padding_left = (self.token_conv_kernel - 1) // 2
+#         padding_right = self.token_conv_kernel // 2
 
-#         # Extract features
-#         hour = x[:, :, 0].long()
-#         quarter_hour = x[:, :, 1].long()
-#         hour_sin = x[:, :, 2].unsqueeze(-1)
-#         hour_cos = x[:, :, 3].unsqueeze(-1)
-#         quarter_hour_sin = x[:, :, 4].unsqueeze(-1)
-#         quarter_hour_cos = x[:, :, 5].unsqueeze(-1)
+#         # Apply padding
+#         x = F.pad(
+#             x.permute(0, 2, 1), (padding_left, padding_right), mode="constant", value=0
+#         )
+#         x = self.tokenConv(x).transpose(1, 2)
+#         return x
 
-#         # Apply embeddings and linear layers
-#         hour_embedding = self.hour_embed(hour)
-#         quarter_hour_embedding = self.quarter_hour_embed(quarter_hour)
-#         hour_sin_embedding = self.linear_hour_sin(hour_sin)
-#         hour_cos_embedding = self.linear_hour_cos(hour_cos)
-#         quarter_hour_sin_embedding = self.linear_quarter_hour_sin(quarter_hour_sin)
-#         quarter_hour_cos_embedding = self.linear_quarter_hour_cos(quarter_hour_cos)
-
-#         # Combine embeddings
-#         if self.combine_type == "concat":
-#             combined_embedding = torch.cat(
-#                 [
-#                     hour_embedding,
-#                     quarter_hour_embedding,
-#                     hour_sin_embedding,
-#                     hour_cos_embedding,
-#                     quarter_hour_sin_embedding,
-#                     quarter_hour_cos_embedding,
-#                 ],
-#                 dim=-1,
-#             )
-#         else:
-#             combined_embedding = (
-#                 hour_embedding
-#                 + quarter_hour_embedding
-#                 + hour_sin_embedding
-#                 + hour_cos_embedding
-#                 + quarter_hour_sin_embedding
-#                 + quarter_hour_cos_embedding
-#             )
-
-#         # Apply dropout (optional)
-#         combined_embedding = self.dropout(combined_embedding)
-
-#         return combined_embedding
-
-
-# class FinalEmbedding(nn.Module):
-#     def __init__(self, input_dim, token_d_model, time_d_model=-1, combine_type="add"):
-#         super(FinalEmbedding, self).__init__()
-#         if time_d_model == -1:
-#             time_d_model = token_d_model
-#             print(
-#                 f"time_d_model is not set, defaulting to token_d_model: {time_d_model}"
-#             )
-
-#         self.token_embedding = TokenEmbedding(input_dim, token_d_model)
-#         self.temporal_embedding = TemporalFeatureEmbedding(time_d_model, combine_type)
-#         self.combine_type = combine_type
-#         self.token_d_model = token_d_model
-#         self.time_d_model = time_d_model
-
-#         if combine_type == "add" and token_d_model != time_d_model:
-#             self.temporal_to_token_dim = nn.Linear(time_d_model, token_d_model)
-
-#     def forward(self, x, x_mark):
-#         # x: [batch, Seq_len, input_dim]
-#         token_emb = self.token_embedding(
-#             x
-#         )  # token embedding -> [batch, Seq_len, token_d_model]
-
-#         temporal_emb = self.temporal_embedding(x_mark)
-#         # add :   [batch, Seq_len, time_d_model]
-#         # concat: [batch, Seq_len, 6 * time_d_model]
-
-#         # Combine embeddings
-#         if self.combine_type == "concat":
-#             combined_emb = torch.cat([token_emb, temporal_emb], dim=-1)
-#             # combined_emb: [batch, Seq_len, token_d_model + 6 * time_d_model]
-#         else:
-#             if self.time_d_model != self.token_d_model:
-#                 temporal_emb = self.temporal_to_token_dim(temporal_emb)
-#             combined_emb = token_emb + temporal_emb
-#             # combined_emb: [batch, Seq_len, token_d_model]
-
-#         return combined_emb
 
 """
 when time featues are n_time_feature for power prediction.
@@ -259,17 +153,14 @@ class TemporalFeatureEmbedding(nn.Module):
         time_d_model,
         combine_type="add",
         max_len=5000,
-        use_pos_enc=True,
-        time_features=[
-            "hour",
-            "quarter_hour",
-        ],  # "day"
+        use_pos_enc=False,
+        time_features=None,  # Allow for no time features
     ):
         super(TemporalFeatureEmbedding, self).__init__()
         self.d_model = time_d_model
         self.combine_type = combine_type
         self.use_pos_enc = use_pos_enc
-        self.time_features = time_features
+        self.time_features = time_features if time_features is not None else []
 
         # Embeddings for discrete time features
         self.hour_embed = nn.Embedding(24, time_d_model)
@@ -290,34 +181,37 @@ class TemporalFeatureEmbedding(nn.Module):
             self.positional_embedding = PositionalEmbedding(time_d_model, max_len)
 
     def forward(self, x):
-        embeddings = []
+        if self.time_features:  # Proceed only if there are time features
+            embeddings = []
+            feature_idx = {"hour": 0, "quarter_hour": 1, "day": 2, "day_in_week": 3}
 
-        # Embedding and linear layers application based on selected time features
-        feature_idx = {"hour": 0, "quarter_hour": 1, "day": 2, "day_in_week": 3}
+            for feature in self.time_features:
+                idx = feature_idx[feature]
+                discrete_feature = x[:, :, idx].long()
+                sin_feature = x[:, :, idx + 4].unsqueeze(-1)
+                cos_feature = x[:, :, idx + 5].unsqueeze(-1)
 
-        for feature in self.time_features:
-            idx = feature_idx[feature]
-            discrete_feature = x[:, :, idx].long()
-            sin_feature = x[:, :, idx + 4].unsqueeze(-1)
-            cos_feature = x[:, :, idx + 5].unsqueeze(-1)
+                if feature == "hour":
+                    embeddings.append(self.hour_embed(discrete_feature))
+                elif feature == "quarter_hour":
+                    embeddings.append(self.quarter_hour_embed(discrete_feature))
+                elif feature == "day":
+                    embeddings.append(self.day_embed(discrete_feature))
+                elif feature == "day_in_week":
+                    embeddings.append(self.day_in_week_embed(discrete_feature))
 
-            if feature == "hour":
-                embeddings.append(self.hour_embed(discrete_feature))
-            elif feature == "quarter_hour":
-                embeddings.append(self.quarter_hour_embed(discrete_feature))
-            elif feature == "day":
-                embeddings.append(self.day_embed(discrete_feature))
-            elif feature == "day_in_week":
-                embeddings.append(self.day_in_week_embed(discrete_feature))
+                embeddings.append(self.linear_sin(sin_feature))
+                embeddings.append(self.linear_cos(cos_feature))
 
-            embeddings.append(self.linear_sin(sin_feature))
-            embeddings.append(self.linear_cos(cos_feature))
-
-        # Combine embeddings
-        if self.combine_type == "concat":
-            combined_embedding = torch.cat(embeddings, dim=-1)
+            # Combine embeddings
+            if self.combine_type == "concat":
+                combined_embedding = torch.cat(embeddings, dim=-1)
+            else:
+                combined_embedding = sum(embeddings)
         else:
-            combined_embedding = sum(embeddings)
+            combined_embedding = torch.zeros(
+                x.size(0), x.size(1), self.d_model, device=x.device
+            )
 
         # Apply positional encoding if enabled
         if self.use_pos_enc:
@@ -352,11 +246,12 @@ class FinalEmbedding(nn.Module):
         token_d_model,
         time_d_model=-1,
         combine_type="add",
-        token_emb_kernel_size=3,
+        token_conv_kernel=3,
         time_features=[
             "hour",
             "quarter_hour",
         ],  # "day"
+        use_pos_enc=False,
     ):
         super(FinalEmbedding, self).__init__()
         if time_d_model == -1:
@@ -366,12 +261,15 @@ class FinalEmbedding(nn.Module):
             )
 
         self.token_embedding = TokenEmbedding(
-            input_dim,
-            token_d_model,
-            token_emb_kernel_size=token_emb_kernel_size,
+            input_dim=input_dim,
+            d_model=token_d_model,
+            token_conv_kernel=token_conv_kernel,
         )
         self.temporal_embedding = TemporalFeatureEmbedding(
-            time_d_model, combine_type=combine_type, time_features=time_features
+            time_d_model=time_d_model,
+            combine_type=combine_type,
+            time_features=time_features,
+            use_pos_enc=use_pos_enc,
         )
         self.combine_type = combine_type
         self.token_d_model = token_d_model
@@ -411,7 +309,7 @@ class DataEmbedding_wo_pos(nn.Module):
         self.value_embedding = TokenEmbedding(input_dim=c_in, d_model=d_model)
         self.position_embedding = PositionalEmbedding(d_model=d_model)
         self.temporal_embedding = (
-            TemporalEmbedding(d_model=d_model, embed_type=embed_type, freq=freq)
+            TimeEmbedding(d_model=d_model, embed_type=embed_type, freq=freq)
             if embed_type != "timeF"
             else TimeFeatureEmbedding(d_model=d_model, embed_type=embed_type, freq=freq)
         )
@@ -437,6 +335,31 @@ class TimeFeatureEmbedding(nn.Module):
 
     def forward(self, x):
         return self.embed(x)
+
+
+class TokenEmbedding(nn.Module):
+    def __init__(self, num_features, token_d_model):
+        super(TokenEmbedding, self).__init__()
+        self.embedding = nn.Linear(num_features, token_d_model * num_features)
+
+    def forward(self, x):
+        return self.embedding(x)  # [batch, seq_len, token_d_model * num_features]
+
+
+class CrossChannelBlock(nn.Module):
+    def __init__(self, input_dim, hidden_dim, dropout=0.1):
+        super(CrossChannelBlock, self).__init__()
+        self.dense1 = nn.Linear(input_dim, hidden_dim)
+        self.dropout1 = nn.Dropout(dropout)
+        self.dense2 = nn.Linear(hidden_dim, hidden_dim)
+        self.dropout2 = nn.Dropout(dropout)
+
+    def forward(self, x):
+        out = F.gelu(self.dense1(x))
+        out = self.dropout1(out)
+        out = self.dense2(out)
+        out = self.dropout2(out)
+        return out
 
 
 # 生成时间序列数据

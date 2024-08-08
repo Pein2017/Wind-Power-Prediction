@@ -9,7 +9,7 @@ output_paths:
 # Model settings
 model_settings:
   name: "SimpleMLP"
-  token_emb_kernel_size: 7
+  token_conv_kernel: 7
   input_dim: 75
   enc_in: 75
   dec_in: 75
