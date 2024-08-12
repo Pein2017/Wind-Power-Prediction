@@ -1,0 +1,95 @@
+# 89withTime
+
+Exp: 1
+
+Experiment Settings: seq_len-32-lr-0.001-hid_d-1024-last_d-128-tok_conv_k-11-bs-256-norm_type-layer-use_pos_enc-True-num_heads-48-fc_layer_type-mha
+Experiment time: 2024-08-10 01:52:58.130458
++------------------------------+---------------+---------------+---------------+-------+
+| Metric                       | Training      | Validation    | Test          | Epoch |
++------------------------------+---------------+---------------+---------------+-------+
+| Train RMSE                   | 39.5903       | 420.4342      | 411.3779      | 31    |
+| Val RMSE                     | 284.6992      | 390.3209      | 365.6669      | 1     |
+| Test RMSE                    | 256.5084      | 417.4462      | 360.4753      | 2     |
+| Best Train Custom Accuracy   | 92.4078       | 41.9150       | 46.1246       | 31    |
+| Best Val Custom Accuracy     | 45.0668       | 50.6912       | 52.6121       | 1     |
+| Best Test Custom Accuracy    | 48.4029       | 32.7005       | 32.2946       | 2     |
++------------------------------+---------------+---------------+---------------+-------+
+
+Exp: 2
+
+Experiment Settings: seq_len-32-lr-0.001-hid_d-1024-last_d-128-tok_conv_k-11-bs-256-norm_type-batch-use_pos_enc-True-num_heads-48-fc_layer_type-mha
+Experiment time: 2024-08-10 01:53:22.191176
++------------------------------+---------------+---------------+---------------+-------+
+| Metric                       | Training      | Validation    | Test          | Epoch |
++------------------------------+---------------+---------------+---------------+-------+
+| Train RMSE                   | 25.4591       | 373.2316      | 388.5987      | 42    |
+| Val RMSE                     | 118.0634      | 371.8742      | 398.4815      | 12    |
+| Test RMSE                    | 278.0057      | 548.4740      | 372.0569      | 1     |
+| Best Train Custom Accuracy   | 95.0569       | 42.9629       | 32.3910       | 42    |
+| Best Val Custom Accuracy     | 77.6628       | 40.8123       | 19.1103       | 12    |
+| Best Test Custom Accuracy    | 47.7626       | 31.9254       | 48.7878       | 1     |
++------------------------------+---------------+---------------+---------------+-------+
+
+# 65withTime
+
+Exp: 3
+
+Experiment Settings: seq_len-32-lr-0.001-hid_d-1024-last_d-128-tok_conv_k-11-bs-256-norm_type-batch-use_pos_enc-True-num_heads-48-fc_layer_type-mha
+Experiment time: 2024-08-10 01:56:14.463487
++------------------------------+---------------+---------------+---------------+-------+
+| Metric                       | Training      | Validation    | Test          | Epoch |
++------------------------------+---------------+---------------+---------------+-------+
+| Train RMSE                   | 25.7740       | 391.6681      | 401.6019      | 42    |
+| Val RMSE                     | 107.6426      | 409.6226      | 402.0456      | 14    |
+| Test RMSE                    | 62.3361       | 413.3885      | 395.7607      | 20    |
+| Best Train Custom Accuracy   | 95.0937       | 48.0894       | 40.3837       | 42    |
+| Best Val Custom Accuracy     | 76.7779       | 25.0656       | 11.6153       | 14    |
+| Best Test Custom Accuracy    | 87.3176       | 37.4769       | 26.9355       | 20    |
++------------------------------+---------------+---------------+---------------+-------+
+
+Exp: 4
+
+Experiment Settings: seq_len-32-lr-0.001-hid_d-1024-last_d-128-tok_conv_k-11-bs-256-norm_type-layer-use_pos_enc-True-num_heads-48-fc_layer_type-mha
+Experiment time: 2024-08-10 01:56:24.446792
++------------------------------+---------------+---------------+---------------+-------+
+| Metric                       | Training      | Validation    | Test          | Epoch |
++------------------------------+---------------+---------------+---------------+-------+
+| Train RMSE                   | 23.9465       | 403.9012      | 403.3991      | 46    |
+| Val RMSE                     | 78.8344       | 413.8094      | 408.4328      | 17    |
+| Test RMSE                    | 197.1997      | 426.4808      | 381.6212      | 4     |
+| Best Train Custom Accuracy   | 95.3734       | 45.7639       | 36.0171       | 46    |
+| Best Val Custom Accuracy     | 84.2795       | 42.5757       | 35.8749       | 17    |
+| Best Test Custom Accuracy    | 61.8993       | 39.2697       | 37.2666       | 4     |
++------------------------------+---------------+---------------+---------------+-------+
+
+
+# 51withTimeExp: 5
+
+Experiment Settings: seq_len-32-lr-0.001-hid_d-1024-last_d-128-tok_conv_k-11-bs-256-norm_type-batch-use_pos_enc-True-num_heads-48-fc_layer_type-mha
+Experiment time: 2024-08-10 01:59:45.871369
++------------------------------+---------------+---------------+---------------+-------+
+| Metric                       | Training      | Validation    | Test          | Epoch |
++------------------------------+---------------+---------------+---------------+-------+
+| Train RMSE                   | 48.5917       | 439.9599      | 402.7264      | 28    |
+| Val RMSE                     | 308.7857      | 426.8464      | 358.5486      | 1     |
+| Test RMSE                    | 308.7857      | 426.8464      | 358.5486      | 1     |
+| Best Train Custom Accuracy   | 89.8201       | 42.6414       | 11.7567       | 28    |
+| Best Val Custom Accuracy     | 39.6137       | 41.6564       | 37.2344       | 1     |
+| Best Test Custom Accuracy    | 39.6137       | 41.6564       | 37.2344       | 1     |
++------------------------------+---------------+---------------+---------------+-------+
+
+Exp: 5
+
+Experiment Settings: seq_len-32-lr-0.001-hid_d-1024-last_d-128-tok_conv_k-11-bs-256-norm_type-layer-use_pos_enc-True-num_heads-48-fc_layer_type-mha
+Experiment time: 2024-08-10 01:59:48.704745
++------------------------------+---------------+---------------+---------------+-------+
+| Metric                       | Training      | Validation    | Test          | Epoch |
++------------------------------+---------------+---------------+---------------+-------+
+| Train RMSE                   | 41.0128       | 445.1766      | 377.8920      | 32    |
+| Val RMSE                     | 317.7498      | 423.6675      | 359.1467      | 1     |
+| Test RMSE                    | 317.7498      | 423.6675      | 359.1467      | 1     |
+| Best Train Custom Accuracy   | 92.1293       | 49.6879       | 22.4371       | 32    |
+| Best Val Custom Accuracy     | 37.3422       | 50.1614       | 35.4308       | 1     |
+| Best Test Custom Accuracy    | 37.3422       | 50.1614       | 35.4308       | 1     |
++------------------------------+---------------+---------------+---------------+-------+
+

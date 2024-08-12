@@ -84,6 +84,7 @@ def custom_test(
     device,
     best_metrics_dir,
     plot_dir=None,
+    plot_scaled=False,
     config=None,
 ):
     test_loader = data_module.test_dataloader()
@@ -111,8 +112,9 @@ def custom_test(
         print("Error: preds or trues arrays are empty. Check data collection logic.")
         return
 
-    # Visualize and save scaled metrics and predictions
-    plot_results(preds, trues, plot_dir, "scaled")
+    # Plot the scaled data if plot_scaled is True
+    if plot_scaled:
+        plot_results(preds, trues, plot_dir, "scaled")
 
     if data_module.scaler_y:
         inversed_preds, inversed_trues = inverse_transform(

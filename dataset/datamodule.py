@@ -81,19 +81,19 @@ class WindPowerDataModule(LightningDataModule):
         self.val_X_mark = val_data[self.time_feature_columns].values
         self.test_X_mark = test_data[self.time_feature_columns].values
 
-        print("*" * 30)
-        print("Data shapes:")
-        print("Train X shape:", self.train_X.shape)
-        print("Train y shape:", self.train_y.shape)
-        print("Val X shape:", self.val_X.shape)
-        print("Val y shape:", self.val_y.shape)
-        print("Test X shape:", self.test_X.shape)
-        print("Test y shape:", self.test_y.shape)
-        print(f"Train X mark shape: {self.train_X_mark.shape}")
-        print(f"Val X mark shape: {self.val_X_mark.shape}")
-        print(f"Test X mark shape: {self.test_X_mark.shape}")
+        # print("*" * 30)
+        # print("Data shapes:")
+        # print("Train X shape:", self.train_X.shape)
+        # print("Train y shape:", self.train_y.shape)
+        # print("Val X shape:", self.val_X.shape)
+        # print("Val y shape:", self.val_y.shape)
+        # print("Test X shape:", self.test_X.shape)
+        # print("Test y shape:", self.test_y.shape)
+        # print(f"Train X mark shape: {self.train_X_mark.shape}")
+        # print(f"Val X mark shape: {self.val_X_mark.shape}")
+        # print(f"Test X mark shape: {self.test_X_mark.shape}")
 
-        print("*" * 30)
+        # print("*" * 30)
 
     def setup(self, stage=None):
         if stage in (None, "fit"):

@@ -40,7 +40,7 @@ def execute_experiment_with_logging(config):
         f"seq_len-{model_settings.seq_len}-"
         f"lr-{training_settings.learning_rate}-"
         f"d-{model_settings.d_model}-"
-        f"last_d-{model_settings.last_hidden_dim}-"
+        f"last_d-{model_settings.last_d_model}-"
         f"time_d-{model_settings.time_d_model}"
     )
 

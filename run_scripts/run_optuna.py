@@ -1,12 +1,13 @@
 # ruff: noqa E402
-
 import contextlib
 import json
+import multiprocessing  # noqa
 import os
 import sqlite3
 import sys
 import time
 from pathlib import Path
+from threading import Lock
 
 import optuna
 import torch
@@ -86,19 +87,23 @@ hyperparam_path_map = {
     # Model settings
     "model_settings": {
         "d_model": "d_model",
-        "hidden_dim": "hidden_dim",
+        "hidden_d_model": "hidden_d_model",
         "token_conv_kernel": "token_conv_kernel",
-        "last_hidden_dim": "last_hidden_dim",
+        "last_d_model": "last_d_model",
         "time_d_model": "time_d_model",
-        "seq_layers": "seq_layers",
-        "e_layers": "e_layers",
+        "pos_d_model": "pos_d_model",
         "seq_len": "seq_len",
+        "e_layers": "e_layers",
+        "seq_layers": "seq_layers",
         "dropout": "dropout",
         "combine_type": "combine_type",
         "use_pos_enc": "use_pos_enc",
         "bidirectional": "bidirectional",
         "norm_type": "norm_type",
         "num_heads": "num_heads",
+        "fc_layer_type": "fc_layer_type",
+        "token_d_model": "token_d_model",
+        "conv_out_dim": "conv_out_dim",
     },
     # Training settings
     "training_settings": {
@@ -275,6 +280,9 @@ def objective(trial, config_path: str, time_str):
     return weighted_loss
 
 
+study_lock = Lock()
+
+
 def retry_on_lock(func):
     def wrapper(*args, **kwargs):
         retries = 5
@@ -296,7 +304,10 @@ def retry_on_lock(func):
 @retry_on_lock
 def create_study(args):
     """Create an Optuna study with the specified configuration."""
-    storage_name = f"sqlite:///{os.path.join(args.output_dir, f'{args.study_name}.db')}"
+    # Modify the connection string to use WAL mode
+    storage_name = (
+        f"sqlite:///{os.path.join(args.output_dir, f'{args.study_name}.db')}?mode=wal"
+    )
 
     print(f'Creating study "{args.study_name}" with storage "{storage_name}"...')
 
@@ -305,23 +316,31 @@ def create_study(args):
 
     if pruner is None:
         print("Not using pruner")
-    else:
-        raise NotImplementedError("Pruner not implemented yet.")
 
-    return optuna.create_study(
-        direction="minimize",
-        study_name=args.study_name,
-        storage=storage_name,
-        load_if_exists=True,
-        sampler=sampler,
-        pruner=pruner,
-    )
+    with study_lock:
+        study = optuna.create_study(
+            direction="minimize",
+            study_name=args.study_name,
+            storage=storage_name,
+            load_if_exists=True,
+            sampler=sampler,
+            pruner=pruner,
+        )
+
+        # Explicitly enable WAL mode
+        with sqlite3.connect(
+            os.path.join(args.output_dir, f"{args.study_name}.db")
+        ) as conn:
+            conn.execute("PRAGMA journal_mode=WAL;")
+            conn.commit()
+
+        return study
 
 
 def get_pruner(args):
     """Get the appropriate Optuna pruner based on the provided type."""
     if args.pruner_type == "median":
-        return MedianPruner(n_startup_trials=5, n_warmup_steps=10, interval_steps=1)
+        return MedianPruner(n_startup_trials=10, n_warmup_steps=75, interval_steps=5)
     elif args.pruner_type == "hyperband":
         return HyperbandPruner(min_resource=3, max_resource="auto", reduction_factor=3)
     elif args.pruner_type == "successive_halving":
@@ -412,72 +431,12 @@ def run_optuna_study(args):
     save_top_trials(study, args.output_dir, args.study_name)
 
 
-def suggest_hyperparameters(trial=None, return_search_space=False):
-    """Suggest hyperparameters using Optuna trial or return search space."""
-    search_space = {
-        "d_model": [4],  # 512, 1024
-        "hidden_dim": [16, 32, 256],  # 1024
-        "token_conv_kernel": [9],  # 13
-        "last_hidden_dim": [1024],  # , 2048
-        "time_d_model": [3],
-        "e_layers": [2, 16],  # Reduced range
-        "learning_rate": [1e-2, 1e-3],  # 5e-3, 1e-2
-        "batch_size": [256],
-        "train_epochs": [40],
-        "seq_len": [16],
-        "dropout": [0.2],
-        "combine_type": ["add"],  #
-        "use_pos_enc": [False],
-        "norm_type": ["batch", "layer"],
-        "num_heads": [12, 24],
-    }
-
-    if return_search_space:
-        return search_space
-
-    hyperparams = {
-        "d_model": trial.suggest_categorical("d_model", search_space["d_model"]),
-        "hidden_dim": trial.suggest_categorical(
-            "hidden_dim", search_space["hidden_dim"]
-        ),
-        "token_conv_kernel": trial.suggest_categorical(
-            "token_conv_kernel", search_space["token_conv_kernel"]
-        ),
-        "last_hidden_dim": trial.suggest_categorical(
-            "last_hidden_dim", search_space["last_hidden_dim"]
-        ),
-        "time_d_model": trial.suggest_categorical(
-            "time_d_model", search_space["time_d_model"]
-        ),
-        "e_layers": trial.suggest_categorical("e_layers", search_space["e_layers"]),
-        "learning_rate": trial.suggest_categorical(
-            "learning_rate", search_space["learning_rate"]
-        ),
-        "batch_size": trial.suggest_categorical(
-            "batch_size", search_space["batch_size"]
-        ),
-        "train_epochs": trial.suggest_categorical(
-            "train_epochs", search_space["train_epochs"]
-        ),
-        "seq_len": trial.suggest_categorical("seq_len", search_space["seq_len"]),
-        "dropout": trial.suggest_categorical("dropout", search_space["dropout"]),
-        "combine_type": trial.suggest_categorical(
-            "combine_type", search_space["combine_type"]
-        ),
-        "use_pos_enc": trial.suggest_categorical(
-            "use_pos_enc", search_space["use_pos_enc"]
-        ),
-        "norm_type": trial.suggest_categorical("norm_type", search_space["norm_type"]),
-        "num_heads": trial.suggest_categorical("num_heads", search_space["num_heads"]),
-    }
-
-    return hyperparams
-
-
 def main():
-    time_str = "24-08-08"
-    study_name = f"{time_str}-farm_65-simpleLSTM-test"
-    n_trails = 10
+    import numpy as np  # noqa
+
+    time_str = "24-08-12"
+    study_name = f"{time_str}-farm_98-mlpv3-search-time=hour"
+    n_trails = 100
     args = {
         "time_str": time_str,
         "study_name": study_name,
@@ -485,14 +444,145 @@ def main():
         "n_trials": int(n_trails),
         "output_dir": f"/data3/lsf/Pein/Power-Prediction/optuna_results/{time_str}",
         "config_path": "/data3/lsf/Pein/Power-Prediction/config/optuna_config.yaml",
-        "sampler_name": "grid",
-        "seed": 17,  #  np.random.randint(10000)
-        "pruner_type": None,
+        "sampler_name": "cma",
+        "seed": np.random.randint(10000),  #  np.random.randint(10000)
+        "pruner_type": "median",
     }
     run_optuna_study(args)
 
 
+def suggest_hyperparameters(
+    trial: optuna.trial.Trial = None, return_search_space=False
+):
+    import numpy as np  # noqa
+
+    """Suggest hyperparameters using Optuna trial or return search space."""
+    search_space = {
+        # Model architecture parameters
+        "hidden_d_model": [256, 1024],
+        "token_conv_kernel": [7, 15],
+        "last_d_model": [64, 1024],
+        "seq_len": [42],
+        "token_d_model": [8, 32],
+        "time_d_model": [64, 256],
+        "pos_d_model": [32, 256],
+        "d_model": [256, 1024],
+        "conv_out_dim": [64, 512],
+        "e_layers": [2, 12],
+        # Attention and normalization parameters
+        "combine_type": ["add"],
+        "use_pos_enc": [True],
+        "norm_type": ["layer", "batch"],
+        "num_heads": [96, 192],
+        "fc_layer_type": ["mha"],
+        # Training parameters
+        "learning_rate": [1e-4, 5e-3],
+        "dropout": [0.1, 0.3],
+        "batch_size": [1024],
+        "train_epochs": [30],
+    }
+
+    if return_search_space:
+        return search_space
+
+    hyperparams = {
+        # Integer suggestions
+        "hidden_d_model": trial.suggest_int(
+            "hidden_d_model",
+            min(search_space["hidden_d_model"]),
+            max(search_space["hidden_d_model"]),
+            step=16,
+        ),
+        "token_conv_kernel": trial.suggest_int(
+            "token_conv_kernel",
+            min(search_space["token_conv_kernel"]),
+            max(search_space["token_conv_kernel"]),
+        ),
+        "last_d_model": trial.suggest_int(
+            "last_d_model",
+            min(search_space["last_d_model"]),
+            max(search_space["last_d_model"]),
+            step=32,
+        ),
+        "seq_len": trial.suggest_int(
+            "seq_len",
+            min(search_space["seq_len"]),
+            max(search_space["seq_len"]),
+            step=2,
+        ),
+        "token_d_model": trial.suggest_int(
+            "token_d_model",
+            min(search_space["token_d_model"]),
+            max(search_space["token_d_model"]),
+            step=16,
+        ),
+        "time_d_model": trial.suggest_int(
+            "time_d_model",
+            min(search_space["time_d_model"]),
+            max(search_space["time_d_model"]),
+            step=16,
+        ),
+        "pos_d_model": trial.suggest_int(
+            "pos_d_model",
+            min(search_space["pos_d_model"]),
+            max(search_space["pos_d_model"]),
+            step=16,
+        ),
+        "d_model": trial.suggest_int(
+            "d_model",
+            min(search_space["d_model"]),
+            max(search_space["d_model"]),
+            step=32,
+        ),
+        "conv_out_dim": trial.suggest_int(
+            "conv_out_dim",
+            min(search_space["conv_out_dim"]),
+            max(search_space["conv_out_dim"]),
+            step=32,
+        ),
+        "e_layers": trial.suggest_int(
+            "e_layers",
+            min(search_space["e_layers"]),
+            max(search_space["e_layers"]),
+            step=2,
+        ),
+        # Float suggestions
+        "learning_rate": trial.suggest_float(
+            "learning_rate",
+            min(search_space["learning_rate"]),
+            max(search_space["learning_rate"]),
+            log=True,
+        ),
+        "dropout": trial.suggest_float(
+            "dropout",
+            min(search_space["dropout"]),
+            max(search_space["dropout"]),
+            step=0.02,
+        ),
+        # Categorical suggestions
+        "combine_type": trial.suggest_categorical(
+            "combine_type", search_space["combine_type"]
+        ),
+        "use_pos_enc": trial.suggest_categorical(
+            "use_pos_enc", search_space["use_pos_enc"]
+        ),
+        "norm_type": trial.suggest_categorical("norm_type", search_space["norm_type"]),
+        "fc_layer_type": trial.suggest_categorical(
+            "fc_layer_type", search_space["fc_layer_type"]
+        ),
+        "batch_size": trial.suggest_categorical(
+            "batch_size", search_space["batch_size"]
+        ),
+        "train_epochs": trial.suggest_categorical(
+            "train_epochs", search_space["train_epochs"]
+        ),
+    }
+
+    return hyperparams
+
+
 if __name__ == "__main__":
+    import os
     import time
 
     start_time = time.time()

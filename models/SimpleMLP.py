@@ -6,13 +6,18 @@ from models.layers.Embed import FinalEmbedding
 
 class MLPBlock(nn.Module):
     def __init__(
-        self, input_dim, hidden_dim, output_dim, activation=nn.GELU(), dropout=0.1
+        self,
+        input_dim,
+        hidden_d_model,
+        output_dim,
+        activation_type=nn.GELU(),
+        dropout=0.1,
     ):
         super(MLPBlock, self).__init__()
-        self.fc1 = nn.Linear(input_dim, hidden_dim)
-        self.bn1 = nn.BatchNorm1d(hidden_dim)
-        self.activation = activation
-        self.fc2 = nn.Linear(hidden_dim, output_dim)
+        self.fc1 = nn.Linear(input_dim, hidden_d_model)
+        self.bn1 = nn.BatchNorm1d(hidden_d_model)
+        self.activation_type = activation_type
+        self.fc2 = nn.Linear(hidden_d_model, output_dim)
         self.bn2 = nn.BatchNorm1d(output_dim)
         self.skip_connection = nn.Linear(input_dim, output_dim)
         self.bn_skip = nn.BatchNorm1d(output_dim)
@@ -24,7 +29,7 @@ class MLPBlock(nn.Module):
 
         out = self.fc1(x)
         out = self.bn1(out.transpose(1, 2)).transpose(1, 2)
-        out = self.activation(out)
+        out = self.activation_type(out)
         out = self.dropout(out)
         out = self.fc2(out)
         out = self.bn2(out.transpose(1, 2)).transpose(1, 2)
@@ -44,9 +49,9 @@ class Model(nn.Module):
         input_dim = configs.input_dim
         token_d_model = configs.d_model
         time_d_model = configs.time_d_model
-        hidden_dim = configs.hidden_dim
+        hidden_d_model = configs.hidden_d_model
         combine_type = configs.combine_type
-        last_hidden_dim = configs.last_hidden_dim
+        last_d_model = configs.last_d_model
         output_dim = configs.output_dim
         e_layers = configs.e_layers
         dropout = configs.dropout
@@ -89,17 +94,21 @@ class Model(nn.Module):
 
         self.mlp_blocks = nn.ModuleList()
         self.mlp_blocks.append(
-            MLPBlock(first_block_input_dim, hidden_dim, hidden_dim, dropout=dropout)
+            MLPBlock(
+                first_block_input_dim, hidden_d_model, hidden_d_model, dropout=dropout
+            )
         )
         for _ in range(e_layers - 2):
             self.mlp_blocks.append(
-                MLPBlock(hidden_dim, hidden_dim, hidden_dim, dropout=dropout)
+                MLPBlock(
+                    hidden_d_model, hidden_d_model, hidden_d_model, dropout=dropout
+                )
             )
         self.mlp_blocks.append(
-            MLPBlock(hidden_dim, hidden_dim, last_hidden_dim, dropout=dropout)
+            MLPBlock(hidden_d_model, hidden_d_model, last_d_model, dropout=dropout)
         )
 
-        self.final_fc = nn.Linear(last_hidden_dim, output_dim)
+        self.final_fc = nn.Linear(last_d_model, output_dim)
         self.prediction_fc = nn.Linear(
             self.seq_len * output_dim, output_dim * self.pred_len
         )
@@ -113,7 +122,7 @@ class Model(nn.Module):
         x = self.final_fc(x)
 
         # Flatten x to [batch_size, -1] before the final prediction layer
-        batch_size, seq_len, hidden_dim = x.shape
+        batch_size, seq_len, hidden_d_model = x.shape
         x = x.view(batch_size, -1)
         x = self.prediction_fc(x)
 
@@ -131,7 +140,7 @@ class Model(nn.Module):
     #     x = self.final_fc(x)
 
     #     # Flatten x to [batch_size, -1] before the final prediction layer
-    #     batch_size, seq_len, hidden_dim = x.shape
+    #     batch_size, seq_len, hidden_d_model = x.shape
     #     x = x.view(batch_size, -1)
     #     x = self.prediction_fc(x)
 

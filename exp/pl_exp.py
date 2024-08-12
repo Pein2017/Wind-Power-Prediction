@@ -10,7 +10,15 @@ import torch.nn as nn
 from torch import optim
 from torch.optim import lr_scheduler
 
-from models import SimpleConv, SimpleLSTM, SimpleMLP, SimpleTransformer, TimeMixer
+from models import (
+    MLP_v2,
+    MLP_v3,
+    SimpleConv,
+    SimpleLSTM,
+    SimpleMLP,
+    SimpleTransformer,
+    TimeMixer,
+)
 from utils.config import dict_to_namespace
 
 
@@ -26,6 +34,8 @@ class WindPowerExperiment(pl.LightningModule):
             "SimpleConv": SimpleConv,
             "SimpleLSTM": SimpleLSTM,
             "SimpleTransformer": SimpleTransformer,
+            "MLP_v2": MLP_v2,
+            "MLP_v3": MLP_v3,
         }
 
         if args:
@@ -73,7 +83,7 @@ class WindPowerExperiment(pl.LightningModule):
             "test_epoch_for_best_test": -1,
         }
 
-    def common_step(self, batch, batch_idx, phase, dataloader_idx=None, loss_clip=100):
+    def common_step(self, batch, batch_idx, phase, dataloader_idx=None, loss_clip=10):
         loss = self.process_batch(batch, self.criterion)
 
         if phase == "train":

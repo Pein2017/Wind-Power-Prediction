@@ -62,14 +62,17 @@ def create_exp_settings(args):
             f"seq_len-{model_settings.seq_len}-"
             f"lr-{learning_rate_rounded}-"
             f"d-{model_settings.d_model}-"
-            f"hid_d-{model_settings.hidden_dim}-"
-            f"last_d-{model_settings.last_hidden_dim}-"
+            f"hid_d-{model_settings.hidden_d_model}-"
+            f"last_d-{model_settings.last_d_model}-"
             f"time_d-{model_settings.time_d_model}-"
             f"e_layers-{model_settings.e_layers}-"
             f"tok_conv_k-{model_settings.token_conv_kernel}-"
             f"dropout-{model_settings.dropout}-"
             f"bs-{training_settings.batch_size}-"
-            f"norm_type-{model_settings.norm_type}"
+            f"norm_type-{model_settings.norm_type}-"
+            f"use_pos_enc-{model_settings.use_pos_enc}-"
+            f"num_heads-{model_settings.num_heads}-"
+            f"fc_layer_type-{model_settings.fc_layer_type}"
         )
 
     return args

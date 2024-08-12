@@ -135,9 +135,13 @@ class PastDecomposableMixing(nn.Module):
 
         if configs.channel_independence == 0:
             self.cross_layer = nn.Sequential(
-                nn.Linear(in_features=configs.d_model, out_features=configs.hidden_dim),
+                nn.Linear(
+                    in_features=configs.d_model, out_features=configs.hidden_d_model
+                ),
                 nn.GELU(),
-                nn.Linear(in_features=configs.hidden_dim, out_features=configs.d_model),
+                nn.Linear(
+                    in_features=configs.hidden_d_model, out_features=configs.d_model
+                ),
             )
 
         # Mixing season
@@ -147,9 +151,9 @@ class PastDecomposableMixing(nn.Module):
         self.mixing_multi_scale_trend = MultiScaleTrendMixing(configs)
 
         self.out_cross_layer = nn.Sequential(
-            nn.Linear(in_features=configs.d_model, out_features=configs.hidden_dim),
+            nn.Linear(in_features=configs.d_model, out_features=configs.hidden_d_model),
             nn.GELU(),
-            nn.Linear(in_features=configs.hidden_dim, out_features=configs.d_model),
+            nn.Linear(in_features=configs.hidden_d_model, out_features=configs.d_model),
         )
 
     def forward(self, x_list):
@@ -244,11 +248,11 @@ class Model(nn.Module):
         self-design
         """
         self.feedforward = nn.Sequential(
-            nn.Linear(self.configs.input_dim, self.configs.last_hidden_dim),
+            nn.Linear(self.configs.input_dim, self.configs.last_d_model),
             nn.GELU(),
-            nn.Linear(self.configs.last_hidden_dim, 1),
+            nn.Linear(self.configs.last_d_model, 1),
         )
-        self.activation = torch.nn.ReLU()
+        self.activation_type = torch.nn.ReLU()
 
     def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
         """
@@ -315,7 +319,7 @@ class Model(nn.Module):
         # Apply the feedforward layer to combine num_features into one
         dec_out = self.feedforward(dec_out)  # [batch, pred_len, 1]
 
-        # dec_out = self.activation(dec_out)  # [batch, pred_len, 1]
+        # dec_out = self.activation_type(dec_out)  # [batch, pred_len, 1]
 
         return dec_out
 

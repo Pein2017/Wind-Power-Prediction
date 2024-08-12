@@ -1,5 +1,6 @@
 import logging
 import math
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -34,15 +35,20 @@ logger.addHandler(file_handler)
 
 
 class PositionalEmbedding(nn.Module):
-    def __init__(self, d_model, max_len=5000):
+    def __init__(self, pos_d_model, max_len=5000):
         super(PositionalEmbedding, self).__init__()
+
+        # Adjust d_model to be even if it's odd
+        adjusted_pos_d_model = pos_d_model if pos_d_model % 2 == 0 else pos_d_model + 1
+
         # Compute the positional encodings once in log space.
-        pe = torch.zeros(max_len, d_model).float()
+        pe = torch.zeros(max_len, adjusted_pos_d_model).float()
         pe.require_grad = False
 
         position = torch.arange(0, max_len).float().unsqueeze(1)
         div_term = (
-            torch.arange(0, d_model, 2).float() * -(math.log(10000.0) / d_model)
+            torch.arange(0, adjusted_pos_d_model, 2).float()
+            * -(math.log(10000.0) / adjusted_pos_d_model)
         ).exp()
 
         pe[:, 0::2] = torch.sin(position * div_term)
@@ -50,9 +56,11 @@ class PositionalEmbedding(nn.Module):
 
         pe = pe.unsqueeze(0)
         self.register_buffer("pe", pe)
+        self.d_model = pos_d_model
 
     def forward(self, x):
-        return self.pe[:, : x.size(1)]
+        # Return the positional encoding matching the input size
+        return self.pe[:, : x.size(1), : self.d_model]
 
 
 class FixedEmbedding(nn.Module):
@@ -147,20 +155,19 @@ when time featues are n_time_feature for power prediction.
 """
 
 
-class TemporalFeatureEmbedding(nn.Module):
+class TimeFeatureEmbedding(nn.Module):
     def __init__(
         self,
-        time_d_model,
-        combine_type="add",
-        max_len=5000,
-        use_pos_enc=False,
-        time_features=None,  # Allow for no time features
+        time_d_model: int,
+        combine_type: str = "add",
+        time_features: Optional[List[str]] = None,  # Allow for no time features
+        time_out_dim: Optional[int] = None,
     ):
-        super(TemporalFeatureEmbedding, self).__init__()
+        super(TimeFeatureEmbedding, self).__init__()
         self.d_model = time_d_model
         self.combine_type = combine_type
-        self.use_pos_enc = use_pos_enc
         self.time_features = time_features if time_features is not None else []
+        self.time_out_dim = time_out_dim
 
         # Embeddings for discrete time features
         self.hour_embed = nn.Embedding(24, time_d_model)
@@ -170,38 +177,57 @@ class TemporalFeatureEmbedding(nn.Module):
         )  # Assuming up to 31 days in a month
         self.day_in_week_embed = nn.Embedding(7, time_d_model)
 
+        # Lead hour embedding
+        num_lead_hour_embeddings = int((51.75 - 28) / 0.25) + 1
+        self.lead_hour_embed = nn.Embedding(num_lead_hour_embeddings, time_d_model)
+        self.min_lead_hour = 28
+        self.step = 0.25
+
         # Linear layers for sine and cosine transformations
         self.linear_sin = nn.Linear(1, time_d_model)
         self.linear_cos = nn.Linear(1, time_d_model)
 
-        self.dropout = nn.Dropout(0.1)  # Dropout rate (optional)
+        # Linear layer to convert to time_out_dim if specified
+        if self.time_out_dim is not None:
+            self.output_layer = nn.Linear(time_d_model, time_out_dim)
 
-        # Positional encoding
-        if self.use_pos_enc:
-            self.positional_embedding = PositionalEmbedding(time_d_model, max_len)
+        self.dropout = nn.Dropout(0.1)  # Dropout rate (optional)
 
     def forward(self, x):
         if self.time_features:  # Proceed only if there are time features
             embeddings = []
-            feature_idx = {"hour": 0, "quarter_hour": 1, "day": 2, "day_in_week": 3}
+            feature_idx = {
+                "hour": 0,
+                "quarter_hour": 1,
+                "day": 2,
+                "day_in_week": 3,
+                "lead_hour": -1,  # Updated index for lead_hour
+            }
 
             for feature in self.time_features:
                 idx = feature_idx[feature]
                 discrete_feature = x[:, :, idx].long()
-                sin_feature = x[:, :, idx + 4].unsqueeze(-1)
-                cos_feature = x[:, :, idx + 5].unsqueeze(-1)
 
-                if feature == "hour":
-                    embeddings.append(self.hour_embed(discrete_feature))
-                elif feature == "quarter_hour":
-                    embeddings.append(self.quarter_hour_embed(discrete_feature))
-                elif feature == "day":
-                    embeddings.append(self.day_embed(discrete_feature))
-                elif feature == "day_in_week":
-                    embeddings.append(self.day_in_week_embed(discrete_feature))
+                match feature:
+                    case "hour":
+                        embeddings.append(self.hour_embed(discrete_feature))
+                    case "quarter_hour":
+                        embeddings.append(self.quarter_hour_embed(discrete_feature))
+                    case "day":
+                        embeddings.append(self.day_embed(discrete_feature))
+                    case "day_in_week":
+                        embeddings.append(self.day_in_week_embed(discrete_feature))
+                    case "lead_hour":
+                        lead_hour_idx = (
+                            (discrete_feature.float() - self.min_lead_hour) / self.step
+                        ).long()
+                        embeddings.append(self.lead_hour_embed(lead_hour_idx))
 
-                embeddings.append(self.linear_sin(sin_feature))
-                embeddings.append(self.linear_cos(cos_feature))
+                if feature != "lead_hour":
+                    sin_feature = x[:, :, idx + 4].unsqueeze(-1)
+                    cos_feature = x[:, :, idx + 5].unsqueeze(-1)
+                    embeddings.append(self.linear_sin(sin_feature))
+                    embeddings.append(self.linear_cos(cos_feature))
 
             # Combine embeddings
             if self.combine_type == "concat":
@@ -213,30 +239,23 @@ class TemporalFeatureEmbedding(nn.Module):
                 x.size(0), x.size(1), self.d_model, device=x.device
             )
 
-        # Apply positional encoding if enabled
-        if self.use_pos_enc:
-            positional_embedding = self.positional_embedding(x)
-            if self.combine_type == "concat":
-                positional_embedding = positional_embedding.expand(x.size(0), -1, -1)
-                combined_embedding = torch.cat(
-                    [combined_embedding, positional_embedding], dim=-1
-                )
-            else:
-                # Ensure positional_embedding and combined_embedding have the same dimensions
-                if positional_embedding.size(-1) != combined_embedding.size(-1):
-                    positional_embedding = positional_embedding.expand_as(
-                        combined_embedding
-                    )
-                combined_embedding += positional_embedding
+        # Convert to time_out_dim if specified
+        if self.time_out_dim is not None:
+            combined_embedding = self.output_layer(combined_embedding)
 
         # Apply dropout (optional)
         combined_embedding = self.dropout(combined_embedding)
 
-        logger.debug(
-            f"debug: temporal.shape of combined_embedding is {combined_embedding.shape}"
-        )
-
         return combined_embedding
+
+
+class TokenEmbedding(nn.Module):
+    def __init__(self, input_dim, token_d_model):
+        super(TokenEmbedding, self).__init__()
+        self.embedding = nn.Linear(input_dim, token_d_model * input_dim)
+
+    def forward(self, x):
+        return self.embedding(x)  # [batch, seq_len, token_d_model * num_features]
 
 
 class FinalEmbedding(nn.Module):
@@ -247,10 +266,7 @@ class FinalEmbedding(nn.Module):
         time_d_model=-1,
         combine_type="add",
         token_conv_kernel=3,
-        time_features=[
-            "hour",
-            "quarter_hour",
-        ],  # "day"
+        time_features=[],
         use_pos_enc=False,
     ):
         super(FinalEmbedding, self).__init__()
@@ -265,7 +281,7 @@ class FinalEmbedding(nn.Module):
             d_model=token_d_model,
             token_conv_kernel=token_conv_kernel,
         )
-        self.temporal_embedding = TemporalFeatureEmbedding(
+        self.temporal_embedding = TimeFeatureEmbedding(
             time_d_model=time_d_model,
             combine_type=combine_type,
             time_features=time_features,
@@ -307,7 +323,7 @@ class DataEmbedding_wo_pos(nn.Module):
         super(DataEmbedding_wo_pos, self).__init__()
 
         self.value_embedding = TokenEmbedding(input_dim=c_in, d_model=d_model)
-        self.position_embedding = PositionalEmbedding(d_model=d_model)
+        self.position_embedding = PositionalEmbedding(pos_d_model=d_model)
         self.temporal_embedding = (
             TimeEmbedding(d_model=d_model, embed_type=embed_type, freq=freq)
             if embed_type != "timeF"
@@ -325,33 +341,24 @@ class DataEmbedding_wo_pos(nn.Module):
         return self.dropout(x)
 
 
-class TimeFeatureEmbedding(nn.Module):
-    def __init__(self, d_model, embed_type="timeF", freq="h"):
-        super(TimeFeatureEmbedding, self).__init__()
+# class TimeFeatureEmbedding(nn.Module):
+#     def __init__(self, d_model, embed_type="timeF", freq="h"):
+#         super(TimeFeatureEmbedding, self).__init__()
 
-        freq_map = {"h": 4, "t": 5, "s": 6, "m": 1, "a": 1, "w": 2, "d": 3, "b": 3}
-        d_inp = freq_map[freq]
-        self.embed = nn.Linear(d_inp, d_model, bias=False)
+#         freq_map = {"h": 4, "t": 5, "s": 6, "m": 1, "a": 1, "w": 2, "d": 3, "b": 3}
+#         d_inp = freq_map[freq]
+#         self.embed = nn.Linear(d_inp, d_model, bias=False)
 
-    def forward(self, x):
-        return self.embed(x)
-
-
-class TokenEmbedding(nn.Module):
-    def __init__(self, num_features, token_d_model):
-        super(TokenEmbedding, self).__init__()
-        self.embedding = nn.Linear(num_features, token_d_model * num_features)
-
-    def forward(self, x):
-        return self.embedding(x)  # [batch, seq_len, token_d_model * num_features]
+#     def forward(self, x):
+#         return self.embed(x)
 
 
 class CrossChannelBlock(nn.Module):
-    def __init__(self, input_dim, hidden_dim, dropout=0.1):
+    def __init__(self, input_dim, hidden_d_model, dropout=0.1):
         super(CrossChannelBlock, self).__init__()
-        self.dense1 = nn.Linear(input_dim, hidden_dim)
+        self.dense1 = nn.Linear(input_dim, hidden_d_model)
         self.dropout1 = nn.Dropout(dropout)
-        self.dense2 = nn.Linear(hidden_dim, hidden_dim)
+        self.dense2 = nn.Linear(hidden_d_model, hidden_d_model)
         self.dropout2 = nn.Dropout(dropout)
 
     def forward(self, x):
@@ -426,6 +433,45 @@ def visualize_solar_embedding(model, time_index, filename="solar_embedding.png")
     plt.grid(True)
     plt.savefig(filename)
     plt.close()
+
+
+def generate_x_mark(batch_size, seq_len):
+    # Generate the discrete features
+    hour = torch.randint(0, 24, (batch_size, seq_len, 1))  # Hours: [0, 23]
+    quarter_hour = torch.randint(0, 4, (batch_size, seq_len, 1))  # Quarters: [0, 3]
+    day = torch.randint(1, 32, (batch_size, seq_len, 1))  # Days: [1, 31]
+    day_in_week = torch.randint(0, 7, (batch_size, seq_len, 1))  # Days in week: [0, 6]
+
+    # Generate the sine and cosine features
+    sin_hour = torch.sin(hour.float() * 2 * torch.pi / 24)
+    cos_hour = torch.cos(hour.float() * 2 * torch.pi / 24)
+    sin_quarter_hour = torch.sin(quarter_hour.float() * 2 * torch.pi / 4)
+    cos_quarter_hour = torch.cos(quarter_hour.float() * 2 * torch.pi / 4)
+    sin_day = torch.sin(day.float() * 2 * torch.pi / 31)
+    cos_day = torch.cos(day.float() * 2 * torch.pi / 31)
+    sin_day_in_week = torch.sin(day_in_week.float() * 2 * torch.pi / 7)
+    cos_day_in_week = torch.cos(day_in_week.float() * 2 * torch.pi / 7)
+
+    # Concatenate all features to form x_mark in the correct order
+    x_mark = torch.cat(
+        [
+            hour,
+            quarter_hour,
+            day,
+            day_in_week,  # Discrete features
+            sin_hour,
+            cos_hour,  # Sine and cosine of hour
+            sin_quarter_hour,
+            cos_quarter_hour,  # Sine and cosine of quarter hour
+            sin_day,
+            cos_day,  # Sine and cosine of day
+            sin_day_in_week,
+            cos_day_in_week,  # Sine and cosine of day in week
+        ],
+        dim=-1,
+    )
+
+    return x_mark
 
 
 if __name__ == "__main__":

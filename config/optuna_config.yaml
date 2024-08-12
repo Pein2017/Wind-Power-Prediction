@@ -19,8 +19,8 @@ output_paths:
 # Data paths
 data_paths:
   data_root_dir: "/data3/lsf/Pein/Power-Prediction/data"
-  train_path: "train_farm_65_withTime.csv"
-  test_path: "test_farm_65_withTime.csv"
+  train_path: "train_farm_99_withTime.csv"
+  test_path: "test_farm_99_withTime.csv"
 
 # Data settings
 data_settings:
@@ -34,21 +34,23 @@ data_settings:
 
 # Model settings
 model_settings:
-  name: "SimpleTransformer"
+  name: "MLP_v3"
   token_conv_kernel: 3
-  input_dim: 51
-  dec_in: 51
+  input_dim: 84
+  dec_in: 84
   output_dim: 1
   d_model: 5
   n_heads: 4
   e_layers: 2
-  hidden_dim: 32
+  hidden_d_model: 32
   seq_layers: 2
-  last_hidden_dim: 16
+  last_d_model: 16
   top_k: 5
   num_kernels: 6
-  activation: "gelu"
-  time_d_model: 3
+  activation_type: "gelu"
+  token_d_model: 16
+  time_d_model: 16
+  pos_d_model: 16
   combine_type: "add"
   seq_len: 8
   pred_len: 1
@@ -58,6 +60,8 @@ model_settings:
   bidirectional: false
   norm_type: "batch"
   num_heads: 8
+  fc_layer_type: "mlp"
+  conv_out_dim: 16
 
 # Global Settings
 exp_settings: null
@@ -73,7 +77,7 @@ training_settings:
   lradj: "TST"
   pct_start: 0.3
   use_amp: false
-  moving_avg: 51
+  moving_avg: 30
   decomp_method: "moving_avg"
   use_norm: 1
   down_sampling_layers: 2

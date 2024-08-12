@@ -105,9 +105,9 @@ class TokenEmbedding(nn.Module):
         return x
 
 
-class TemporalFeatureEmbedding(nn.Module):
+class TimeFeatureEmbedding(nn.Module):
     def __init__(self, time_d_model, combine_type="add"):
-        super(TemporalFeatureEmbedding, self).__init__()
+        super(TimeFeatureEmbedding, self).__init__()
         self.d_model = time_d_model
         self.combine_type = combine_type
 
@@ -204,9 +204,9 @@ class TemporalFeatureEmbedding(nn.Module):
         return combined_embedding
 
 
-# class TemporalFeatureEmbedding(nn.Module):
+# class TimeFeatureEmbedding(nn.Module):
 #     def __init__(self, time_d_model, combine_type="add"):
-#         super(TemporalFeatureEmbedding, self).__init__()
+#         super(TimeFeatureEmbedding, self).__init__()
 #         self.d_model = time_d_model
 #         self.combine_type = combine_type
 
@@ -292,7 +292,7 @@ class FinalEmbedding(nn.Module):
             )
 
         self.token_embedding = TokenEmbedding(input_dim, token_d_model)
-        self.temporal_embedding = TemporalFeatureEmbedding(time_d_model, combine_type)
+        self.temporal_embedding = TimeFeatureEmbedding(time_d_model, combine_type)
         self.positional_embedding = (
             PositionalEmbedding(token_d_model, max_len) if use_pos_emb else None
         )

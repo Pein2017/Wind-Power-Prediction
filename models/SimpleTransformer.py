@@ -4,14 +4,14 @@ import torch.nn as nn
 from models.layers.Embed import (
     CrossChannelBlock,
     PositionalEmbedding,
-    TemporalFeatureEmbedding,
+    TimeFeatureEmbedding,
     TokenEmbedding,
 )
 
 
 class TransformerBlock(nn.Module):
     def __init__(
-        self, embed_dim, num_heads, hidden_dim, dropout=0.1, norm_type="batch"
+        self, embed_dim, num_heads, hidden_d_model, dropout=0.1, norm_type="batch"
     ):
         super(TransformerBlock, self).__init__()
         self.attention = nn.MultiheadAttention(
@@ -26,10 +26,10 @@ class TransformerBlock(nn.Module):
             self.norm2 = nn.BatchNorm1d(embed_dim)
 
         self.ffn = nn.Sequential(
-            nn.Linear(embed_dim, hidden_dim),
+            nn.Linear(embed_dim, hidden_d_model),
             nn.GELU(),
             nn.Dropout(dropout),
-            nn.Linear(hidden_dim, embed_dim),
+            nn.Linear(hidden_d_model, embed_dim),
             nn.Dropout(dropout),
         )
 
@@ -54,17 +54,17 @@ class CombinedBlock(nn.Module):
         self,
         embed_dim,
         num_heads,
-        hidden_dim,
+        hidden_d_model,
         dropout=0.1,
         norm_type="batch",
         cross_channel_dim=None,
     ):
         super(CombinedBlock, self).__init__()
         self.transformer_block = TransformerBlock(
-            embed_dim, num_heads, hidden_dim, dropout, norm_type
+            embed_dim, num_heads, hidden_d_model, dropout, norm_type
         )
         self.cross_channel_block = (
-            CrossChannelBlock(embed_dim + cross_channel_dim, hidden_dim, dropout)
+            CrossChannelBlock(embed_dim + cross_channel_dim, hidden_d_model, dropout)
             if cross_channel_dim
             else None
         )
@@ -109,7 +109,7 @@ class Model(nn.Module):
         d_model = config.d_model  # dimension per input feature
         embed_dim = input_dim * d_model  # total embedding dimension
         num_heads = config.num_heads
-        hidden_dim = config.hidden_dim
+        hidden_d_model = config.hidden_d_model
         num_layers = config.e_layers
         dropout = config.dropout
         norm_type = config.norm_type  # "batch" or "layer"
@@ -124,7 +124,7 @@ class Model(nn.Module):
             PositionalEmbedding(embed_dim) if config.use_pos_enc else None
         )
         self.time_embedding = (
-            TemporalFeatureEmbedding(time_d_model, time_features=time_features)
+            TimeFeatureEmbedding(time_d_model, time_features=time_features)
             if num_time_features > 0
             else None
         )
@@ -134,7 +134,7 @@ class Model(nn.Module):
                 CombinedBlock(
                     embed_dim,
                     num_heads,
-                    hidden_dim,
+                    hidden_d_model,
                     dropout,
                     norm_type,
                     cross_channel_dim=time_d_model if num_time_features > 0 else None,

@@ -18,11 +18,11 @@ model_settings:
   n_heads: 4
   e_layers: 2
   d_layers: 1
-  hidden_dim: 32
-  last_hidden_dim: 16
+  hidden_d_model: 32
+  last_d_model: 16
   top_k: 5
   num_kernels: 6
-  activation: "gelu"
+  activation_type: "gelu"
   time_d_model: 128
   combine_type: "add"
   seq_len: 8

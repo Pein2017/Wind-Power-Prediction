@@ -1,0 +1,1217 @@
+[I 2024-08-12 12:54:02,941] Using an existing study with name '24-08-11-farm_98-mlpv3-test' instead of creating a new one.
+Creating study "24-08-11-farm_98-mlpv3-test" with storage "sqlite:////data3/lsf/Pein/Power-Prediction/optuna_results/24-08-11/24-08-11-farm_98-mlpv3-test.db?mode=wal"...
+Not using pruner
+  0%|          | 0/256 [00:00<?, ?it/s]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 16.2 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+16.2 M    Trainable params
+0         Non-trainable params
+16.2 M    Total params
+64.873    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.231
+Metric Loss/val improved by 0.165 >= min_delta = 0.0. New best score: 1.066
+Metric Loss/val improved by 0.112 >= min_delta = 0.0. New best score: 0.954
+`Trainer.fit` stopped: `max_epochs=20` reached.
+                                         0%|          | 0/256 [03:08<?, ?it/s]Best trial: 1. Best value: 1.91553:   0%|          | 0/256 [03:08<?, ?it/s]Best trial: 1. Best value: 1.91553:   0%|          | 1/256 [03:08<13:22:38, 188.86s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 4.7 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+4.7 M     Trainable params
+0         Non-trainable params
+4.7 M     Total params
+18.670    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.207
+Metric Loss/val improved by 0.018 >= min_delta = 0.0. New best score: 1.189
+Metric Loss/val improved by 0.079 >= min_delta = 0.0. New best score: 1.110
+Metric Loss/val improved by 0.186 >= min_delta = 0.0. New best score: 0.925
+`Trainer.fit` stopped: `max_epochs=20` reached.
+                                                                                       Best trial: 1. Best value: 1.91553:   0%|          | 1/256 [06:09<13:22:38, 188.86s/it]Best trial: 0. Best value: 0.768513:   0%|          | 1/256 [06:09<13:22:38, 188.86s/it]Best trial: 0. Best value: 0.768513:   1%|          | 2/256 [06:09<12:59:40, 184.18s/it]Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=6, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=128, fc_layer_type='mha', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-512-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-128-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 12:57:11,792] Trial 1 finished with value: 1.9155263125896453 and parameters: {'batch_size': 1024, 'combine_type': 'add', 'use_pos_enc': True, 'norm_type': 'layer', 'num_heads': 128, 'fc_layer_type': 'mha', 'hidden_d_model': 512, 'token_conv_kernel': 11, 'last_d_model': 1024, 'seq_len': 42, 'time_d_model': 64, 'learning_rate': 0.0002, 'dropout': 0.2, 'train_epochs': 20, 'token_d_model': 32, 'conv_out_dim': 512, 'd_model': 64, 'e_layers': 6}. Best is trial 1 with value: 1.9155263125896453.
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=32, fc_layer_type='mlp', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-128-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-32-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:00:12,695] Trial 4 finished with value: 0.8655838560312986 and parameters: {'batch_size': 1024, 'combine_type': 'add', 'use_pos_enc': True, 'norm_type': 'batch', 'num_heads': 32, 'fc_layer_type': 'mlp', 'hidden_d_model': 128, 'token_conv_kernel': 11, 'last_d_model': 1024, 'seq_len': 42, 'time_d_model': 64, 'learning_rate': 0.0002, 'dropout': 0.2, 'train_epochs': 20, 'token_d_model': 8, 'conv_out_dim': 512, 'd_model': 64, 'e_layers': 6}. Best is trial 0 with value: 0.7685130268335343.
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 823 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+823 K     Trainable params
+0         Non-trainable params
+823 K     Total params
+3.292     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.247
+Metric Loss/val improved by 0.219 >= min_delta = 0.0. New best score: 1.028
+Metric Loss/val improved by 0.156 >= min_delta = 0.0. New best score: 0.872
+Metric Loss/val improved by 0.028 >= min_delta = 0.0. New best score: 0.844
+Metric Loss/val improved by 0.020 >= min_delta = 0.0. New best score: 0.824
+`Trainer.fit` stopped: `max_epochs=20` reached.
+                                                                                        Best trial: 0. Best value: 0.768513:   1%|          | 2/256 [09:34<12:59:40, 184.18s/it]Best trial: 2. Best value: 0.711352:   1%|          | 2/256 [09:34<12:59:40, 184.18s/it]Best trial: 2. Best value: 0.711352:   1%|          | 3/256 [09:34<13:37:07, 193.78s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 5.1 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+5.1 M     Trainable params
+0         Non-trainable params
+5.1 M     Total params
+20.381    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.223
+Metric Loss/val improved by 0.014 >= min_delta = 0.0. New best score: 1.209
+                                                                                        Best trial: 2. Best value: 0.711352:   1%|          | 3/256 [10:01<13:37:07, 193.78s/it]Best trial: 2. Best value: 0.711352:   1%|          | 3/256 [10:01<13:37:07, 193.78s/it]Best trial: 2. Best value: 0.711352:   2%|▏         | 4/256 [10:01<8:55:47, 127.57s/it] 
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=128, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-512-last_d-1024-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-128-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:03:37,905] Trial 7 finished with value: 0.7767451345920563 and parameters: {'batch_size': 1024, 'combine_type': 'add', 'use_pos_enc': True, 'norm_type': 'layer', 'num_heads': 128, 'fc_layer_type': 'mlp', 'hidden_d_model': 512, 'token_conv_kernel': 11, 'last_d_model': 1024, 'seq_len': 42, 'time_d_model': 64, 'learning_rate': 0.0002, 'dropout': 0.2, 'train_epochs': 20, 'token_d_model': 8, 'conv_out_dim': 64, 'd_model': 64, 'e_layers': 2}. Best is trial 2 with value: 0.711352276429534.
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=128, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-128-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:04:03,973] Trial 11 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 4.5 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+4.5 M     Trainable params
+0         Non-trainable params
+4.5 M     Total params
+17.977    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.179
+Metric Loss/val improved by 0.147 >= min_delta = 0.0. New best score: 1.032
+Metric Loss/val improved by 0.177 >= min_delta = 0.0. New best score: 0.854
+`Trainer.fit` stopped: `max_epochs=20` reached.
+                                                                                       Best trial: 2. Best value: 0.711352:   2%|▏         | 4/256 [12:55<8:55:47, 127.57s/it]Best trial: 2. Best value: 0.711352:   2%|▏         | 4/256 [12:55<8:55:47, 127.57s/it]Best trial: 2. Best value: 0.711352:   2%|▏         | 5/256 [12:55<10:04:09, 144.42s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 5.5 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+5.5 M     Trainable params
+0         Non-trainable params
+5.5 M     Total params
+21.966    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.238
+                                                                                        Best trial: 2. Best value: 0.711352:   2%|▏         | 5/256 [13:17<10:04:09, 144.42s/it]Best trial: 2. Best value: 0.711352:   2%|▏         | 5/256 [13:17<10:04:09, 144.42s/it]Best trial: 2. Best value: 0.711352:   2%|▏         | 6/256 [13:17<7:08:45, 102.90s/it] 
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=2, hidden_d_model=128, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mha', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-128-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:06:58,277] Trial 14 finished with value: 1.2535042248666288 and parameters: {'batch_size': 1024, 'combine_type': 'add', 'use_pos_enc': True, 'norm_type': 'layer', 'num_heads': 32, 'fc_layer_type': 'mha', 'hidden_d_model': 128, 'token_conv_kernel': 11, 'last_d_model': 64, 'seq_len': 42, 'time_d_model': 64, 'learning_rate': 0.0002, 'dropout': 0.2, 'train_epochs': 20, 'token_d_model': 8, 'conv_out_dim': 512, 'd_model': 64, 'e_layers': 2}. Best is trial 2 with value: 0.711352276429534.
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=128, fc_layer_type='mha', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-128-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-128-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:07:20,575] Trial 26 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.4 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.4 M     Trainable params
+0         Non-trainable params
+1.4 M     Total params
+5.631     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.216
+                                                                                       Best trial: 2. Best value: 0.711352:   2%|▏         | 6/256 [13:28<7:08:45, 102.90s/it]Best trial: 2. Best value: 0.711352:   2%|▏         | 6/256 [13:28<7:08:45, 102.90s/it]Best trial: 2. Best value: 0.711352:   3%|▎         | 7/256 [13:28<5:02:49, 72.97s/it] Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 8.1 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+8.1 M     Trainable params
+0         Non-trainable params
+8.1 M     Total params
+32.264    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.243
+                                                                                      Best trial: 2. Best value: 0.711352:   3%|▎         | 7/256 [13:49<5:02:49, 72.97s/it]Best trial: 2. Best value: 0.711352:   3%|▎         | 7/256 [13:49<5:02:49, 72.97s/it]Best trial: 2. Best value: 0.711352:   3%|▎         | 8/256 [13:49<3:52:01, 56.14s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 759 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+759 K     Trainable params
+0         Non-trainable params
+759 K     Total params
+3.039     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.184
+Metric Loss/val improved by 0.116 >= min_delta = 0.0. New best score: 1.068
+                                                                                      Best trial: 2. Best value: 0.711352:   3%|▎         | 8/256 [14:12<3:52:01, 56.14s/it]Best trial: 2. Best value: 0.711352:   3%|▎         | 8/256 [14:12<3:52:01, 56.14s/it]Best trial: 2. Best value: 0.711352:   4%|▎         | 9/256 [14:12<3:08:35, 45.81s/it]
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=32, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-32-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:07:31,923] Trial 29 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=128, fc_layer_type='mha', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-128-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:07:52,017] Trial 32 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-512-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:08:15,130] Trial 35 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 3.2 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+3.2 M     Trainable params
+0         Non-trainable params
+3.2 M     Total params
+12.984    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.190
+Metric Loss/val improved by 0.131 >= min_delta = 0.0. New best score: 1.059
+                                                                                      Best trial: 2. Best value: 0.711352:   4%|▎         | 9/256 [14:34<3:08:35, 45.81s/it]Best trial: 2. Best value: 0.711352:   4%|▎         | 9/256 [14:34<3:08:35, 45.81s/it]Best trial: 2. Best value: 0.711352:   4%|▍         | 10/256 [14:34<2:38:40, 38.70s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 4.6 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+4.6 M     Trainable params
+0         Non-trainable params
+4.6 M     Total params
+18.230    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.196
+Metric Loss/val improved by 0.163 >= min_delta = 0.0. New best score: 1.033
+Metric Loss/val improved by 0.091 >= min_delta = 0.0. New best score: 0.942
+                                                                                       Best trial: 2. Best value: 0.711352:   4%|▍         | 10/256 [15:00<2:38:40, 38.70s/it]Best trial: 2. Best value: 0.711352:   4%|▍         | 10/256 [15:00<2:38:40, 38.70s/it]Best trial: 2. Best value: 0.711352:   4%|▍         | 11/256 [15:00<2:21:10, 34.57s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 5.5 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+5.5 M     Trainable params
+0         Non-trainable params
+5.5 M     Total params
+21.966    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.238
+                                                                                       Best trial: 2. Best value: 0.711352:   4%|▍         | 11/256 [15:13<2:21:10, 34.57s/it]Best trial: 2. Best value: 0.711352:   4%|▍         | 11/256 [15:13<2:21:10, 34.57s/it]Best trial: 2. Best value: 0.711352:   5%|▍         | 12/256 [15:13<1:54:17, 28.11s/it]dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=128, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-128-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:08:37,908] Trial 39 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=128, fc_layer_type='mha', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-512-last_d-1024-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-128-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:09:03,127] Trial 41 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mha', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-128-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:09:16,439] Trial 44 pruned. 
+Base config keys: Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 16.1 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+16.1 M    Trainable params
+0         Non-trainable params
+16.1 M    Total params
+64.518    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.227
+                                                                                       Best trial: 2. Best value: 0.711352:   5%|▍         | 12/256 [15:24<1:54:17, 28.11s/it]Best trial: 2. Best value: 0.711352:   5%|▍         | 12/256 [15:24<1:54:17, 28.11s/it]Best trial: 2. Best value: 0.711352:   5%|▌         | 13/256 [15:24<1:33:06, 22.99s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.4 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.4 M     Trainable params
+0         Non-trainable params
+1.4 M     Total params
+5.631     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.216
+                                                                                       Best trial: 2. Best value: 0.711352:   5%|▌         | 13/256 [15:34<1:33:06, 22.99s/it]Best trial: 2. Best value: 0.711352:   5%|▌         | 13/256 [15:34<1:33:06, 22.99s/it]Best trial: 2. Best value: 0.711352:   5%|▌         | 14/256 [15:34<1:16:38, 19.00s/it]dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mlp', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-128-last_d-64-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:09:27,657] Trial 45 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:09:37,428] Trial 47 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 2.3 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+2.3 M     Trainable params
+0         Non-trainable params
+2.3 M     Total params
+9.292     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.153
+Metric Loss/val improved by 0.268 >= min_delta = 0.0. New best score: 0.886
+Metric Loss/val improved by 0.121 >= min_delta = 0.0. New best score: 0.764
+Metric Loss/val improved by 0.058 >= min_delta = 0.0. New best score: 0.706
+Metric Loss/val improved by 0.007 >= min_delta = 0.0. New best score: 0.699
+`Trainer.fit` stopped: `max_epochs=20` reached.
+                                                                                       Best trial: 2. Best value: 0.711352:   5%|▌         | 14/256 [18:35<1:16:38, 19.00s/it]Best trial: 2. Best value: 0.711352:   5%|▌         | 14/256 [18:35<1:16:38, 19.00s/it]Best trial: 2. Best value: 0.711352:   6%|▌         | 15/256 [18:35<4:32:26, 67.83s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 5.2 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+5.2 M     Trainable params
+0         Non-trainable params
+5.2 M     Total params
+20.976    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.280
+                                                                                       Best trial: 2. Best value: 0.711352:   6%|▌         | 15/256 [18:46<4:32:26, 67.83s/it]Best trial: 2. Best value: 0.711352:   6%|▌         | 15/256 [18:46<4:32:26, 67.83s/it]Best trial: 2. Best value: 0.711352:   6%|▋         | 16/256 [18:46<3:22:30, 50.63s/it]
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=32, fc_layer_type='mha', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-512-last_d-1024-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-32-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:12:38,424] Trial 48 finished with value: 0.7808946691453458 and parameters: {'batch_size': 1024, 'combine_type': 'add', 'use_pos_enc': True, 'norm_type': 'batch', 'num_heads': 32, 'fc_layer_type': 'mha', 'hidden_d_model': 512, 'token_conv_kernel': 11, 'last_d_model': 1024, 'seq_len': 42, 'time_d_model': 64, 'learning_rate': 0.0002, 'dropout': 0.2, 'train_epochs': 20, 'token_d_model': 32, 'conv_out_dim': 64, 'd_model': 64, 'e_layers': 2}. Best is trial 2 with value: 0.711352276429534.
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=512, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mha', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-64-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:12:49,108] Trial 56 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 5.8 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+5.8 M     Trainable params
+0         Non-trainable params
+5.8 M     Total params
+23.282    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.191
+Metric Loss/val improved by 0.134 >= min_delta = 0.0. New best score: 1.057
+                                                                                       Best trial: 2. Best value: 0.711352:   6%|▋         | 16/256 [19:04<3:22:30, 50.63s/it]Best trial: 2. Best value: 0.711352:   6%|▋         | 16/256 [19:04<3:22:30, 50.63s/it]Best trial: 2. Best value: 0.711352:   7%|▋         | 17/256 [19:04<2:43:03, 40.94s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 8.1 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+8.1 M     Trainable params
+0         Non-trainable params
+8.1 M     Total params
+32.264    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.243
+                                                                                       Best trial: 2. Best value: 0.711352:   7%|▋         | 17/256 [19:17<2:43:03, 40.94s/it]Best trial: 2. Best value: 0.711352:   7%|▋         | 17/256 [19:17<2:43:03, 40.94s/it]Best trial: 2. Best value: 0.711352:   7%|▋         | 18/256 [19:17<2:09:17, 32.59s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 5.7 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+5.7 M     Trainable params
+0         Non-trainable params
+5.7 M     Total params
+22.819    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.165
+Metric Loss/val improved by 0.084 >= min_delta = 0.0. New best score: 1.080
+                                                                                       Best trial: 2. Best value: 0.711352:   7%|▋         | 18/256 [19:36<2:09:17, 32.59s/it]Best trial: 2. Best value: 0.711352:   7%|▋         | 18/256 [19:36<2:09:17, 32.59s/it]Best trial: 2. Best value: 0.711352:   7%|▋         | 19/256 [19:36<1:51:50, 28.31s/it]
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=128, fc_layer_type='mlp', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-128-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:13:07,488] Trial 57 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mha', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-128-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:13:20,683] Trial 58 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=2, hidden_d_model=128, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mha', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-128-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:13:39,023] Trial 60 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 19.2 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+19.2 M    Trainable params
+0         Non-trainable params
+19.2 M    Total params
+76.781    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.215
+                                                                                       Best trial: 2. Best value: 0.711352:   7%|▋         | 19/256 [19:48<1:51:50, 28.31s/it]Best trial: 2. Best value: 0.711352:   7%|▋         | 19/256 [19:48<1:51:50, 28.31s/it]Best trial: 2. Best value: 0.711352:   8%|▊         | 20/256 [19:48<1:32:31, 23.52s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.5 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.5 M     Trainable params
+0         Non-trainable params
+1.5 M     Total params
+6.159     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.187
+                                                                                       Best trial: 2. Best value: 0.711352:   8%|▊         | 20/256 [20:02<1:32:31, 23.52s/it]Best trial: 2. Best value: 0.711352:   8%|▊         | 20/256 [20:02<1:32:31, 23.52s/it]Best trial: 2. Best value: 0.711352:   8%|▊         | 21/256 [20:02<1:21:03, 20.69s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 19.6 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+19.6 M    Trainable params
+0         Non-trainable params
+19.6 M    Total params
+78.366    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.239
+                                                                                       Best trial: 2. Best value: 0.711352:   8%|▊         | 21/256 [20:24<1:21:03, 20.69s/it]Best trial: 2. Best value: 0.711352:   8%|▊         | 21/256 [20:24<1:21:03, 20.69s/it]Best trial: 2. Best value: 0.711352:   9%|▊         | 22/256 [20:24<1:21:50, 20.98s/it]dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=32, fc_layer_type='mlp', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-32-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:13:51,386] Trial 63 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=2, hidden_d_model=128, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=128, fc_layer_type='mha', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-128-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-128-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:14:05,484] Trial 64 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=32, fc_layer_type='mha', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-32-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:14:27,140] Trial 66 pruned. 
+Base config keys: Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 16.2 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+16.2 M    Trainable params
+0         Non-trainable params
+16.2 M    Total params
+64.873    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.228
+                                                                                       Best trial: 2. Best value: 0.711352:   9%|▊         | 22/256 [20:41<1:21:50, 20.98s/it]Best trial: 2. Best value: 0.711352:   9%|▊         | 22/256 [20:41<1:21:50, 20.98s/it]Best trial: 2. Best value: 0.711352:   9%|▉         | 23/256 [20:41<1:17:12, 19.88s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 2.4 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+2.4 M     Trainable params
+0         Non-trainable params
+2.4 M     Total params
+9.478     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.259
+                                                                                       Best trial: 2. Best value: 0.711352:   9%|▉         | 23/256 [20:54<1:17:12, 19.88s/it]Best trial: 2. Best value: 0.711352:   9%|▉         | 23/256 [20:54<1:17:12, 19.88s/it]Best trial: 2. Best value: 0.711352:   9%|▉         | 24/256 [20:54<1:08:39, 17.76s/it]dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mha', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-128-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:14:44,453] Trial 69 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=128, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-128-last_d-64-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-128-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:14:57,245] Trial 71 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 16.0 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+16.0 M    Trainable params
+0         Non-trainable params
+16.0 M    Total params
+64.079    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.157
+Metric Loss/val improved by 0.231 >= min_delta = 0.0. New best score: 0.926
+                                                                                       Best trial: 2. Best value: 0.711352:   9%|▉         | 24/256 [21:20<1:08:39, 17.76s/it]Best trial: 2. Best value: 0.711352:   9%|▉         | 24/256 [21:20<1:08:39, 17.76s/it]Best trial: 2. Best value: 0.711352:  10%|▉         | 25/256 [21:20<1:17:33, 20.14s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 3.7 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+3.7 M     Trainable params
+0         Non-trainable params
+3.7 M     Total params
+14.663    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.248
+                                                                                       Best trial: 2. Best value: 0.711352:  10%|▉         | 25/256 [21:28<1:17:33, 20.14s/it]Best trial: 2. Best value: 0.711352:  10%|▉         | 25/256 [21:28<1:17:33, 20.14s/it]Best trial: 2. Best value: 0.711352:  10%|█         | 26/256 [21:28<1:04:17, 16.77s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 16.2 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+16.2 M    Trainable params
+0         Non-trainable params
+16.2 M    Total params
+64.620    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.199
+                                                                                       Best trial: 2. Best value: 0.711352:  10%|█         | 26/256 [21:40<1:04:17, 16.77s/it]Best trial: 2. Best value: 0.711352:  10%|█         | 26/256 [21:40<1:04:17, 16.77s/it]Best trial: 2. Best value: 0.711352:  11%|█         | 27/256 [21:40<58:06, 15.22s/it]  
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=2, hidden_d_model=128, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=32, fc_layer_type='mha', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-128-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-32-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:15:22,963] Trial 74 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=128, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-128-last_d-64-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-128-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:15:31,862] Trial 78 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=128, fc_layer_type='mha', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-128-last_d-64-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-128-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:15:43,469] Trial 80 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 3.0 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+3.0 M     Trainable params
+0         Non-trainable params
+3.0 M     Total params
+11.993    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.197
+Metric Loss/val improved by 0.093 >= min_delta = 0.0. New best score: 1.105
+                                                                                     Best trial: 2. Best value: 0.711352:  11%|█         | 27/256 [22:06<58:06, 15.22s/it]Best trial: 2. Best value: 0.711352:  11%|█         | 27/256 [22:06<58:06, 15.22s/it]Best trial: 2. Best value: 0.711352:  11%|█         | 28/256 [22:06<1:09:57, 18.41s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 8.1 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+8.1 M     Trainable params
+0         Non-trainable params
+8.1 M     Total params
+32.264    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.243
+                                                                                       Best trial: 2. Best value: 0.711352:  11%|█         | 28/256 [22:18<1:09:57, 18.41s/it]Best trial: 2. Best value: 0.711352:  11%|█         | 28/256 [22:18<1:09:57, 18.41s/it]Best trial: 2. Best value: 0.711352:  11%|█▏        | 29/256 [22:18<1:02:12, 16.44s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 2.4 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+2.4 M     Trainable params
+0         Non-trainable params
+2.4 M     Total params
+9.732     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.177
+Metric Loss/val improved by 0.178 >= min_delta = 0.0. New best score: 1.000
+                                                                                       Best trial: 2. Best value: 0.711352:  11%|█▏        | 29/256 [22:46<1:02:12, 16.44s/it]Best trial: 2. Best value: 0.711352:  11%|█▏        | 29/256 [22:46<1:02:12, 16.44s/it]Best trial: 2. Best value: 0.711352:  12%|█▏        | 30/256 [22:46<1:14:45, 19.85s/it]dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=128, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-128-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:16:09,320] Trial 82 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=32, fc_layer_type='mha', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-128-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-32-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:16:21,177] Trial 88 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=128, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-128-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-128-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:16:48,971] Trial 90 pruned. 
+Base config keys: Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 5.0 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+5.0 M     Trainable params
+0         Non-trainable params
+5.0 M     Total params
+19.859    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.231
+                                                                                       Best trial: 2. Best value: 0.711352:  12%|█▏        | 30/256 [22:57<1:14:45, 19.85s/it]Best trial: 2. Best value: 0.711352:  12%|█▏        | 30/256 [22:57<1:14:45, 19.85s/it]Best trial: 2. Best value: 0.711352:  12%|█▏        | 31/256 [22:57<1:04:56, 17.32s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 2.4 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+2.4 M     Trainable params
+0         Non-trainable params
+2.4 M     Total params
+9.478     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.259
+                                                                                       Best trial: 2. Best value: 0.711352:  12%|█▏        | 31/256 [23:08<1:04:56, 17.32s/it]Best trial: 2. Best value: 0.711352:  12%|█▏        | 31/256 [23:08<1:04:56, 17.32s/it]Best trial: 2. Best value: 0.711352:  12%|█▎        | 32/256 [23:08<58:01, 15.54s/it]  dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=6, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mlp', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-512-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:17:00,385] Trial 93 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-128-last_d-64-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:17:11,783] Trial 94 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 17.1 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+17.1 M    Trainable params
+0         Non-trainable params
+17.1 M    Total params
+68.393    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.171
+Metric Loss/val improved by 0.107 >= min_delta = 0.0. New best score: 1.064
+Metric Loss/val improved by 0.074 >= min_delta = 0.0. New best score: 0.989
+                                                                                     Best trial: 2. Best value: 0.711352:  12%|█▎        | 32/256 [23:41<58:01, 15.54s/it]Best trial: 2. Best value: 0.711352:  12%|█▎        | 32/256 [23:41<58:01, 15.54s/it]Best trial: 2. Best value: 0.711352:  13%|█▎        | 33/256 [23:41<1:16:53, 20.69s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 669 K  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+669 K     Trainable params
+0         Non-trainable params
+669 K     Total params
+2.676     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.240
+                                                                                       Best trial: 2. Best value: 0.711352:  13%|█▎        | 33/256 [23:52<1:16:53, 20.69s/it]Best trial: 2. Best value: 0.711352:  13%|█▎        | 33/256 [23:52<1:16:53, 20.69s/it]Best trial: 2. Best value: 0.711352:  13%|█▎        | 34/256 [23:52<1:05:48, 17.79s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 2.4 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+2.4 M     Trainable params
+0         Non-trainable params
+2.4 M     Total params
+9.401     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.119
+Metric Loss/val improved by 0.195 >= min_delta = 0.0. New best score: 0.924
+Metric Loss/val improved by 0.024 >= min_delta = 0.0. New best score: 0.899
+`Trainer.fit` stopped: `max_epochs=20` reached.
+                                                                                       
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=128, fc_layer_type='mlp', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-128-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:17:44,475] Trial 96 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=32, fc_layer_type='mha', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-512-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-32-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:17:55,498] Trial 99 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=128, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-512-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-128-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+Best trial: 2. Best value: 0.711352:  13%|█▎        | 34/256 [26:26<1:05:48, 17.79s/it]Best trial: 2. Best value: 0.711352:  13%|█▎        | 34/256 [26:26<1:05:48, 17.79s/it]Best trial: 2. Best value: 0.711352:  14%|█▎        | 35/256 [26:26<3:36:24, 58.75s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 4.9 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+4.9 M     Trainable params
+0         Non-trainable params
+4.9 M     Total params
+19.605    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.279
+                                                                                       Best trial: 2. Best value: 0.711352:  14%|█▎        | 35/256 [26:35<3:36:24, 58.75s/it]Best trial: 2. Best value: 0.711352:  14%|█▎        | 35/256 [26:35<3:36:24, 58.75s/it]Best trial: 2. Best value: 0.711352:  14%|█▍        | 36/256 [26:35<2:40:48, 43.86s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 17.3 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+17.3 M    Trainable params
+0         Non-trainable params
+17.3 M    Total params
+69.383    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.153
+Metric Loss/val improved by 0.156 >= min_delta = 0.0. New best score: 0.997
+Metric Loss/val improved by 0.087 >= min_delta = 0.0. New best score: 0.910
+                                                                                       Best trial: 2. Best value: 0.711352:  14%|█▍        | 36/256 [27:16<2:40:48, 43.86s/it]Best trial: 2. Best value: 0.711352:  14%|█▍        | 36/256 [27:16<2:40:48, 43.86s/it]Best trial: 2. Best value: 0.711352:  14%|█▍        | 37/256 [27:16<2:36:56, 43.00s/it][I 2024-08-12 13:20:29,839] Trial 100 finished with value: 0.8482360586524009 and parameters: {'batch_size': 1024, 'combine_type': 'add', 'use_pos_enc': True, 'norm_type': 'layer', 'num_heads': 128, 'fc_layer_type': 'mlp', 'hidden_d_model': 512, 'token_conv_kernel': 11, 'last_d_model': 64, 'seq_len': 42, 'time_d_model': 64, 'learning_rate': 0.0002, 'dropout': 0.2, 'train_epochs': 20, 'token_d_model': 32, 'conv_out_dim': 64, 'd_model': 64, 'e_layers': 2}. Best is trial 2 with value: 0.711352276429534.
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=6, hidden_d_model=512, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mlp', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-512-last_d-64-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:20:38,938] Trial 118 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=128, fc_layer_type='mlp', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-128-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:21:19,926] Trial 119 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 5.5 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+5.5 M     Trainable params
+0         Non-trainable params
+5.5 M     Total params
+21.966    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.238
+                                                                                       Best trial: 2. Best value: 0.711352:  14%|█▍        | 37/256 [27:34<2:36:56, 43.00s/it]Best trial: 2. Best value: 0.711352:  14%|█▍        | 37/256 [27:34<2:36:56, 43.00s/it]Best trial: 2. Best value: 0.711352:  15%|█▍        | 38/256 [27:34<2:08:59, 35.50s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 4.5 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+4.5 M     Trainable params
+0         Non-trainable params
+4.5 M     Total params
+17.943    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.245
+                                                                                       Best trial: 2. Best value: 0.711352:  15%|█▍        | 38/256 [27:44<2:08:59, 35.50s/it]Best trial: 2. Best value: 0.711352:  15%|█▍        | 38/256 [27:44<2:08:59, 35.50s/it]Best trial: 2. Best value: 0.711352:  15%|█▌        | 39/256 [27:44<1:39:50, 27.61s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 3.4 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+3.4 M     Trainable params
+0         Non-trainable params
+3.4 M     Total params
+13.512    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.184
+Metric Loss/val improved by 0.090 >= min_delta = 0.0. New best score: 1.094
+                                                                                       Best trial: 2. Best value: 0.711352:  15%|█▌        | 39/256 [28:02<1:39:50, 27.61s/it]Best trial: 2. Best value: 0.711352:  15%|█▌        | 39/256 [28:02<1:39:50, 27.61s/it]Best trial: 2. Best value: 0.711352:  16%|█▌        | 40/256 [28:02<1:29:28, 24.86s/it]
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=128, fc_layer_type='mha', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-128-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:21:37,939] Trial 124 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=2, hidden_d_model=128, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=128, fc_layer_type='mlp', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-128-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-128-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:21:47,114] Trial 126 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=128, fc_layer_type='mha', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-1024-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-128-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:22:05,553] Trial 128 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 18.0 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+18.0 M    Trainable params
+0         Non-trainable params
+18.0 M    Total params
+72.053    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.230
+                                                                                       Best trial: 2. Best value: 0.711352:  16%|█▌        | 40/256 [28:12<1:29:28, 24.86s/it]Best trial: 2. Best value: 0.711352:  16%|█▌        | 40/256 [28:12<1:29:28, 24.86s/it]Best trial: 2. Best value: 0.711352:  16%|█▌        | 41/256 [28:12<1:13:23, 20.48s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.1 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.1 M     Trainable params
+0         Non-trainable params
+1.1 M     Total params
+4.558     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.225
+                                                                                       Best trial: 2. Best value: 0.711352:  16%|█▌        | 41/256 [28:21<1:13:23, 20.48s/it]Best trial: 2. Best value: 0.711352:  16%|█▌        | 41/256 [28:21<1:13:23, 20.48s/it]Best trial: 2. Best value: 0.711352:  16%|█▋        | 42/256 [28:21<1:00:47, 17.04s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.4 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.4 M     Trainable params
+0         Non-trainable params
+1.4 M     Total params
+5.631     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.216
+                                                                                       Best trial: 2. Best value: 0.711352:  16%|█▋        | 42/256 [28:31<1:00:47, 17.04s/it]Best trial: 2. Best value: 0.711352:  16%|█▋        | 42/256 [28:31<1:00:47, 17.04s/it]Best trial: 2. Best value: 0.711352:  17%|█▋        | 43/256 [28:31<52:25, 14.77s/it]  dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=32, fc_layer_type='mlp', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-128-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-32-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:22:15,820] Trial 133 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=6, hidden_d_model=512, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=32, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-512-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-32-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:22:24,851] Trial 135 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=2, hidden_d_model=512, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=128, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-512-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-128-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:22:34,300] Trial 136 pruned. 
+Base config keys: Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 8.1 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+8.1 M     Trainable params
+0         Non-trainable params
+8.1 M     Total params
+32.264    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.243
+                                                                                     Best trial: 2. Best value: 0.711352:  17%|█▋        | 43/256 [28:45<52:25, 14.77s/it]Best trial: 2. Best value: 0.711352:  17%|█▋        | 43/256 [28:45<52:25, 14.77s/it]Best trial: 2. Best value: 0.711352:  17%|█▋        | 44/256 [28:45<51:51, 14.68s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 19.3 M | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+19.3 M    Trainable params
+0         Non-trainable params
+19.3 M    Total params
+77.375    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.257
+                                                                                     Best trial: 2. Best value: 0.711352:  17%|█▋        | 44/256 [29:05<51:51, 14.68s/it]Best trial: 2. Best value: 0.711352:  17%|█▋        | 44/256 [29:05<51:51, 14.68s/it]Best trial: 2. Best value: 0.711352:  18%|█▊        | 45/256 [29:05<57:12, 16.27s/it]dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=1024, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=128, fc_layer_type='mha', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-128-last_d-1024-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-128-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:22:48,770] Trial 138 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=6, hidden_d_model=128, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mha', conv_out_dim=512), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-128-last_d-64-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:23:08,729] Trial 140 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 3.1 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+3.1 M     Trainable params
+0         Non-trainable params
+3.1 M     Total params
+12.521    Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.179
+                                                                                     Best trial: 2. Best value: 0.711352:  18%|█▊        | 45/256 [29:15<57:12, 16.27s/it]Best trial: 2. Best value: 0.711352:  18%|█▊        | 45/256 [29:15<57:12, 16.27s/it]Best trial: 2. Best value: 0.711352:  18%|█▊        | 46/256 [29:15<50:21, 14.39s/it]Seed set to 17
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name      | Type    | Params | Mode 
+----------------------------------------------
+0 | model     | Model   | 1.1 M  | train
+1 | criterion | MSELoss | 0      | train
+----------------------------------------------
+1.1 M     Trainable params
+0         Non-trainable params
+1.1 M     Total params
+4.305     Total estimated model params size (MB)
+[rank: 0] Received SIGTERM: 15
+Best trial: 2. Best value: 0.711352:  18%|█▊        | 46/256 [29:20<2:13:57, 38.28s/it]
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=256, n_heads=4, e_layers=2, hidden_d_model=128, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=32, fc_layer_type='mha', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-256-hid_d-128-last_d-64-time_d-64-e_layers-2-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-32-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
+[I 2024-08-12 13:23:18,754] Trial 143 pruned. 
+Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
+Suggested hyperparameters keys: dict_keys(['batch_size', 'combine_type', 'use_pos_enc', 'norm_type', 'num_heads', 'fc_layer_type', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'time_d_model', 'learning_rate', 'dropout', 'train_epochs', 'token_d_model', 'conv_out_dim', 'd_model', 'e_layers'])
+
+Running experiment with config:
+Namespace(general_settings=Namespace(seed=17, is_training=1, task_name='default', description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-11', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-11', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-11.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-11', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-11'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_99_withTime.csv', test_path='test_farm_99_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(name='MLP_v3', token_conv_kernel=11, input_dim=84, dec_in=84, output_dim=1, d_model=64, n_heads=4, e_layers=6, hidden_d_model=512, seq_layers=2, last_d_model=64, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=8, time_d_model=64, pos_d_model=16, combine_type='add', seq_len=42, pred_len=1, min_y_value=0.0, dropout=0.2, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=32, fc_layer_type='mlp', conv_out_dim=64), exp_settings='seq_len-42-lr-0.0002-d-64-hid_d-512-last_d-64-time_d-64-e_layers-6-tok_conv_k-11-dropout-0.2-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-32-fc_layer_type-mlp', training_settings=Namespace(gradient_clip_val=1, train_epochs=20, batch_size=1024, early_stop_patience=20, learning_rate=0.0002, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
+
+
