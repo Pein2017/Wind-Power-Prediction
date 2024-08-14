@@ -2,7 +2,6 @@
 general_settings:
   seed: 17
   is_training: 1
-  task_name: "default"
   description: "train"
   comment: "optuna search"
 
@@ -19,8 +18,9 @@ output_paths:
 # Data paths
 data_paths:
   data_root_dir: "/data3/lsf/Pein/Power-Prediction/data"
-  train_path: "train_farm_99_withTime.csv"
-  test_path: "test_farm_99_withTime.csv"
+  train_path: "train_farm_98_withTime.csv"
+  test_path: "test_farm_98_withTime.csv"
+  random_split: true
 
 # Data settings
 data_settings:
@@ -34,6 +34,7 @@ data_settings:
 
 # Model settings
 model_settings:
+  task_name: "wind_power_forecasting with single farm station"
   name: "MLP_v3"
   token_conv_kernel: 3
   input_dim: 84

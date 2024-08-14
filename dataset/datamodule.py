@@ -4,6 +4,7 @@ from typing import Union
 
 import pandas as pd  # noqa
 from pytorch_lightning import LightningDataModule
+from sklearn.model_selection import train_test_split
 from sympy import Dict
 from torch.utils.data import DataLoader
 
@@ -30,6 +31,7 @@ class WindPowerDataModule(LightningDataModule):
 
         # Optional attributes with defaults
         self.train_val_split = getattr(args.data_settings, "train_val_split", 0.2)
+        self.random_split = getattr(args.data_settings, "random_split", True)
 
         # check if train_val_split is smaller than 0.4
         if self.train_val_split > 0.4:
@@ -46,12 +48,18 @@ class WindPowerDataModule(LightningDataModule):
         train_data = pd.read_csv(self.train_path)
         test_data = pd.read_csv(self.test_path)
 
-        # Ensure train-validation split is not random (use first 80% for train and last 20% for val)
-        train_data_size = int(len(train_data) * (1 - self.train_val_split))
-        train_data, val_data = (
-            train_data[:train_data_size],
-            train_data[train_data_size:],
-        )
+        if self.random_split:
+            train_data, val_data = train_test_split(
+                train_data,
+                test_size=self.train_val_split,
+            )
+        else:
+            raise NotImplementedError("Non-random split not implemented yet")
+            train_data_size = int(len(train_data) * (1 - self.train_val_split))
+            train_data, val_data = (
+                train_data[:train_data_size],
+                train_data[train_data_size:],
+            )
 
         columns = train_data.columns.tolist()
         power_index = columns.index("power")

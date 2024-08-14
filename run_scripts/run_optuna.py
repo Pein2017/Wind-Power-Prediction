@@ -434,8 +434,8 @@ def run_optuna_study(args):
 def main():
     import numpy as np  # noqa
 
-    time_str = "24-08-12"
-    study_name = f"{time_str}-farm_98-mlpv3-search-time=hour"
+    time_str = "24-08-13-mlp_v3-search"
+    study_name = f"{time_str}-farm_89"
     n_trails = 100
     args = {
         "time_str": time_str,
@@ -458,28 +458,30 @@ def suggest_hyperparameters(
 
     """Suggest hyperparameters using Optuna trial or return search space."""
     search_space = {
-        # Model architecture parameters
-        "hidden_d_model": [256, 1024],
-        "token_conv_kernel": [7, 15],
-        "last_d_model": [64, 1024],
-        "seq_len": [42],
-        "token_d_model": [8, 32],
-        "time_d_model": [64, 256],
-        "pos_d_model": [32, 256],
-        "d_model": [256, 1024],
-        "conv_out_dim": [64, 512],
-        "e_layers": [2, 12],
-        # Attention and normalization parameters
+        # d_model related parameters
+        "d_model": [64, 256, 512],
+        "hidden_d_model": [128, 256],
+        "last_d_model": [128, 512, 2048],
+        "time_d_model": [32, 64, 128],
+        "pos_d_model": [32, 64, 128],
+        "token_d_model": [32, 64],
+        # Model architecture and layers
+        "e_layers": [2, 4, 6, 8],
+        "token_conv_kernel": [5, 7, 9, 11],
+        "conv_out_dim": [64, 128, 256, 512],
+        # Attention mechanism parameters
+        "num_heads": [4, 8, 16, 96],
+        "fc_layer_type": ["mha"],  # MHA or MLP
+        # Miscellaneous fixed parameters
         "combine_type": ["add"],
         "use_pos_enc": [True],
         "norm_type": ["layer", "batch"],
-        "num_heads": [96, 192],
-        "fc_layer_type": ["mha"],
-        # Training parameters
-        "learning_rate": [1e-4, 5e-3],
-        "dropout": [0.1, 0.3],
-        "batch_size": [1024],
+        "dropout": [0.1, 0.2, 0.3],
+        "seq_len": [8, 16],
         "train_epochs": [30],
+        # Parameters to search
+        "learning_rate": [5e-4, 81e-4, 1e-3, 2e-3, 5e-3, 1e-2, 2e-2, 5e-2, 1e-1],
+        "batch_size": [1024],
     }
 
     if return_search_space:
@@ -487,6 +489,12 @@ def suggest_hyperparameters(
 
     hyperparams = {
         # Integer suggestions
+        "num_heads": trial.suggest_int(
+            "num_heads",
+            min(search_space["num_heads"]),
+            max(search_space["num_heads"]),
+            step=32,
+        ),
         "hidden_d_model": trial.suggest_int(
             "hidden_d_model",
             min(search_space["hidden_d_model"]),

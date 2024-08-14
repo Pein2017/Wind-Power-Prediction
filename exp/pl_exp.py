@@ -16,6 +16,7 @@ from models import (
     SimpleConv,
     SimpleLSTM,
     SimpleMLP,
+    SimpleMLP_recover,
     SimpleTransformer,
     TimeMixer,
 )
@@ -36,6 +37,7 @@ class WindPowerExperiment(pl.LightningModule):
             "SimpleTransformer": SimpleTransformer,
             "MLP_v2": MLP_v2,
             "MLP_v3": MLP_v3,
+            "SimpleMLP_recover": SimpleMLP_recover,
         }
 
         if args:

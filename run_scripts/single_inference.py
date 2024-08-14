@@ -218,9 +218,9 @@ def main_inference(exp_result_dir, res_output_dir):
 
 if __name__ == "__main__":
     time_str = "24-07-17"
-    exp_result_dir = f"/data3/lsf/Pein/Power-Prediction/output/{time_str}/seq_len-36-lr-0.1-d-256-hid_d-32-last_d-256-time_d-128-e_layers-8-comb_type-add-bs-1100/version_0/"
+    exp_result_dir = f"/data3/lsf/Pein/Power-Prediction/res_output/{time_str}/seq_len-36-lr-0.1-d-256-hid_d-32-last_d-256-time_d-128-e_layers-8-comb_type-add-bs-1100/version_0/"
     res_output_dir = (
-        f"/data3/lsf/Pein/Power-Prediction/output/{time_str}_result/best_preds/"
+        f"/data3/lsf/Pein/Power-Prediction/res_output/{time_str}_result/best_preds/"
     )
 
     main_inference(exp_result_dir, res_output_dir)

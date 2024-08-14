@@ -252,10 +252,32 @@ class TimeFeatureEmbedding(nn.Module):
 class TokenEmbedding(nn.Module):
     def __init__(self, input_dim, token_d_model):
         super(TokenEmbedding, self).__init__()
-        self.embedding = nn.Linear(input_dim, token_d_model * input_dim)
+        self.input_dim = input_dim
+        self.token_d_model = token_d_model
+
+        # Conv1d layer to project each feature to input_dim * token_d_model
+        self.conv1d = nn.Conv1d(
+            in_channels=input_dim,  # Use the original input_dim as input channels
+            out_channels=input_dim
+            * token_d_model,  # Project to input_dim * token_d_model
+            kernel_size=1,  # Kernel size of 1 to preserve sequence length
+        )
 
     def forward(self, x):
-        return self.embedding(x)  # [batch, seq_len, token_d_model * num_features]
+        # x: [batch, seq_len, input_dim]
+
+        # Permute to [batch, input_dim, seq_len] for Conv1D operation
+        x_permuted = x.permute(0, 2, 1)
+
+        # Apply Conv1D to project to input_dim * token_d_model
+        conv_out = self.conv1d(
+            x_permuted
+        )  # [batch, input_dim * token_d_model, seq_len]
+
+        # Permute back to [batch, seq_len, input_dim * token_d_model]
+        output = conv_out.permute(0, 2, 1)
+
+        return output  # [batch, seq_len, input_dim * token_d_model]
 
 
 class FinalEmbedding(nn.Module):
