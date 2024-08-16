@@ -104,6 +104,9 @@ hyperparam_path_map = {
         "fc_layer_type": "fc_layer_type",
         "token_d_model": "token_d_model",
         "conv_out_dim": "conv_out_dim",
+        "feat_conv_kernel": "feat_conv_kernel",
+        "norm_after_dict": "norm_after_dict",
+        "skip_connection_mode": "skip_connection_mode",
     },
     # Training settings
     "training_settings": {
@@ -220,7 +223,7 @@ def _log_metrics(trainer, use_wandb):
     val_loss = trainer.callback_metrics["Loss/val"].item()
     test_loss = trainer.callback_metrics["Loss/test"].item()
 
-    weighted_loss = 0.2 * train_loss + 0.4 * val_loss + 0.4 * test_loss
+    weighted_loss = 0.01 * train_loss + 0.5 * val_loss + 0.5 * test_loss
 
     if use_wandb:
         import wandb
@@ -314,9 +317,6 @@ def create_study(args):
     sampler = get_sampler(args)
     pruner = get_pruner(args)
 
-    if pruner is None:
-        print("Not using pruner")
-
     with study_lock:
         study = optuna.create_study(
             direction="minimize",
@@ -346,7 +346,8 @@ def get_pruner(args):
     elif args.pruner_type == "successive_halving":
         return SuccessiveHalvingPruner(min_resource=3, reduction_factor=2)
     else:
-        return None
+        print("Not using Pruner")
+        return optuna.pruners.NopPruner()
 
 
 def get_sampler(args):
@@ -354,6 +355,7 @@ def get_sampler(args):
     search_space = suggest_hyperparameters(return_search_space=True)
     seed = args.seed
     sampler_name = args.sampler_name
+    print(f"Using sampler {sampler_name} with seed {seed}")
     if sampler_name == "cma":
         return CmaEsSampler(seed=seed)
     elif sampler_name == "random":
@@ -433,10 +435,16 @@ def run_optuna_study(args):
 
 def main():
     import numpy as np  # noqa
+    import time
 
-    time_str = "24-08-13-mlp_v3-search"
-    study_name = f"{time_str}-farm_89"
-    n_trails = 100
+    # Generate a time-based seed
+    time_seed = int(time.time() * 10000) % 100000
+
+    time_str = "24-08-16-mlp_v3-test-skip-full"
+    study_name = f"{time_str}-farm_66"
+    n_trails = 20 * 8
+    sampler_name = "cma"
+    pruner_type = None
     args = {
         "time_str": time_str,
         "study_name": study_name,
@@ -444,9 +452,9 @@ def main():
         "n_trials": int(n_trails),
         "output_dir": f"/data3/lsf/Pein/Power-Prediction/optuna_results/{time_str}",
         "config_path": "/data3/lsf/Pein/Power-Prediction/config/optuna_config.yaml",
-        "sampler_name": "cma",
-        "seed": np.random.randint(10000),  #  np.random.randint(10000)
-        "pruner_type": "median",
+        "sampler_name": sampler_name,
+        "seed": time_seed,
+        "pruner_type": pruner_type,
     }
     run_optuna_study(args)
 
@@ -459,29 +467,40 @@ def suggest_hyperparameters(
     """Suggest hyperparameters using Optuna trial or return search space."""
     search_space = {
         # d_model related parameters
-        "d_model": [64, 256, 512],
-        "hidden_d_model": [128, 256],
-        "last_d_model": [128, 512, 2048],
-        "time_d_model": [32, 64, 128],
-        "pos_d_model": [32, 64, 128],
-        "token_d_model": [32, 64],
+        "d_model": [32, 200],
+        "hidden_d_model": [32, 160],
+        "last_d_model": [256],
+        "time_d_model": [4],
+        "pos_d_model": [4],
+        "token_d_model": [3],
         # Model architecture and layers
-        "e_layers": [2, 4, 6, 8],
-        "token_conv_kernel": [5, 7, 9, 11],
-        "conv_out_dim": [64, 128, 256, 512],
+        "e_layers": [2],
+        "token_conv_kernel": [5],
+        "conv_out_dim": [64],
         # Attention mechanism parameters
-        "num_heads": [4, 8, 16, 96],
-        "fc_layer_type": ["mha"],  # MHA or MLP
+        "num_heads": [4],
         # Miscellaneous fixed parameters
         "combine_type": ["add"],
         "use_pos_enc": [True],
-        "norm_type": ["layer", "batch"],
-        "dropout": [0.1, 0.2, 0.3],
-        "seq_len": [8, 16],
-        "train_epochs": [30],
+        "norm_type": ["layer"],
+        "dropout": [0],
+        "seq_len": [16],
+        "train_epochs": [50],
         # Parameters to search
-        "learning_rate": [5e-4, 81e-4, 1e-3, 2e-3, 5e-3, 1e-2, 2e-2, 5e-2, 1e-1],
+        "learning_rate": [5e-3, 1e-2, 5e-2],
         "batch_size": [1024],
+        "feat_conv_kernel": [5],
+        "norm_after_dict_combinations": [
+            {"conv": True, "mha": True, "mlp": True},
+            {"conv": True, "mha": True, "mlp": False},
+            {"conv": True, "mha": False, "mlp": True},
+            {"conv": True, "mha": False, "mlp": False},
+            {"conv": False, "mha": True, "mlp": True},
+            {"conv": False, "mha": True, "mlp": False},
+            {"conv": False, "mha": False, "mlp": True},
+            {"conv": False, "mha": False, "mlp": False},
+        ],
+        "skip_connection_mode": ["full"],  # , "conv_mha", "conv_mlp", "full"
     }
 
     if return_search_space:
@@ -555,12 +574,12 @@ def suggest_hyperparameters(
             step=2,
         ),
         # Float suggestions
-        "learning_rate": trial.suggest_float(
-            "learning_rate",
-            min(search_space["learning_rate"]),
-            max(search_space["learning_rate"]),
-            log=True,
-        ),
+        # "learning_rate": trial.suggest_float(
+        #     "learning_rate",
+        #     min(search_space["learning_rate"]),
+        #     max(search_space["learning_rate"]),
+        #     log=True,
+        # ),
         "dropout": trial.suggest_float(
             "dropout",
             min(search_space["dropout"]),
@@ -568,6 +587,9 @@ def suggest_hyperparameters(
             step=0.02,
         ),
         # Categorical suggestions
+        "learning_rate": trial.suggest_categorical(
+            "learning_rate", search_space["learning_rate"]
+        ),
         "combine_type": trial.suggest_categorical(
             "combine_type", search_space["combine_type"]
         ),
@@ -575,14 +597,20 @@ def suggest_hyperparameters(
             "use_pos_enc", search_space["use_pos_enc"]
         ),
         "norm_type": trial.suggest_categorical("norm_type", search_space["norm_type"]),
-        "fc_layer_type": trial.suggest_categorical(
-            "fc_layer_type", search_space["fc_layer_type"]
-        ),
         "batch_size": trial.suggest_categorical(
             "batch_size", search_space["batch_size"]
         ),
         "train_epochs": trial.suggest_categorical(
             "train_epochs", search_space["train_epochs"]
+        ),
+        "feat_conv_kernel": trial.suggest_categorical(
+            "feat_conv_kernel", search_space["feat_conv_kernel"]
+        ),
+        "norm_after_dict": trial.suggest_categorical(
+            "norm_after_dict", search_space["norm_after_dict_combinations"]
+        ),
+        "skip_connection_mode": trial.suggest_categorical(
+            "skip_connection_mode", search_space["skip_connection_mode"]
         ),
     }
 

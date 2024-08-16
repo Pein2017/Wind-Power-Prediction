@@ -17,12 +17,12 @@ logger.setLevel(logging.INFO)
 
 # Create a console handler and set the log level to DEBUG
 console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.DEBUG)
+console_handler.setLevel(logging.INFO)
 
 # Create a file handler and set the log level to DEBUG
 log_file = "embed_debug.log"
 file_handler = logging.FileHandler(log_file)
-file_handler.setLevel(logging.DEBUG)
+file_handler.setLevel(logging.INFO)
 
 # Create a formatter and set it for both the handlers
 formatter = logging.Formatter("%(asctime)s %(message)s")
@@ -162,9 +162,10 @@ class TimeFeatureEmbedding(nn.Module):
         combine_type: str = "add",
         time_features: Optional[List[str]] = None,  # Allow for no time features
         time_out_dim: Optional[int] = None,
+        drop_out: Optional[float] = 0.1,
     ):
         super(TimeFeatureEmbedding, self).__init__()
-        self.d_model = time_d_model
+        self.time_d_model = time_d_model
         self.combine_type = combine_type
         self.time_features = time_features if time_features is not None else []
         self.time_out_dim = time_out_dim
@@ -177,21 +178,15 @@ class TimeFeatureEmbedding(nn.Module):
         )  # Assuming up to 31 days in a month
         self.day_in_week_embed = nn.Embedding(7, time_d_model)
 
-        # Lead hour embedding
-        num_lead_hour_embeddings = int((51.75 - 28) / 0.25) + 1
-        self.lead_hour_embed = nn.Embedding(num_lead_hour_embeddings, time_d_model)
-        self.min_lead_hour = 28
-        self.step = 0.25
-
         # Linear layers for sine and cosine transformations
         self.linear_sin = nn.Linear(1, time_d_model)
         self.linear_cos = nn.Linear(1, time_d_model)
 
         # Linear layer to convert to time_out_dim if specified
-        if self.time_out_dim is not None:
+        if time_out_dim is not None and time_out_dim != time_d_model:
             self.output_layer = nn.Linear(time_d_model, time_out_dim)
 
-        self.dropout = nn.Dropout(0.1)  # Dropout rate (optional)
+        self.dropout = nn.Dropout(drop_out)  # Dropout rate (optional)
 
     def forward(self, x):
         if self.time_features:  # Proceed only if there are time features
@@ -201,7 +196,6 @@ class TimeFeatureEmbedding(nn.Module):
                 "quarter_hour": 1,
                 "day": 2,
                 "day_in_week": 3,
-                "lead_hour": -1,  # Updated index for lead_hour
             }
 
             for feature in self.time_features:
@@ -217,11 +211,6 @@ class TimeFeatureEmbedding(nn.Module):
                         embeddings.append(self.day_embed(discrete_feature))
                     case "day_in_week":
                         embeddings.append(self.day_in_week_embed(discrete_feature))
-                    case "lead_hour":
-                        lead_hour_idx = (
-                            (discrete_feature.float() - self.min_lead_hour) / self.step
-                        ).long()
-                        embeddings.append(self.lead_hour_embed(lead_hour_idx))
 
                 if feature != "lead_hour":
                     sin_feature = x[:, :, idx + 4].unsqueeze(-1)
@@ -236,11 +225,11 @@ class TimeFeatureEmbedding(nn.Module):
                 combined_embedding = sum(embeddings)
         else:
             combined_embedding = torch.zeros(
-                x.size(0), x.size(1), self.d_model, device=x.device
+                x.size(0), x.size(1), self.time_d_model, device=x.device
             )
 
         # Convert to time_out_dim if specified
-        if self.time_out_dim is not None:
+        if self.time_out_dim is not None and self.time_out_dim != self.time_d_model:
             combined_embedding = self.output_layer(combined_embedding)
 
         # Apply dropout (optional)
@@ -250,23 +239,33 @@ class TimeFeatureEmbedding(nn.Module):
 
 
 class TokenEmbedding(nn.Module):
-    def __init__(self, input_dim, token_d_model):
+    def __init__(self, input_dim, token_d_model, use_linear_projection=False):
         super(TokenEmbedding, self).__init__()
         self.input_dim = input_dim
         self.token_d_model = token_d_model
+        self.use_linear_projection = use_linear_projection
+
+        if self.use_linear_projection:
+            # Linear layer to project each feature to a higher dimension
+            self.linear = nn.Linear(input_dim, input_dim * token_d_model)
 
         # Conv1d layer to project each feature to input_dim * token_d_model
         self.conv1d = nn.Conv1d(
-            in_channels=input_dim,  # Use the original input_dim as input channels
-            out_channels=input_dim
-            * token_d_model,  # Project to input_dim * token_d_model
-            kernel_size=1,  # Kernel size of 1 to preserve sequence length
+            in_channels=input_dim * token_d_model
+            if self.use_linear_projection
+            else input_dim,
+            out_channels=input_dim * token_d_model,
+            kernel_size=1,
         )
 
     def forward(self, x):
         # x: [batch, seq_len, input_dim]
 
-        # Permute to [batch, input_dim, seq_len] for Conv1D operation
+        if self.use_linear_projection:
+            # Apply the linear projection first
+            x = self.linear(x)  # [batch, seq_len, input_dim * token_d_model]
+
+        # Permute to [batch, input_dim * token_d_model, seq_len] for Conv1D operation
         x_permuted = x.permute(0, 2, 1)
 
         # Apply Conv1D to project to input_dim * token_d_model

@@ -31,7 +31,7 @@ class WindPowerDataModule(LightningDataModule):
 
         # Optional attributes with defaults
         self.train_val_split = getattr(args.data_settings, "train_val_split", 0.2)
-        self.random_split = getattr(args.data_settings, "random_split", True)
+        self.random_split = getattr(args.data_settings, "random_split")
 
         # check if train_val_split is smaller than 0.4
         if self.train_val_split > 0.4:
@@ -54,7 +54,7 @@ class WindPowerDataModule(LightningDataModule):
                 test_size=self.train_val_split,
             )
         else:
-            raise NotImplementedError("Non-random split not implemented yet")
+            # raise NotImplementedError("Non-random split not implemented yet")
             train_data_size = int(len(train_data) * (1 - self.train_val_split))
             train_data, val_data = (
                 train_data[:train_data_size],
@@ -89,19 +89,19 @@ class WindPowerDataModule(LightningDataModule):
         self.val_X_mark = val_data[self.time_feature_columns].values
         self.test_X_mark = test_data[self.time_feature_columns].values
 
-        # print("*" * 30)
-        # print("Data shapes:")
-        # print("Train X shape:", self.train_X.shape)
-        # print("Train y shape:", self.train_y.shape)
-        # print("Val X shape:", self.val_X.shape)
-        # print("Val y shape:", self.val_y.shape)
-        # print("Test X shape:", self.test_X.shape)
-        # print("Test y shape:", self.test_y.shape)
-        # print(f"Train X mark shape: {self.train_X_mark.shape}")
-        # print(f"Val X mark shape: {self.val_X_mark.shape}")
-        # print(f"Test X mark shape: {self.test_X_mark.shape}")
+        print("*" * 30)
+        print("Data shapes:")
+        print("Train X shape:", self.train_X.shape)
+        print("Train y shape:", self.train_y.shape)
+        print("Val X shape:", self.val_X.shape)
+        print("Val y shape:", self.val_y.shape)
+        print("Test X shape:", self.test_X.shape)
+        print("Test y shape:", self.test_y.shape)
+        print(f"Train X mark shape: {self.train_X_mark.shape}")
+        print(f"Val X mark shape: {self.val_X_mark.shape}")
+        print(f"Test X mark shape: {self.test_X_mark.shape}")
 
-        # print("*" * 30)
+        print("*" * 30)
 
     def setup(self, stage=None):
         if stage in (None, "fit"):

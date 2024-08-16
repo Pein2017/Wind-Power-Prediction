@@ -17,10 +17,9 @@ output_paths:
 
 # Data paths
 data_paths:
-  data_root_dir: "/data3/lsf/Pein/Power-Prediction/data"
-  train_path: "train_farm_98_withTime.csv"
-  test_path: "test_farm_98_withTime.csv"
-  random_split: true
+  data_root_dir: "/data3/lsf/Pein/Power-Prediction/new_data/"
+  train_path: "4-train_66_withTime.csv"
+  test_path: "4-test_66_withTime.csv"
 
 # Data settings
 data_settings:
@@ -31,14 +30,16 @@ data_settings:
   data: "WindPower"
   scale_x_type: "standard"
   scale_y_type: "standard"
+  random_split: false
+
 
 # Model settings
 model_settings:
   task_name: "wind_power_forecasting with single farm station"
   name: "MLP_v3"
   token_conv_kernel: 3
-  input_dim: 84
-  dec_in: 84
+  input_dim: 52
+  dec_in: 52
   output_dim: 1
   d_model: 5
   n_heads: 4
@@ -62,7 +63,10 @@ model_settings:
   norm_type: "batch"
   num_heads: 8
   fc_layer_type: "mlp"
-  conv_out_dim: 16
+  conv_out_dim: 3
+  feat_conv_kernel: 10
+  norm_after_dict: null
+  skip_connection_mode: "none"
 
 # Global Settings
 exp_settings: null

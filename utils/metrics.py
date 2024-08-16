@@ -66,6 +66,7 @@ def metric(pred, true):
 
 
 factor = (300 + 400 + 900) / 300 / 1000
+factor = 1
 CAP = 300400.0 * factor
 
 

@@ -69,12 +69,10 @@ def create_exp_settings(args):
             f"pos_d-{model_settings.pos_d_model}-"
             f"e_layers-{model_settings.e_layers}-"
             f"tok_conv_k-{model_settings.token_conv_kernel}-"
-            f"dropout-{model_settings.dropout}-"
+            # f"dropout-{model_settings.dropout}-"
             f"bs-{training_settings.batch_size}-"
-            f"norm_type-{model_settings.norm_type}-"
-            f"use_pos_enc-{model_settings.use_pos_enc}-"
-            f"num_heads-{model_settings.num_heads}-"
-            f"fc_layer_type-{model_settings.fc_layer_type}"
+            f"norm_type-{model_settings.norm_type}"
+            # f"num_heads-{model_settings.num_heads}-"
         )
 
     return args

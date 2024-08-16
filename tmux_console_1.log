@@ -1,8 +1,26 @@
-[I 2024-08-13 23:05:40,984] Using an existing study with name '24-08-13-mlp_v3-small_range-farm_89' instead of creating a new one.
-Creating study "24-08-13-mlp_v3-small_range-farm_89" with storage "sqlite:////data3/lsf/Pein/Power-Prediction/optuna_results/24-08-13-mlp_v3-small_range/24-08-13-mlp_v3-small_range-farm_89.db?mode=wal"...
-  0%|          | 0/10 [00:00<?, ?it/s]/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [4, 96] and step=32, but the range is not divisible by `step`. It will be replaced by [4, 68].
+[I 2024-08-17 00:30:19,566] Using an existing study with name '24-08-16-mlp_v3-test-skip-none-farm_66' instead of creating a new one.
+Creating study "24-08-16-mlp_v3-test-skip-none-farm_66" with storage "sqlite:////data3/lsf/Pein/Power-Prediction/optuna_results/24-08-16-mlp_v3-test-skip-none/24-08-16-mlp_v3-test-skip-none-farm_66.db?mode=wal"...
+Using sampler cma with seed 90501
+Not using Pruner
+  0%|          | 0/160 [00:00<?, ?it/s]/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': True, 'mlp': True} which is of type dict.
+  warnings.warn(message)
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': True, 'mlp': False} which is of type dict.
+  warnings.warn(message)
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': False, 'mlp': True} which is of type dict.
+  warnings.warn(message)
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': False, 'mlp': False} which is of type dict.
+  warnings.warn(message)
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': True, 'mlp': True} which is of type dict.
+  warnings.warn(message)
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': True, 'mlp': False} which is of type dict.
+  warnings.warn(message)
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': False, 'mlp': True} which is of type dict.
+  warnings.warn(message)
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': False, 'mlp': False} which is of type dict.
+  warnings.warn(message)
+/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [32, 200] and step=32, but the range is not divisible by `step`. It will be replaced by [32, 192].
   warnings.warn(
-Seed set to 17
+                                         0%|          | 0/160 [00:01<?, ?it/s]                                         0%|          | 0/160 [00:01<?, ?it/s]Seed set to 17
 /home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
 GPU available: True (cuda), used: True
 TPU available: False, using: 0 TPU cores
@@ -12,85 +30,17 @@ LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
 
   | Name      | Type    | Params | Mode 
 ----------------------------------------------
-0 | model     | Model   | 6.8 M  | train
+0 | model     | Model   | 416 K  | train
 1 | criterion | MSELoss | 0      | train
 ----------------------------------------------
-6.8 M     Trainable params
+416 K     Trainable params
 0         Non-trainable params
-6.8 M     Total params
-27.236    Total estimated model params size (MB)
-Metric Loss/val improved. New best score: 1.038
-Metric Loss/val improved by 0.005 >= min_delta = 0.0. New best score: 1.033
-Monitored metric Loss/val did not improve in the last 15 records. Best score: 1.033. Signaling Trainer to stop.
-                                        0%|          | 0/10 [01:41<?, ?it/s]Best trial: 1. Best value: 4.62039:   0%|          | 0/10 [01:41<?, ?it/s]Best trial: 1. Best value: 4.62039:  10%|█         | 1/10 [01:41<15:11, 101.23s/it]/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [4, 96] and step=32, but the range is not divisible by `step`. It will be replaced by [4, 68].
-  warnings.warn(
-                                                                                   Best trial: 1. Best value: 4.62039:  10%|█         | 1/10 [01:41<15:11, 101.23s/it]                                                                                   Best trial: 1. Best value: 4.62039:  10%|█         | 1/10 [01:42<15:11, 101.23s/it]Seed set to 17
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
-GPU available: True (cuda), used: True
-TPU available: False, using: 0 TPU cores
-HPU available: False, using: 0 HPUs
-LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
-
-  | Name      | Type    | Params | Mode 
-----------------------------------------------
-0 | model     | Model   | 6.9 M  | train
-1 | criterion | MSELoss | 0      | train
-----------------------------------------------
-6.9 M     Trainable params
-0         Non-trainable params
-6.9 M     Total params
-27.506    Total estimated model params size (MB)
-Metric Loss/val improved. New best score: 1.038
-Metric Loss/val improved by 0.003 >= min_delta = 0.0. New best score: 1.035
-Monitored metric Loss/val did not improve in the last 15 records. Best score: 1.035. Signaling Trainer to stop.
-                                                                                   Best trial: 1. Best value: 4.62039:  10%|█         | 1/10 [03:31<15:11, 101.23s/it]Best trial: 2. Best value: 1.32498:  10%|█         | 1/10 [03:31<15:11, 101.23s/it]Best trial: 2. Best value: 1.32498:  20%|██        | 2/10 [03:31<14:10, 106.28s/it]/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [4, 96] and step=32, but the range is not divisible by `step`. It will be replaced by [4, 68].
-  warnings.warn(
-                                                                                   Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
-Suggested hyperparameters keys: dict_keys(['num_heads', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'token_d_model', 'time_d_model', 'pos_d_model', 'd_model', 'conv_out_dim', 'e_layers', 'learning_rate', 'dropout', 'combine_type', 'use_pos_enc', 'norm_type', 'fc_layer_type', 'batch_size', 'train_epochs'])
-
-Running experiment with config:
-Namespace(general_settings=Namespace(seed=17, is_training=1, description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-13-mlp_v3-small_range', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-13-mlp_v3-small_range', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-13-mlp_v3-small_range.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-13-mlp_v3-small_range', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-13-mlp_v3-small_range'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_89_withTime.csv', test_path='test_farm_89_withTime.csv', random_split=True), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(task_name='wind_power_forecasting with single farm station', name='MLP_v3', token_conv_kernel=5, input_dim=75, dec_in=75, output_dim=1, d_model=64, n_heads=4, e_layers=2, hidden_d_model=128, seq_layers=2, last_d_model=128, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=32, pos_d_model=32, combine_type='add', seq_len=8, pred_len=1, min_y_value=0.0, dropout=0.1, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=36, fc_layer_type='mha', conv_out_dim=64), exp_settings='seq_len-8-lr-0.0043-d-64-hid_d-128-last_d-128-tok_d-32-time_d-32-pos_d-32-e_layers-2-tok_conv_k-5-dropout-0.1-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-36-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=0.1, train_epochs=30, batch_size=1024, early_stop_patience=15, learning_rate=0.004336506922662687, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
-
-
-[I 2024-08-13 23:07:22,212] Trial 1 finished with value: 4.620391845703125 and parameters: {'num_heads': 36, 'hidden_d_model': 128, 'token_conv_kernel': 5, 'last_d_model': 128, 'seq_len': 8, 'token_d_model': 32, 'time_d_model': 32, 'pos_d_model': 32, 'd_model': 64, 'conv_out_dim': 64, 'e_layers': 2, 'learning_rate': 0.004336506922662687, 'dropout': 0.1, 'combine_type': 'add', 'use_pos_enc': True, 'norm_type': 'layer', 'fc_layer_type': 'mha', 'batch_size': 1024, 'train_epochs': 30}. Best is trial 1 with value: 4.620391845703125.
-[W 2024-08-13 23:07:22,992] The parameter 'norm_type' in trial#2 is sampled independently by using `RandomSampler` instead of `CmaEsSampler` (optimization performance may be degraded). `CmaEsSampler` does not support dynamic search space or `CategoricalDistribution`. You can suppress this warning by setting `warn_independent_sampling` to `False` in the constructor of `CmaEsSampler`, if this independent sampling is intended behavior.
-[W 2024-08-13 23:07:23,117] The parameter 'train_epochs' in trial#2 is sampled independently by using `RandomSampler` instead of `CmaEsSampler` (optimization performance may be degraded). `CmaEsSampler` does not support dynamic search space or `CategoricalDistribution`. You can suppress this warning by setting `warn_independent_sampling` to `False` in the constructor of `CmaEsSampler`, if this independent sampling is intended behavior.
-Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
-Suggested hyperparameters keys: dict_keys(['num_heads', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'token_d_model', 'time_d_model', 'pos_d_model', 'd_model', 'conv_out_dim', 'e_layers', 'learning_rate', 'dropout', 'combine_type', 'use_pos_enc', 'norm_type', 'fc_layer_type', 'batch_size', 'train_epochs'])
-
-Running experiment with config:
-Namespace(general_settings=Namespace(seed=17, is_training=1, description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-13-mlp_v3-small_range', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-13-mlp_v3-small_range', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-13-mlp_v3-small_range.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-13-mlp_v3-small_range', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-13-mlp_v3-small_range'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_89_withTime.csv', test_path='test_farm_89_withTime.csv', random_split=True), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(task_name='wind_power_forecasting with single farm station', name='MLP_v3', token_conv_kernel=5, input_dim=75, dec_in=75, output_dim=1, d_model=64, n_heads=4, e_layers=4, hidden_d_model=128, seq_layers=2, last_d_model=128, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=32, pos_d_model=32, combine_type='add', seq_len=8, pred_len=1, min_y_value=0.0, dropout=0.1, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=36, fc_layer_type='mha', conv_out_dim=64), exp_settings='seq_len-8-lr-0.0014-d-64-hid_d-128-last_d-128-tok_d-32-time_d-32-pos_d-32-e_layers-4-tok_conv_k-5-dropout-0.1-bs-1024-norm_type-layer-use_pos_enc-True-num_heads-36-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=50, batch_size=1024, early_stop_patience=15, learning_rate=0.001420367057948488, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
-
-
-[I 2024-08-13 23:09:12,021] Trial 2 finished with value: 1.3249791622161866 and parameters: {'num_heads': 36, 'hidden_d_model': 128, 'token_conv_kernel': 5, 'last_d_model': 128, 'seq_len': 8, 'token_d_model': 32, 'time_d_model': 32, 'pos_d_model': 32, 'd_model': 64, 'conv_out_dim': 64, 'e_layers': 4, 'learning_rate': 0.001420367057948488, 'dropout': 0.1, 'combine_type': 'add', 'use_pos_enc': True, 'norm_type': 'layer', 'fc_layer_type': 'mha', 'batch_size': 1024, 'train_epochs': 50}. Best is trial 2 with value: 1.3249791622161866.
-Best trial: 2. Best value: 1.32498:  20%|██        | 2/10 [03:31<14:10, 106.28s/it]                                                                                   Best trial: 2. Best value: 1.32498:  20%|██        | 2/10 [03:32<14:10, 106.28s/it]Seed set to 17
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
-GPU available: True (cuda), used: True
-TPU available: False, using: 0 TPU cores
-HPU available: False, using: 0 HPUs
-LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
-
-  | Name      | Type    | Params | Mode 
-----------------------------------------------
-0 | model     | Model   | 6.9 M  | train
-1 | criterion | MSELoss | 0      | train
-----------------------------------------------
-6.9 M     Trainable params
-0         Non-trainable params
-6.9 M     Total params
-27.506    Total estimated model params size (MB)
-[rank: 0] Received SIGTERM: 15
-[rank: 0] Received SIGTERM: 15
-[rank: 0] Received SIGTERM: 15
-[rank: 0] Received SIGTERM: 15
-[rank: 0] Received SIGTERM: 15
-Best trial: 2. Best value: 1.32498:  20%|██        | 2/10 [03:34<14:19, 107.44s/it]
-[W 2024-08-13 23:09:12,927] The parameter 'norm_type' in trial#4 is sampled independently by using `RandomSampler` instead of `CmaEsSampler` (optimization performance may be degraded). `CmaEsSampler` does not support dynamic search space or `CategoricalDistribution`. You can suppress this warning by setting `warn_independent_sampling` to `False` in the constructor of `CmaEsSampler`, if this independent sampling is intended behavior.
-[W 2024-08-13 23:09:13,044] The parameter 'train_epochs' in trial#4 is sampled independently by using `RandomSampler` instead of `CmaEsSampler` (optimization performance may be degraded). `CmaEsSampler` does not support dynamic search space or `CategoricalDistribution`. You can suppress this warning by setting `warn_independent_sampling` to `False` in the constructor of `CmaEsSampler`, if this independent sampling is intended behavior.
-Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
-Suggested hyperparameters keys: dict_keys(['num_heads', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'token_d_model', 'time_d_model', 'pos_d_model', 'd_model', 'conv_out_dim', 'e_layers', 'learning_rate', 'dropout', 'combine_type', 'use_pos_enc', 'norm_type', 'fc_layer_type', 'batch_size', 'train_epochs'])
-
-Running experiment with config:
-Namespace(general_settings=Namespace(seed=17, is_training=1, description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-13-mlp_v3-small_range', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-13-mlp_v3-small_range', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-13-mlp_v3-small_range.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-13-mlp_v3-small_range', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-13-mlp_v3-small_range'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/data', train_path='train_farm_89_withTime.csv', test_path='test_farm_89_withTime.csv', random_split=True), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard'), model_settings=Namespace(task_name='wind_power_forecasting with single farm station', name='MLP_v3', token_conv_kernel=5, input_dim=75, dec_in=75, output_dim=1, d_model=64, n_heads=4, e_layers=4, hidden_d_model=128, seq_layers=2, last_d_model=128, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=32, time_d_model=32, pos_d_model=32, combine_type='add', seq_len=8, pred_len=1, min_y_value=0.0, dropout=0.1, use_pos_enc=True, bidirectional=False, norm_type='batch', num_heads=36, fc_layer_type='mha', conv_out_dim=64), exp_settings='seq_len-8-lr-0.0009-d-64-hid_d-128-last_d-128-tok_d-32-time_d-32-pos_d-32-e_layers-4-tok_conv_k-5-dropout-0.1-bs-1024-norm_type-batch-use_pos_enc-True-num_heads-36-fc_layer_type-mha', training_settings=Namespace(gradient_clip_val=1, train_epochs=50, batch_size=1024, early_stop_patience=15, learning_rate=0.0009270733569289628, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
-
-
+416 K     Total params
+1.666     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.202
+Metric Loss/val improved by 0.010 >= min_delta = 0.0. New best score: 1.193
+Metric Loss/val improved by 0.060 >= min_delta = 0.0. New best score: 1.133
+Metric Loss/val improved by 0.219 >= min_delta = 0.0. New best score: 0.913
+Metric Loss/val improved by 0.038 >= min_delta = 0.0. New best score: 0.876
+Metric Loss/val improved by 0.036 >= min_delta = 0.0. New best score: 0.840
+Metric Loss/val improved by 0.018 >= min_delta = 0.0. New best score: 0.822

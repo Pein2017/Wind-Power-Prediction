@@ -68,13 +68,14 @@ data_settings:
   data: "WindPower"
   scale_x_type: "standard"
   scale_y_type: "standard"
+  random_split: false
 
 # Data paths
 data_paths:
   data_root_dir: "/data3/lsf/Pein/Power-Prediction/data"
   train_path: "train_data_89_withTime.csv"
   test_path: "test_data_89_withTime.csv"
-
+  
 # GPU settings
 gpu_settings:
   use_gpu: True
