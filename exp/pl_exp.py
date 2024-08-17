@@ -85,7 +85,7 @@ class WindPowerExperiment(pl.LightningModule):
             "test_epoch_for_best_test": -1,
         }
 
-    def common_step(self, batch, batch_idx, phase, dataloader_idx=None, loss_clip=10):
+    def common_step(self, batch, batch_idx, phase, dataloader_idx=None, loss_clip=5):
         loss = self.process_batch(batch, self.criterion)
 
         if phase == "train":

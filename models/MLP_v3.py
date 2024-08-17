@@ -316,6 +316,10 @@ class MultiFeatureBlock(nn.Module):
         )
         self.conv_activation = get_activation(activation_type)
 
+        if hidden_dim % num_heads != 0:
+            raise ValueError(
+                f"hidden_dim ({hidden_dim}) should be divisible by num_heads ({num_heads})"
+            )
         # MHA Block: Keep the dimension at hidden_dim
         self.mha = nn.MultiheadAttention(
             embed_dim=hidden_dim,

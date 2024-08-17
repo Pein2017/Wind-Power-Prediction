@@ -1,26 +1,12 @@
-[I 2024-08-17 00:30:16,215] Using an existing study with name '24-08-16-mlp_v3-test-skip-none-farm_66' instead of creating a new one.
-Creating study "24-08-16-mlp_v3-test-skip-none-farm_66" with storage "sqlite:////data3/lsf/Pein/Power-Prediction/optuna_results/24-08-16-mlp_v3-test-skip-none/24-08-16-mlp_v3-test-skip-none-farm_66.db?mode=wal"...
-Using sampler cma with seed 57508
-Not using Pruner
-  0%|          | 0/160 [00:00<?, ?it/s]/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': True, 'mlp': True} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': True, 'mlp': False} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': False, 'mlp': True} which is of type dict.
+[I 2024-08-18 01:09:36,904] A new study created in RDB with name: 24-08-18-mlp_v3-search-8procs-farm_66
+Creating study "24-08-18-mlp_v3-search-8procs-farm_66" with storage "sqlite:////data3/lsf/Pein/Power-Prediction/optuna_results/24-08-18-mlp_v3-search-8procs/24-08-18-mlp_v3-search-8procs-farm_66.db?mode=wal"...
+Using sampler cma with seed 45365
+Using sampler : CmaEsSampler, pruner : <optuna.pruners._median.MedianPruner object at 0x7f0818c2a620>
+  0%|          | 0/96 [00:00<?, ?it/s]/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': False, 'mlp': True} which is of type dict.
   warnings.warn(message)
 /home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': False, 'mlp': False} which is of type dict.
   warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': True, 'mlp': True} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': True, 'mlp': False} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': False, 'mlp': True} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': False, 'mlp': False} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [32, 200] and step=32, but the range is not divisible by `step`. It will be replaced by [32, 192].
-  warnings.warn(
-                                         0%|          | 0/160 [00:01<?, ?it/s]                                         0%|          | 0/160 [00:01<?, ?it/s]Seed set to 17
+Seed set to 17
 /home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
 GPU available: True (cuda), used: True
 TPU available: False, using: 0 TPU cores
@@ -30,76 +16,15 @@ LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
 
   | Name      | Type    | Params | Mode 
 ----------------------------------------------
-0 | model     | Model   | 464 K  | train
+0 | model     | Model   | 2.1 M  | train
 1 | criterion | MSELoss | 0      | train
 ----------------------------------------------
-464 K     Trainable params
+2.1 M     Trainable params
 0         Non-trainable params
-464 K     Total params
-1.859     Total estimated model params size (MB)
-Metric Loss/val improved. New best score: 1.197
-Metric Loss/val improved by 0.126 >= min_delta = 0.0. New best score: 1.071
-Monitored metric Loss/val did not improve in the last 15 records. Best score: 1.071. Signaling Trainer to stop.
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': True, 'mlp': True} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': True, 'mlp': False} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': False, 'mlp': True} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': False, 'mlp': False} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': True, 'mlp': True} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': True, 'mlp': False} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': False, 'mlp': True} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': False, 'mlp': False} which is of type dict.
-  warnings.warn(message)
-                                         0%|          | 0/160 [00:58<?, ?it/s]Best trial: 8. Best value: 0.811407:   0%|          | 0/160 [00:58<?, ?it/s]Best trial: 8. Best value: 0.811407:   1%|          | 1/160 [00:58<2:34:43, 58.38s/it]/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [32, 200] and step=32, but the range is not divisible by `step`. It will be replaced by [32, 192].
-  warnings.warn(
-                                                                                      Best trial: 8. Best value: 0.811407:   1%|          | 1/160 [00:59<2:34:43, 58.38s/it]                                                                                      Best trial: 8. Best value: 0.811407:   1%|          | 1/160 [00:59<2:34:43, 58.38s/it][W 2024-08-17 00:30:17,346] The parameter 'learning_rate' in trial#42 is sampled independently by using `RandomSampler` instead of `CmaEsSampler` (optimization performance may be degraded). `CmaEsSampler` does not support dynamic search space or `CategoricalDistribution`. You can suppress this warning by setting `warn_independent_sampling` to `False` in the constructor of `CmaEsSampler`, if this independent sampling is intended behavior.
-[W 2024-08-17 00:30:17,638] The parameter 'norm_after_dict' in trial#42 is sampled independently by using `RandomSampler` instead of `CmaEsSampler` (optimization performance may be degraded). `CmaEsSampler` does not support dynamic search space or `CategoricalDistribution`. You can suppress this warning by setting `warn_independent_sampling` to `False` in the constructor of `CmaEsSampler`, if this independent sampling is intended behavior.
-Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
-Suggested hyperparameters keys: dict_keys(['num_heads', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'token_d_model', 'time_d_model', 'pos_d_model', 'd_model', 'conv_out_dim', 'e_layers', 'dropout', 'learning_rate', 'combine_type', 'use_pos_enc', 'norm_type', 'batch_size', 'train_epochs', 'feat_conv_kernel', 'norm_after_dict', 'skip_connection_mode'])
-
-Running experiment with config:
-Namespace(general_settings=Namespace(seed=17, is_training=1, description='train', comment='optuna search'), output_paths=Namespace(train_log_dir='/data3/lsf/Pein/Power-Prediction/train_log/24-08-16-mlp_v3-test-skip-none', res_output_dir='/data3/lsf/Pein/Power-Prediction/res_output/24-08-16-mlp_v3-test-skip-none', final_best_metrics_log_path='/data3/lsf/Pein/Power-Prediction/final_best_metric/24-08-16-mlp_v3-test-skip-none.log', optuna_study_dir='/data3/lsf/Pein/Power-Prediction/optuna_study/24-08-16-mlp_v3-test-skip-none', wandb_output_dir='/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/24-08-16-mlp_v3-test-skip-none'), data_paths=Namespace(data_root_dir='/data3/lsf/Pein/Power-Prediction/new_data/', train_path='4-train_66_withTime.csv', test_path='4-test_66_withTime.csv'), data_settings=Namespace(train_val_split=0.2, target='power', inverse=True, num_workers=8, data='WindPower', scale_x_type='standard', scale_y_type='standard', random_split=False), model_settings=Namespace(task_name='wind_power_forecasting with single farm station', name='MLP_v3', token_conv_kernel=5, input_dim=52, dec_in=52, output_dim=1, d_model=128, n_heads=4, e_layers=2, hidden_d_model=112, seq_layers=2, last_d_model=256, top_k=5, num_kernels=6, activation_type='gelu', token_d_model=3, time_d_model=4, pos_d_model=4, combine_type='add', seq_len=16, pred_len=1, min_y_value=0.0, dropout=0.0, use_pos_enc=True, bidirectional=False, norm_type='layer', num_heads=4, fc_layer_type='mlp', conv_out_dim=64, feat_conv_kernel=5, norm_after_dict=Namespace(conv=False, mha=False, mlp=False), skip_connection_mode='none'), exp_settings='seq_len-16-lr-0.05-d-128-hid_d-112-last_d-256-tok_d-3-time_d-4-pos_d-4-e_layers-2-tok_conv_k-5-bs-1024-norm_type-layer', training_settings=Namespace(gradient_clip_val=1, train_epochs=50, batch_size=1024, early_stop_patience=15, learning_rate=0.05, loss='MSE', lradj='TST', pct_start=0.3, use_amp=False, moving_avg=30, decomp_method='moving_avg', use_norm=1, down_sampling_layers=2, down_sampling_window=2, down_sampling_method='avg'), scheduler_settings=Namespace(type='OneCycleLR', T_max=20, weight_decay=0.0001, patience=5, reduce_factor=0.2, pct_start=0.3, eta_min='1e-6', warmup_steps=0), gpu_settings=Namespace(use_gpu=True, gpu_id=0, use_multi_gpu=False, use_all_gpus_for_search=False), additional_settings=None, logging_settings=Namespace(use_wandb=False))
-
-
-******************************
-Data shapes:
-Train X shape: (11673, 52)
-Train y shape: (11673, 1)
-Val X shape: (2919, 52)
-Val y shape: (2919, 1)
-Test X shape: (2880, 52)
-Test y shape: (2880, 1)
-Train X mark shape: (11673, 12)
-Val X mark shape: (2919, 12)
-Test X mark shape: (2880, 12)
-******************************
-[I 2024-08-17 00:31:14,601] Trial 42 finished with value: 7.630826396942139 and parameters: {'num_heads': 4, 'hidden_d_model': 112, 'token_conv_kernel': 5, 'last_d_model': 256, 'seq_len': 16, 'token_d_model': 3, 'time_d_model': 4, 'pos_d_model': 4, 'd_model': 128, 'conv_out_dim': 64, 'e_layers': 2, 'dropout': 0.0, 'learning_rate': 0.05, 'combine_type': 'add', 'use_pos_enc': True, 'norm_type': 'layer', 'batch_size': 1024, 'train_epochs': 50, 'feat_conv_kernel': 5, 'norm_after_dict': {'conv': False, 'mha': False, 'mlp': False}, 'skip_connection_mode': 'none'}. Best is trial 8 with value: 0.811407097429037.
-[W 2024-08-17 00:31:15,506] The parameter 'learning_rate' in trial#44 is sampled independently by using `RandomSampler` instead of `CmaEsSampler` (optimization performance may be degraded). `CmaEsSampler` does not support dynamic search space or `CategoricalDistribution`. You can suppress this warning by setting `warn_independent_sampling` to `False` in the constructor of `CmaEsSampler`, if this independent sampling is intended behavior.
-[W 2024-08-17 00:31:15,815] The parameter 'norm_after_dict' in trial#44 is sampled independently by using `RandomSampler` instead of `CmaEsSampler` (optimization performance may be degraded). `CmaEsSampler` does not support dynamic search space or `CategoricalDistribution`. You can suppress this warning by setting `warn_independent_sampling` to `False` in the constructor of `CmaEsSampler`, if this independent sampling is intended behavior.
-Base config keys: dict_keys(['general_settings', 'output_paths', 'data_paths', 'data_settings', 'model_settings', 'exp_settings', 'training_settings', 'scheduler_settings', 'gpu_settings', 'additional_settings', 'logging_settings'])
-Suggested hyperparameters keys: dict_keys(['num_heads', 'hidden_d_model', 'token_conv_kernel', 'last_d_model', 'seq_len', 'token_d_model', 'time_d_model', 'pos_d_model', 'd_model', 'conv_out_dim', 'e_layers', 'dropout', 'learning_rate', 'combine_type', 'use_pos_enc', 'norm_type', 'batch_size', 'train_epochs', 'feat_conv_kernel', 'norm_after_dict', 'skip_connection_mode'])
-Seed set to 17
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
-GPU available: True (cuda), used: True
-TPU available: False, using: 0 TPU cores
-HPU available: False, using: 0 HPUs
-LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
-
-  | Name      | Type    | Params | Mode 
-----------------------------------------------
-0 | model     | Model   | 418 K  | train
-1 | criterion | MSELoss | 0      | train
-----------------------------------------------
-418 K     Trainable params
-0         Non-trainable params
-418 K     Total params
-1.675     Total estimated model params size (MB)
-Metric Loss/val improved. New best score: 1.200
-Metric Loss/val improved by 0.022 >= min_delta = 0.0. New best score: 1.178
-Metric Loss/val improved by 0.175 >= min_delta = 0.0. New best score: 1.004
+2.1 M     Total params
+8.400     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.209
+Metric Loss/val improved by 0.001 >= min_delta = 0.0. New best score: 1.208
+Metric Loss/val improved by 0.001 >= min_delta = 0.0. New best score: 1.208
+Metric Loss/val improved by 0.000 >= min_delta = 0.0. New best score: 1.207
+Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 1.205

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the folder name as a variable
-FOLDER_NAME="24-08-16-mlp_v3-test"
+FOLDER_NAME="24-08-18-mlp_v3-search-8procs"
 
 # Define the base directory path
 BASE_DIR="/data3/lsf/Pein/Power-Prediction"

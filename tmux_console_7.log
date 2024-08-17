@@ -1,26 +1,12 @@
-[I 2024-08-17 00:31:16,116] Using an existing study with name '24-08-16-mlp_v3-test-skip-full-farm_66' instead of creating a new one.
-Creating study "24-08-16-mlp_v3-test-skip-full-farm_66" with storage "sqlite:////data3/lsf/Pein/Power-Prediction/optuna_results/24-08-16-mlp_v3-test-skip-full/24-08-16-mlp_v3-test-skip-full-farm_66.db?mode=wal"...
-Using sampler cma with seed 56599
-Not using Pruner
-  0%|          | 0/160 [00:00<?, ?it/s]/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': True, 'mlp': True} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': True, 'mlp': False} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': False, 'mlp': True} which is of type dict.
+[I 2024-08-18 01:09:56,099] Using an existing study with name '24-08-18-mlp_v3-search-8procs-farm_66' instead of creating a new one.
+Creating study "24-08-18-mlp_v3-search-8procs-farm_66" with storage "sqlite:////data3/lsf/Pein/Power-Prediction/optuna_results/24-08-18-mlp_v3-search-8procs/24-08-18-mlp_v3-search-8procs-farm_66.db?mode=wal"...
+Using sampler cma with seed 56864
+Using sampler : CmaEsSampler, pruner : <optuna.pruners._median.MedianPruner object at 0x7fed25c8e890>
+  0%|          | 0/96 [00:00<?, ?it/s]/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': False, 'mlp': True} which is of type dict.
   warnings.warn(message)
 /home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': False, 'mlp': False} which is of type dict.
   warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': True, 'mlp': True} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': True, 'mlp': False} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': False, 'mlp': True} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': False, 'mha': False, 'mlp': False} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [32, 200] and step=32, but the range is not divisible by `step`. It will be replaced by [32, 192].
-  warnings.warn(
-                                         0%|          | 0/160 [00:01<?, ?it/s]                                         0%|          | 0/160 [00:01<?, ?it/s]Seed set to 17
+Seed set to 17
 /home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
 GPU available: True (cuda), used: True
 TPU available: False, using: 0 TPU cores
@@ -30,11 +16,14 @@ LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
 
   | Name      | Type    | Params | Mode 
 ----------------------------------------------
-0 | model     | Model   | 245 K  | train
+0 | model     | Model   | 2.4 M  | train
 1 | criterion | MSELoss | 0      | train
 ----------------------------------------------
-245 K     Trainable params
+2.4 M     Trainable params
 0         Non-trainable params
-245 K     Total params
-0.984     Total estimated model params size (MB)
-Metric Loss/val improved. New best score: 1.072
+2.4 M     Total params
+9.626     Total estimated model params size (MB)
+Metric Loss/val improved. New best score: 1.257
+Metric Loss/val improved by 0.013 >= min_delta = 0.0. New best score: 1.244
+Metric Loss/val improved by 0.042 >= min_delta = 0.0. New best score: 1.202
+Metric Loss/val improved by 0.138 >= min_delta = 0.0. New best score: 1.065

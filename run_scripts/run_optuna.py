@@ -6,8 +6,10 @@ import os
 import sqlite3
 import sys
 import time
+import traceback
 from pathlib import Path
 from threading import Lock
+from typing import Dict
 
 import optuna
 import torch
@@ -117,7 +119,7 @@ hyperparam_path_map = {
 }
 
 
-def update_nested_dict(base_dict, updates, path_map):
+def update_nested_dict(base_dict: Dict, updates, path_map):
     """Update nested dictionary based on the path map."""
     # Convert base_dict's nested Namespace objects to dictionaries
     base_dict = namespace_to_dict(base_dict)
@@ -136,10 +138,12 @@ def update_nested_dict(base_dict, updates, path_map):
     return dict_to_namespace(base_dict, True)
 
 
-def _load_and_update_config(config_path, trial, time_str):
+def _load_and_update_config(
+    config_path: Path, trial: optuna.trial.Trial, time_str: str
+):
     """Load configuration and update with suggested hyperparameters."""
     # Load the base configuration from YAML and replace time placeholders
-    base_config = load_config(config_path, time_str=time_str)
+    base_config = load_config(config_path=config_path, time_str=time_str)
 
     # Convert the base_config Namespace to a dictionary for updating
     base_config_dict = namespace_to_dict(base_config)
@@ -150,6 +154,22 @@ def _load_and_update_config(config_path, trial, time_str):
     # Debug: Print keys
     print("Base config keys:", base_config_dict.keys())
     print("Suggested hyperparameters keys:", suggested_hyperparams.keys())
+
+    # Check and adjust hidden_d_model to be divisible by num_heads
+    hidden_d_model = suggested_hyperparams.get("hidden_d_model")
+    num_heads = suggested_hyperparams.get("num_heads")
+
+    if hidden_d_model is not None and num_heads is not None:
+        if hidden_d_model % num_heads != 0:
+            # Reduce num_heads so that hidden_d_model is divisible by num_heads
+            max_divisible_heads = max(
+                [n for n in range(1, hidden_d_model + 1) if hidden_d_model % n == 0]
+            )
+            print(
+                f"Adjusting num_heads from {num_heads} to {max_divisible_heads} "
+                f"to ensure hidden_d_model {hidden_d_model} is divisible by num_heads."
+            )
+            suggested_hyperparams["num_heads"] = max_divisible_heads
 
     # Update the base_config dictionary with the suggested hyperparameters
     updated_config_dict = update_nested_dict(
@@ -236,51 +256,58 @@ def _log_metrics(trainer, use_wandb):
 
 def objective(trial, config_path: str, time_str):
     """Objective function for Optuna to minimize."""
-    base_config = _load_and_update_config(config_path, trial, time_str)
-    print(f"\nRunning experiment with config:\n{base_config}\n\n")
+    try:
+        base_config = _load_and_update_config(config_path, trial, time_str)
+        print(f"\nRunning experiment with config:\n{base_config}\n\n")
 
-    (
-        trainer,
-        wind_power_module,
-        train_dataloader,
-        val_dataloaders,
-        use_wandb,
-        exp_output_dir,
-        version,
-        data_module,
-        base_config,
-    ) = setup_environment(trial, base_config)
-
-    log_file_path = _prepare_logging(base_config)
-
-    with open(log_file_path, "w") as f, contextlib.redirect_stdout(
-        f
-    ), contextlib.redirect_stderr(f):
-        trial_start_time = time.time()
-
-        training_duration = run_training(
-            trainer, wind_power_module, train_dataloader, val_dataloaders
-        )
-        testing_duration = run_custom_test(
+        (
             trainer,
             wind_power_module,
-            data_module,
-            base_config,
+            train_dataloader,
+            val_dataloaders,
+            use_wandb,
             exp_output_dir,
             version,
-        )
+            data_module,
+            base_config,
+        ) = setup_environment(trial, base_config)
 
-        calculate_total_duration(trial_start_time)
+        log_file_path = _prepare_logging(base_config)
 
-        print(f"Training time of trial: {training_duration:.2f} seconds")
-        print(f"Testing time of trial: {testing_duration:.2f} seconds")
-        print(
-            f"Total time of trial: {training_duration + testing_duration:.2f} seconds"
-        )
+        with open(log_file_path, "w") as f, contextlib.redirect_stdout(
+            f
+        ), contextlib.redirect_stderr(f):
+            trial_start_time = time.time()
 
-    weighted_loss = _log_metrics(trainer, use_wandb)
+            training_duration = run_training(
+                trainer, wind_power_module, train_dataloader, val_dataloaders
+            )
+            testing_duration = run_custom_test(
+                trainer,
+                wind_power_module,
+                data_module,
+                base_config,
+                exp_output_dir,
+                version,
+            )
 
-    return weighted_loss
+            calculate_total_duration(trial_start_time)
+
+            print(f"Training time of trial: {training_duration:.2f} seconds")
+            print(f"Testing time of trial: {testing_duration:.2f} seconds")
+            print(
+                f"Total time of trial: {training_duration + testing_duration:.2f} seconds"
+            )
+
+        weighted_loss = _log_metrics(trainer, use_wandb)
+
+        return weighted_loss
+
+    except Exception:
+        print("Trial failed due to an error:")
+        traceback.print_exc()  # Print the full traceback of the error
+        # Return a very high loss value to signify failure in Optuna
+        return float("inf")
 
 
 study_lock = Lock()
@@ -316,6 +343,7 @@ def create_study(args):
 
     sampler = get_sampler(args)
     pruner = get_pruner(args)
+    print(f"Using sampler : {sampler}, pruner : {pruner}")
 
     with study_lock:
         study = optuna.create_study(
@@ -346,7 +374,6 @@ def get_pruner(args):
     elif args.pruner_type == "successive_halving":
         return SuccessiveHalvingPruner(min_resource=3, reduction_factor=2)
     else:
-        print("Not using Pruner")
         return optuna.pruners.NopPruner()
 
 
@@ -440,11 +467,11 @@ def main():
     # Generate a time-based seed
     time_seed = int(time.time() * 10000) % 100000
 
-    time_str = "24-08-16-mlp_v3-test-skip-full"
+    time_str = "24-08-18-mlp_v3-search-8procs"
     study_name = f"{time_str}-farm_66"
-    n_trails = 20 * 8
+    n_trails = 12 * 8
     sampler_name = "cma"
-    pruner_type = None
+    pruner_type = "median"
     args = {
         "time_str": time_str,
         "study_name": study_name,
@@ -467,129 +494,153 @@ def suggest_hyperparameters(
     """Suggest hyperparameters using Optuna trial or return search space."""
     search_space = {
         # d_model related parameters
-        "d_model": [32, 200],
-        "hidden_d_model": [32, 160],
-        "last_d_model": [256],
-        "time_d_model": [4],
-        "pos_d_model": [4],
-        "token_d_model": [3],
+        "d_model": [16, 48, 64, 96],
+        "hidden_d_model": [48, 64, 96],
+        "last_d_model": [128, 256],
+        "time_d_model": [4, 8, 16],
+        "pos_d_model": [4, 8, 16],
+        "token_d_model": [8, 16, 32, 64, 96],
         # Model architecture and layers
-        "e_layers": [2],
-        "token_conv_kernel": [5],
-        "conv_out_dim": [64],
+        "e_layers": [6, 8, 12],
+        "token_conv_kernel": [5, 9, 11],
+        "conv_out_dim": [64, 128],
         # Attention mechanism parameters
-        "num_heads": [4],
+        "num_heads": [4, 8, 16, 32],
         # Miscellaneous fixed parameters
         "combine_type": ["add"],
-        "use_pos_enc": [True],
-        "norm_type": ["layer"],
-        "dropout": [0],
+        "use_pos_enc": [True, False],
+        "norm_type": ["batch", "layer"],
+        "dropout": [0.1, 0.2],
         "seq_len": [16],
         "train_epochs": [50],
         # Parameters to search
-        "learning_rate": [5e-3, 1e-2, 5e-2],
+        "learning_rate": [8e-4, 1e-3, 3e-3, 5e-3],
         "batch_size": [1024],
-        "feat_conv_kernel": [5],
+        "feat_conv_kernel": [9, 11, 13],
         "norm_after_dict_combinations": [
-            {"conv": True, "mha": True, "mlp": True},
-            {"conv": True, "mha": True, "mlp": False},
             {"conv": True, "mha": False, "mlp": True},
             {"conv": True, "mha": False, "mlp": False},
-            {"conv": False, "mha": True, "mlp": True},
-            {"conv": False, "mha": True, "mlp": False},
-            {"conv": False, "mha": False, "mlp": True},
-            {"conv": False, "mha": False, "mlp": False},
         ],
-        "skip_connection_mode": ["full"],  # , "conv_mha", "conv_mlp", "full"
+        "skip_connection_mode": [
+            "conv_mlp",
+            "full",
+            "none   ",
+        ],  # "none", "conv_mha", "conv_mlp", "full"
     }
 
     if return_search_space:
         return search_space
 
     hyperparams = {
-        # Integer suggestions
-        "num_heads": trial.suggest_int(
-            "num_heads",
-            min(search_space["num_heads"]),
-            max(search_space["num_heads"]),
-            step=32,
-        ),
-        "hidden_d_model": trial.suggest_int(
-            "hidden_d_model",
-            min(search_space["hidden_d_model"]),
-            max(search_space["hidden_d_model"]),
-            step=16,
-        ),
-        "token_conv_kernel": trial.suggest_int(
-            "token_conv_kernel",
-            min(search_space["token_conv_kernel"]),
-            max(search_space["token_conv_kernel"]),
-        ),
-        "last_d_model": trial.suggest_int(
-            "last_d_model",
-            min(search_space["last_d_model"]),
-            max(search_space["last_d_model"]),
-            step=32,
-        ),
-        "seq_len": trial.suggest_int(
-            "seq_len",
-            min(search_space["seq_len"]),
-            max(search_space["seq_len"]),
-            step=2,
-        ),
-        "token_d_model": trial.suggest_int(
-            "token_d_model",
-            min(search_space["token_d_model"]),
-            max(search_space["token_d_model"]),
-            step=16,
-        ),
-        "time_d_model": trial.suggest_int(
-            "time_d_model",
-            min(search_space["time_d_model"]),
-            max(search_space["time_d_model"]),
-            step=16,
-        ),
-        "pos_d_model": trial.suggest_int(
-            "pos_d_model",
-            min(search_space["pos_d_model"]),
-            max(search_space["pos_d_model"]),
-            step=16,
-        ),
-        "d_model": trial.suggest_int(
-            "d_model",
-            min(search_space["d_model"]),
-            max(search_space["d_model"]),
-            step=32,
-        ),
-        "conv_out_dim": trial.suggest_int(
-            "conv_out_dim",
-            min(search_space["conv_out_dim"]),
-            max(search_space["conv_out_dim"]),
-            step=32,
-        ),
-        "e_layers": trial.suggest_int(
-            "e_layers",
-            min(search_space["e_layers"]),
-            max(search_space["e_layers"]),
-            step=2,
-        ),
-        # Float suggestions
+        # Integer suggestions (commented out)
+        # "num_heads": trial.suggest_int(
+        #     "num_heads",
+        #     min(search_space["num_heads"]),
+        #     max(search_space["num_heads"]),
+        #     step=32,
+        # ),
+        # "hidden_d_model": trial.suggest_int(
+        #     "hidden_d_model",
+        #     min(search_space["hidden_d_model"]),
+        #     max(search_space["hidden_d_model"]),
+        #     step=32,
+        # ),
+        # "token_conv_kernel": trial.suggest_int(
+        #     "token_conv_kernel",
+        #     min(search_space["token_conv_kernel"]),
+        #     max(search_space["token_conv_kernel"]),
+        # ),
+        # "last_d_model": trial.suggest_int(
+        #     "last_d_model",
+        #     min(search_space["last_d_model"]),
+        #     max(search_space["last_d_model"]),
+        #     step=32,
+        # ),
+        # "seq_len": trial.suggest_int(
+        #     "seq_len",
+        #     min(search_space["seq_len"]),
+        #     max(search_space["seq_len"]),
+        #     step=2,
+        # ),
+        # "token_d_model": trial.suggest_int(
+        #     "token_d_model",
+        #     min(search_space["token_d_model"]),
+        #     max(search_space["token_d_model"]),
+        #     step=16,
+        # ),
+        # "time_d_model": trial.suggest_int(
+        #     "time_d_model",
+        #     min(search_space["time_d_model"]),
+        #     max(search_space["time_d_model"]),
+        #     step=16,
+        # ),
+        # "pos_d_model": trial.suggest_int(
+        #     "pos_d_model",
+        #     min(search_space["pos_d_model"]),
+        #     max(search_space["pos_d_model"]),
+        #     step=16,
+        # ),
+        # "d_model": trial.suggest_int(
+        #     "d_model",
+        #     min(search_space["d_model"]),
+        #     max(search_space["d_model"]),
+        #     step=16,
+        # ),
+        # "conv_out_dim": trial.suggest_int(
+        #     "conv_out_dim",
+        #     min(search_space["conv_out_dim"]),
+        #     max(search_space["conv_out_dim"]),
+        #     step=32,
+        # ),
+        # "e_layers": trial.suggest_int(
+        #     "e_layers",
+        #     min(search_space["e_layers"]),
+        #     max(search_space["e_layers"]),
+        #     step=2,
+        # ),
+        # Float suggestions (commented out)
         # "learning_rate": trial.suggest_float(
         #     "learning_rate",
         #     min(search_space["learning_rate"]),
         #     max(search_space["learning_rate"]),
         #     log=True,
         # ),
-        "dropout": trial.suggest_float(
-            "dropout",
-            min(search_space["dropout"]),
-            max(search_space["dropout"]),
-            step=0.02,
-        ),
+        # "dropout": trial.suggest_float(
+        #     "dropout",
+        #     min(search_space["dropout"]),
+        #     max(search_space["dropout"]),
+        #     step=0.02,
+        # ),
         # Categorical suggestions
+        "num_heads": trial.suggest_categorical("num_heads", search_space["num_heads"]),
+        "hidden_d_model": trial.suggest_categorical(
+            "hidden_d_model", search_space["hidden_d_model"]
+        ),
+        "token_conv_kernel": trial.suggest_categorical(
+            "token_conv_kernel", search_space["token_conv_kernel"]
+        ),
+        "last_d_model": trial.suggest_categorical(
+            "last_d_model", search_space["last_d_model"]
+        ),
+        "seq_len": trial.suggest_categorical("seq_len", search_space["seq_len"]),
+        "token_d_model": trial.suggest_categorical(
+            "token_d_model", search_space["token_d_model"]
+        ),
+        "time_d_model": trial.suggest_categorical(
+            "time_d_model", search_space["time_d_model"]
+        ),
+        "pos_d_model": trial.suggest_categorical(
+            "pos_d_model", search_space["pos_d_model"]
+        ),
+        "d_model": trial.suggest_categorical("d_model", search_space["d_model"]),
+        "conv_out_dim": trial.suggest_categorical(
+            "conv_out_dim", search_space["conv_out_dim"]
+        ),
+        "e_layers": trial.suggest_categorical("e_layers", search_space["e_layers"]),
         "learning_rate": trial.suggest_categorical(
             "learning_rate", search_space["learning_rate"]
         ),
+        "dropout": trial.suggest_categorical("dropout", search_space["dropout"]),
         "combine_type": trial.suggest_categorical(
             "combine_type", search_space["combine_type"]
         ),
