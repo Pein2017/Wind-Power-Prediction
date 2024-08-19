@@ -9,15 +9,15 @@ general_settings:
 
 # Output Paths
 output_paths:
-  train_log_dir: "/data3/lsf/Pein/Power-Prediction/train_log/exp_time_str"
-  res_output_dir: "/data3/lsf/Pein/Power-Prediction/res_output/exp_time_str"
-  final_best_metrics_log_path: "/data3/lsf/Pein/Power-Prediction/final_best_metric/exp_time_str.log"
-  optuna_study_dir: "/data3/lsf/Pein/Power-Prediction/optuna_study/exp_time_str"
-  wandb_output_dir: "/data3/lsf/Pein/Power-Prediction/wandb_output/optuna/exp_time_str"
+  train_log_dir: "/data/Pein/Pytorch/Wind-Power-Prediction/train_log/exp_time_str"
+  res_output_dir: "/data/Pein/Pytorch/Wind-Power-Prediction/res_output/exp_time_str"
+  final_best_metrics_log_path: "/data/Pein/Pytorch/Wind-Power-Prediction/final_best_metric/exp_time_str.log"
+  optuna_study_dir: "/data/Pein/Pytorch/Wind-Power-Prediction/optuna_study/exp_time_str"
+  wandb_output_dir: "/data/Pein/Pytorch/Wind-Power-Prediction/wandb_output/optuna/exp_time_str"
 
 # Data paths
 data_paths:
-  data_root_dir: "/data3/lsf/Pein/Power-Prediction/new_data/"
+  data_root_dir: "/data/Pein/Pytorch/Wind-Power-Prediction/new_data/"
   train_path: "4-train_66_withTime.csv"
   test_path: "4-test_66_withTime.csv"
 

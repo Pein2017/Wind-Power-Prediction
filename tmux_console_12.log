@@ -1,9 +1,0 @@
-Traceback (most recent call last):
-  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py", line 25, in <module>
-    from exp.pl_exp import WindPowerExperiment
-  File "/data3/lsf/Pein/Power-Prediction/exp/pl_exp.py", line 13, in <module>
-    from models import (
-  File "/data3/lsf/Pein/Power-Prediction/models/MLP_v3.py", line 58
-    time_features:  = None,
-                    ^
-SyntaxError: invalid syntax

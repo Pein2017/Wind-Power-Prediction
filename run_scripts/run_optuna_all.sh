@@ -7,24 +7,26 @@ convertsecs() {
     ((s = ${1} % 60))
     printf "%02d hours %02d minutes %02d seconds" $h $m $s
 }
+
+
 # Number of Processes
 COUNT=12
 START=12
 END=$((START + COUNT - 1))
 SLEEP=3
 
+# Number of GPUs
+GPU_COUNT=4
+
 # Capture the start time
 start_time=$(date +%s)
 
-# Activate the conda environment
-source activate Pein_310
-
 # Run the instances with GPUs in the background
 for i in $(seq $START $END); do
-    gpu_id=$((i % 2)) # Alternate between GPU 0 and GPU 1
-    log_file="/data3/lsf/Pein/Power-Prediction/tmux_console_${i}.log"
+    gpu_id=$((i % GPU_COUNT)) # Alternate between available GPUs
+    log_file="/data/Pein/Pytorch/Wind-Power-Prediction/tmux_${i}.log"
 
-    CUDA_VISIBLE_DEVICES=$gpu_id python /data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py >"$log_file" 2>&1 &
+    CUDA_VISIBLE_DEVICES=$gpu_id python /data/Pein/Pytorch/Wind-Power-Prediction/run_scripts/run_optuna.py >"$log_file" 2>&1 &
 
     # Sleep for seconds to allow the instance to start
     sleep $SLEEP

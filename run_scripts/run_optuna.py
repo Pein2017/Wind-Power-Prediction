@@ -18,25 +18,15 @@ from optuna.samplers import CmaEsSampler, GridSampler, NSGAIISampler, RandomSamp
 
 # from optuna.integration import PyTorchLightningPruningCallback
 
-sys.path.append("/data3/lsf/Pein/Power-Prediction")
+sys.path.append("/data/Pein/Pytorch/Wind-Power-Prediction")
 
 import pytorch_lightning as pl  # noqa
 
 from exp.pl_exp import WindPowerExperiment
-from run_scripts.single_exp import (
-    prepare_data_module,
-    prepare_output_directory,
-    set_seed,
-    setup_device_and_strategy,
-    setup_logging,
-    setup_trainer,
-)
-from utils.callback import MetricsCallback, get_callbacks, OptunaPruningCallback
-from utils.config import (
-    load_config,
-    namespace_to_dict,
-    dict_to_namespace,
-)
+from run_scripts.single_exp import (prepare_data_module, prepare_output_directory, set_seed,
+                                    setup_device_and_strategy, setup_logging, setup_trainer)
+from utils.callback import MetricsCallback, OptunaPruningCallback, get_callbacks
+from utils.config import dict_to_namespace, load_config, namespace_to_dict
 from utils.results import custom_test
 from utils.tools import get_next_version
 
@@ -468,15 +458,16 @@ def run_optuna_study(args):
 
 
 def main():
-    import numpy as np  # noqa
     import time
+
+    import numpy as np  # noqa
 
     # Generate a time-based seed
     time_seed = int(time.time() * 10000) % 100000
 
-    time_str = "24-08-18-mlp_v3-time_feats_only_day"
+    time_str = "24-08-19-no_time"
     study_name = f"{time_str}-farm_66"
-    n_trails = 12 * 1
+    n_trails = 12 * 2
     sampler_name = "cma"
     pruner_type = "median"
     args = {
@@ -484,8 +475,8 @@ def main():
         "study_name": study_name,
         "timeout": None,  # * keep this argument
         "n_trials": int(n_trails),
-        "output_dir": f"/data3/lsf/Pein/Power-Prediction/optuna_results/{time_str}",
-        "config_path": "/data3/lsf/Pein/Power-Prediction/config/optuna_config.yaml",
+        "output_dir": f"/data/Pein/Pytorch/Wind-Power-Prediction/optuna_results/{time_str}",
+        "config_path": "/data/Pein/Pytorch/Wind-Power-Prediction/config/optuna_config.yaml",
         "sampler_name": sampler_name,
         "seed": time_seed,
         "pruner_type": pruner_type,

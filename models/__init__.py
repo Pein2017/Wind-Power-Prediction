@@ -1,3 +1,3 @@
 import sys
 
-sys.path.append("/data3/lsf/Pein/Power-Prediction/models/layers")
+sys.path.append("/data/Pein/Pytorch/Wind-Power-Prediction/models/layers")

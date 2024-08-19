@@ -1,17 +1,13 @@
 # noqa
 import argparse
 import logging
-from typing import Optional,List
+from typing import List, Optional
 
 import torch
 import torch.nn as nn
 
-from models.layers.Embed import (
-    PositionalEmbedding,
-    TimeFeatureEmbedding,
-    TokenEmbedding,
-    generate_x_mark,
-)
+from models.layers.Embed import (PositionalEmbedding, TimeFeatureEmbedding, TokenEmbedding,
+                                 generate_x_mark)
 
 level = logging.INFO
 # Create a custom logger
@@ -46,7 +42,6 @@ def get_activation(activation_type: str) -> nn.Module:
     else:
         raise ValueError(f"Unsupported activation_type type: {activation_type}")
 
-
 class InitBlock(nn.Module):
     def __init__(
         self,
@@ -55,7 +50,7 @@ class InitBlock(nn.Module):
         output_dim: int,  # output_dim should be the enter d_model for the stacked network
         pos_d_model: Optional[int] = None,
         time_d_model: Optional[int] = None,
-        time_features:  = None,
+        time_features: Optional[List] = None,  # Allow None or empty list for time features
         token_conv_kernel: int = 5,
         norm_type: str = "batchnorm",  # Norm type: 'batchnorm' or 'layernorm'
         activation_type: str = "relu",  # Activation type: 'relu', 'gelu', etc.
@@ -70,13 +65,14 @@ class InitBlock(nn.Module):
         # Token embedding: Project each input feature to a higher dimension
         self.token_embedding = TokenEmbedding(input_dim, token_d_model)
 
-        # Positional and Temporal Embedding (optional)
+        # Positional Embedding (optional)
         self.positional_embedding = None
         if pos_d_model is not None:
             self.positional_embedding = PositionalEmbedding(pos_d_model)
 
+        # Temporal Embedding (optional)
         self.temporal_embedding = None
-        if time_d_model is not None and len(time_features)>0:
+        if time_d_model is not None and time_features:
             self.temporal_embedding = TimeFeatureEmbedding(
                 time_d_model, time_features=time_features
             )
@@ -85,7 +81,7 @@ class InitBlock(nn.Module):
         total_dim = input_dim * token_d_model
         if pos_d_model is not None:
             total_dim += pos_d_model
-        if time_d_model is not None:
+        if time_d_model is not None and time_features:
             total_dim += time_d_model
 
         self.conv1d = nn.Conv1d(
@@ -125,7 +121,7 @@ class InitBlock(nn.Module):
                 batch_size, seq_len, 0, device=x.device
             )  # Empty tensor
 
-        # Temporal Embedding (if x_mark is provided)
+        # Temporal Embedding (if x_mark is provided and time features exist)
         if self.temporal_embedding is not None and x_mark is not None:
             Time_emb = self.temporal_embedding(x_mark)
         else:

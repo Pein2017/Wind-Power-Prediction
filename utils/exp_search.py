@@ -1,7 +1,7 @@
 import itertools
 import sys
 
-sys.path.append("/data3/lsf/Pein/Power-Prediction")
+sys.path.append("/data/Pein/Pytorch/Wind-Power-Prediction")
 
 
 from utils.config import dict_to_namespace

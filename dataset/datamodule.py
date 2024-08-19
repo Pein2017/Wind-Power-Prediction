@@ -152,7 +152,7 @@ if __name__ == "__main__":
     seq_len = 5  # example sequence length
     batch_size = 32  # example batch size
 
-    data_dir = "/data3/lsf/Pein/Power-Prediction/data"
+    data_dir = "/data/Pein/Pytorch/Wind-Power-Prediction/data"
     train_ori = os.path.join(data_dir, "train_data_89_withTime.csv")
     test_ori = os.path.join(data_dir, "test_data_89_withTime.csv")
 

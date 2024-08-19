@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Define the folder name as a variable
-FOLDER_NAME="24-08-18-mlp_v3-time_feats_has_quaterhour"
+FOLDER_NAME="24-08-18-mlp_v3-time_feats_only_day"
 
 # Define the base directory path
-BASE_DIR="/data3/lsf/Pein/Power-Prediction"
+BASE_DIR="/data/Pein/Pytorch/Wind-Power-Prediction"
 
 # Remove the three folders using the folder name variable
 rm -rf "$BASE_DIR/res_output/$FOLDER_NAME"
