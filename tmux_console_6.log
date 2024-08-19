@@ -1,28 +1,9 @@
-[I 2024-08-18 01:09:53,100] Using an existing study with name '24-08-18-mlp_v3-search-8procs-farm_66' instead of creating a new one.
-Creating study "24-08-18-mlp_v3-search-8procs-farm_66" with storage "sqlite:////data3/lsf/Pein/Power-Prediction/optuna_results/24-08-18-mlp_v3-search-8procs/24-08-18-mlp_v3-search-8procs-farm_66.db?mode=wal"...
-Using sampler cma with seed 26611
-Using sampler : CmaEsSampler, pruner : <optuna.pruners._median.MedianPruner object at 0x7f914e482740>
-  0%|          | 0/96 [00:00<?, ?it/s]/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': False, 'mlp': True} which is of type dict.
-  warnings.warn(message)
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:524: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains {'conv': True, 'mha': False, 'mlp': False} which is of type dict.
-  warnings.warn(message)
-Seed set to 17
-/home/lsf/anaconda3/envs/Pein_310/lib/python3.10/site-packages/lightning_fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python /data3/lsf/Pein/Power-Prediction/run_scripts/run_opt ...
-GPU available: True (cuda), used: True
-TPU available: False, using: 0 TPU cores
-HPU available: False, using: 0 HPUs
-You are using a CUDA device ('NVIDIA RTX 6000 Ada Generation') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
-LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
-
-  | Name      | Type    | Params | Mode 
-----------------------------------------------
-0 | model     | Model   | 1.5 M  | train
-1 | criterion | MSELoss | 0      | train
-----------------------------------------------
-1.5 M     Trainable params
-0         Non-trainable params
-1.5 M     Total params
-6.123     Total estimated model params size (MB)
-Metric Loss/val improved. New best score: 1.263
-Metric Loss/val improved by 0.045 >= min_delta = 0.0. New best score: 1.217
-Metric Loss/val improved by 0.024 >= min_delta = 0.0. New best score: 1.194
+Traceback (most recent call last):
+  File "/data3/lsf/Pein/Power-Prediction/run_scripts/run_optuna.py", line 25, in <module>
+    from exp.pl_exp import WindPowerExperiment
+  File "/data3/lsf/Pein/Power-Prediction/exp/pl_exp.py", line 13, in <module>
+    from models import (
+  File "/data3/lsf/Pein/Power-Prediction/models/MLP_v3.py", line 434
+    TIME_FEATURES = ["da]  # "quarter_hour","hour",
+                                                 ^
+SyntaxError: unterminated string literal (detected at line 434)

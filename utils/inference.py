@@ -24,6 +24,7 @@ def full_inference(
                 all_trues.append(batch_y.cpu().numpy())
         preds = np.concatenate(all_preds, axis=0)
         trues = np.concatenate(all_trues, axis=0)
+
         if scale_y_flag:
             inversed_preds, inversed_trues = inverse_transform(preds, trues, scaler)
             inversed_preds = np.maximum(inversed_preds, 0)

@@ -7,9 +7,10 @@ convertsecs() {
     ((s = ${1} % 60))
     printf "%02d hours %02d minutes %02d seconds" $h $m $s
 }
-
-# Number of Process
-COUNT=8
+# Number of Processes
+COUNT=12
+START=12
+END=$((START + COUNT - 1))
 SLEEP=3
 
 # Capture the start time
@@ -19,7 +20,7 @@ start_time=$(date +%s)
 source activate Pein_310
 
 # Run the instances with GPUs in the background
-for i in $(seq 0 $((COUNT - 1))); do
+for i in $(seq $START $END); do
     gpu_id=$((i % 2)) # Alternate between GPU 0 and GPU 1
     log_file="/data3/lsf/Pein/Power-Prediction/tmux_console_${i}.log"
 

@@ -86,34 +86,65 @@ class AccuracyMetricLoss(nn.Module):
             pred.shape == true.shape
         ), "Shape mismatch between prediction and ground truth arrays"
 
-        num_complete_days = true.shape[0] // 96
-        if num_complete_days == 0:
-            raise ValueError(
-                "Input data does not contain a complete day (96 time points)."
-            )
+        error_sum = 0.0
+        num_elements = true.shape[0]
 
-        true = true[: num_complete_days * 96]
-        pred = pred[: num_complete_days * 96]
+        for i in range(num_elements):
+            if true[i] > 0.2 * self.cap:
+                error_sum += ((true[i] - pred[i]) / true[i]) ** 2
+            else:
+                error_sum += ((true[i] - pred[i]) / (0.2 * self.cap)) ** 2
 
-        true = true.view(num_complete_days, 96)
-        pred = pred.view(num_complete_days, 96)
-
-        score = torch.zeros(num_complete_days, device=self.device, dtype=torch.float32)
-
-        for i_date in range(num_complete_days):
-            error_sum = 0.0
-            for i_time in range(96):
-                if true[i_date, i_time] > 0.2 * self.cap:
-                    error_sum += (
-                        (true[i_date, i_time] - pred[i_date, i_time])
-                        / true[i_date, i_time]
-                    ) ** 2
-                else:
-                    error_sum += (
-                        (true[i_date, i_time] - pred[i_date, i_time]) / (0.2 * self.cap)
-                    ) ** 2
-            score[i_date] = (1 - torch.sqrt(error_sum / 96.0)) * 100.0
-
-        mean_score = torch.mean(score)
+        # Calculate the mean score for all elements
+        mean_score = (1 - torch.sqrt(error_sum / num_elements)) * 100.0
 
         return mean_score
+
+
+# class AccuracyMetricLoss(nn.Module):
+#     def __init__(self, device: torch.device, cap=CAP):
+#         super(AccuracyMetricLoss, self).__init__()
+#         self.cap = cap
+#         self.device = device
+
+#     def forward(self, pred, true):
+#         if isinstance(pred, np.ndarray):
+#             pred = torch.tensor(pred, device=self.device, dtype=torch.float32)
+#         if isinstance(true, np.ndarray):
+#             true = torch.tensor(true, device=self.device, dtype=torch.float32)
+
+#         assert (
+#             pred.shape == true.shape
+#         ), "Shape mismatch between prediction and ground truth arrays"
+
+#         num_complete_days = true.shape[0] // 96
+#         if num_complete_days == 0:
+#             raise ValueError(
+#                 "Input data does not contain a complete day (96 time points)."
+#             )
+
+#         true = true[: num_complete_days * 96]
+#         pred = pred[: num_complete_days * 96]
+
+#         true = true.view(num_complete_days, 96)
+#         pred = pred.view(num_complete_days, 96)
+
+#         score = torch.zeros(num_complete_days, device=self.device, dtype=torch.float32)
+
+#         for i_date in range(num_complete_days):
+#             error_sum = 0.0
+#             for i_time in range(96):
+#                 if true[i_date, i_time] > 0.2 * self.cap:
+#                     error_sum += (
+#                         (true[i_date, i_time] - pred[i_date, i_time])
+#                         / true[i_date, i_time]
+#                     ) ** 2
+#                 else:
+#                     error_sum += (
+#                         (true[i_date, i_time] - pred[i_date, i_time]) / (0.2 * self.cap)
+#                     ) ** 2
+#             score[i_date] = (1 - torch.sqrt(error_sum / 96.0)) * 100.0
+
+#         mean_score = torch.mean(score)
+
+#         return mean_score

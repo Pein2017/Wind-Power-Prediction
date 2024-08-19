@@ -1,7 +1,6 @@
 import datetime
 import os
 
-import optuna
 from pytorch_lightning.callbacks import (
     Callback,
     EarlyStopping,
@@ -417,8 +416,9 @@ class OptunaPruningCallback(Callback):
         val_loss = trainer.callback_metrics["Loss/val"].item()
         test_loss = trainer.callback_metrics["Loss/test"].item()
 
-        weighted_loss = 0.2 * train_loss + 0.4 * val_loss + 0.4 * test_loss
+        weighted_loss = 0.01 * train_loss + 0.5 * val_loss + 0.5 * test_loss
 
         self.trial.report(weighted_loss, trainer.current_epoch)
         if self.trial.should_prune():
-            raise optuna.exceptions.TrialPruned()
+            print("Trial pruned!")
+            trainer.should_stop = True

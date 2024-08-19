@@ -1,7 +1,7 @@
 # noqa
 import argparse
 import logging
-from typing import Optional
+from typing import Optional,List
 
 import torch
 import torch.nn as nn
@@ -13,17 +13,18 @@ from models.layers.Embed import (
     generate_x_mark,
 )
 
+level = logging.INFO
 # Create a custom logger
 logger = logging.getLogger(__name__)
 
-logger.setLevel(logging.DEBUG)
+logger.setLevel(level)
 
 console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
+console_handler.setLevel(level)
 
 log_file = "mlp_v3.log"
 file_handler = logging.FileHandler(log_file)
-file_handler.setLevel(logging.DEBUG)
+file_handler.setLevel(level)
 
 # Create a formatter and set it for both the handlers
 formatter = logging.Formatter("%(asctime)s %(message)s")
@@ -54,7 +55,7 @@ class InitBlock(nn.Module):
         output_dim: int,  # output_dim should be the enter d_model for the stacked network
         pos_d_model: Optional[int] = None,
         time_d_model: Optional[int] = None,
-        time_features=None,
+        time_features:  = None,
         token_conv_kernel: int = 5,
         norm_type: str = "batchnorm",  # Norm type: 'batchnorm' or 'layernorm'
         activation_type: str = "relu",  # Activation type: 'relu', 'gelu', etc.
@@ -75,7 +76,7 @@ class InitBlock(nn.Module):
             self.positional_embedding = PositionalEmbedding(pos_d_model)
 
         self.temporal_embedding = None
-        if time_d_model is not None:
+        if time_d_model is not None and len(time_features)>0:
             self.temporal_embedding = TimeFeatureEmbedding(
                 time_d_model, time_features=time_features
             )
@@ -289,7 +290,7 @@ class MultiFeatureBlock(nn.Module):
             norm_after_dict = {
                 "conv": True,
                 "mha": False,
-                "mlp": True,
+                "mlp": False,
             }
         if norm_after_dict is not None and not isinstance(norm_after_dict, dict):
             norm_after_dict = vars(norm_after_dict)
@@ -430,7 +431,7 @@ class Model(nn.Module):
         super(Model, self).__init__()
 
         # Time features to be used for embedding
-        TIME_FEATURES = ["hour", "quarter_hour", "day"]
+        TIME_FEATURES = []  # "quarter_hour","hour",
 
         # Extract configurations from the config
         input_dim = config.input_dim

@@ -65,8 +65,10 @@ model_settings:
   fc_layer_type: "mlp"
   conv_out_dim: 3
   feat_conv_kernel: 10
-  norm_after_dict: null
   skip_connection_mode: "none"
+  conv_norm: null
+  mlp_norm: null
+  norm_after_dict: null
 
 # Global Settings
 exp_settings: null

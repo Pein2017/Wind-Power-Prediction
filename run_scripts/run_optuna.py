@@ -109,12 +109,18 @@ hyperparam_path_map = {
         "feat_conv_kernel": "feat_conv_kernel",
         "norm_after_dict": "norm_after_dict",
         "skip_connection_mode": "skip_connection_mode",
+        "conv_norm": "conv_norm",
+        "mlp_norm": "mlp_norm",
     },
     # Training settings
     "training_settings": {
         "learning_rate": "learning_rate",
         "batch_size": "batch_size",
         "train_epochs": "train_epochs",
+    },
+    "data_settings": {
+        "scale_y_type": "scale_y_type",
+        "random_split": "random_split",
     },
 }
 
@@ -158,6 +164,7 @@ def _load_and_update_config(
     # Check and adjust hidden_d_model to be divisible by num_heads
     hidden_d_model = suggested_hyperparams.get("hidden_d_model")
     num_heads = suggested_hyperparams.get("num_heads")
+    suggested_hyperparams["dropout"] = round(suggested_hyperparams["dropout"], 3)
 
     if hidden_d_model is not None and num_heads is not None:
         if hidden_d_model % num_heads != 0:
@@ -368,7 +375,7 @@ def create_study(args):
 def get_pruner(args):
     """Get the appropriate Optuna pruner based on the provided type."""
     if args.pruner_type == "median":
-        return MedianPruner(n_startup_trials=10, n_warmup_steps=75, interval_steps=5)
+        return MedianPruner(n_startup_trials=5, n_warmup_steps=25, interval_steps=1)
     elif args.pruner_type == "hyperband":
         return HyperbandPruner(min_resource=3, max_resource="auto", reduction_factor=3)
     elif args.pruner_type == "successive_halving":
@@ -467,9 +474,9 @@ def main():
     # Generate a time-based seed
     time_seed = int(time.time() * 10000) % 100000
 
-    time_str = "24-08-18-mlp_v3-search-8procs"
+    time_str = "24-08-18-mlp_v3-time_feats_only_day"
     study_name = f"{time_str}-farm_66"
-    n_trails = 12 * 8
+    n_trails = 12 * 1
     sampler_name = "cma"
     pruner_type = "median"
     args = {
@@ -494,153 +501,122 @@ def suggest_hyperparameters(
     """Suggest hyperparameters using Optuna trial or return search space."""
     search_space = {
         # d_model related parameters
-        "d_model": [16, 48, 64, 96],
-        "hidden_d_model": [48, 64, 96],
-        "last_d_model": [128, 256],
-        "time_d_model": [4, 8, 16],
-        "pos_d_model": [4, 8, 16],
-        "token_d_model": [8, 16, 32, 64, 96],
+        "d_model": [16, 256],
+        "hidden_d_model": [16, 32, 48],
+        "last_d_model": [32, 512],
+        "time_d_model": [4, 32],
+        "pos_d_model": [4, 32],
+        "token_d_model": [4, 8],
         # Model architecture and layers
-        "e_layers": [6, 8, 12],
-        "token_conv_kernel": [5, 9, 11],
-        "conv_out_dim": [64, 128],
+        "e_layers": [2, 8],
+        "token_conv_kernel": [9, 11],
+        "feat_conv_kernel": [9, 11],
+        "conv_out_dim": [64, 128, 256],
         # Attention mechanism parameters
-        "num_heads": [4, 8, 16, 32],
+        "num_heads": [4, 8],
         # Miscellaneous fixed parameters
         "combine_type": ["add"],
         "use_pos_enc": [True, False],
         "norm_type": ["batch", "layer"],
-        "dropout": [0.1, 0.2],
-        "seq_len": [16],
+        "dropout": [0.1, 0.15, 0.2],
+        "seq_len": [8],
         "train_epochs": [50],
         # Parameters to search
-        "learning_rate": [8e-4, 1e-3, 3e-3, 5e-3],
+        "learning_rate": [8e-4, 8e-3, 2e-2, 5e-2],  # 8e-4, 1e-3,
         "batch_size": [1024],
-        "feat_conv_kernel": [9, 11, 13],
-        "norm_after_dict_combinations": [
-            {"conv": True, "mha": False, "mlp": True},
-            {"conv": True, "mha": False, "mlp": False},
-        ],
+        "conv_norm": [True],
+        "mlp_norm": [True, False],
         "skip_connection_mode": [
             "conv_mlp",
             "full",
-            "none   ",
         ],  # "none", "conv_mha", "conv_mlp", "full"
+        "scale_y_type": ["standard"],  # min_max
     }
 
     if return_search_space:
         return search_space
 
     hyperparams = {
-        # Integer suggestions (commented out)
-        # "num_heads": trial.suggest_int(
-        #     "num_heads",
-        #     min(search_space["num_heads"]),
-        #     max(search_space["num_heads"]),
-        #     step=32,
-        # ),
-        # "hidden_d_model": trial.suggest_int(
-        #     "hidden_d_model",
-        #     min(search_space["hidden_d_model"]),
-        #     max(search_space["hidden_d_model"]),
-        #     step=32,
-        # ),
-        # "token_conv_kernel": trial.suggest_int(
-        #     "token_conv_kernel",
-        #     min(search_space["token_conv_kernel"]),
-        #     max(search_space["token_conv_kernel"]),
-        # ),
-        # "last_d_model": trial.suggest_int(
-        #     "last_d_model",
-        #     min(search_space["last_d_model"]),
-        #     max(search_space["last_d_model"]),
-        #     step=32,
-        # ),
-        # "seq_len": trial.suggest_int(
-        #     "seq_len",
-        #     min(search_space["seq_len"]),
-        #     max(search_space["seq_len"]),
-        #     step=2,
-        # ),
-        # "token_d_model": trial.suggest_int(
-        #     "token_d_model",
-        #     min(search_space["token_d_model"]),
-        #     max(search_space["token_d_model"]),
-        #     step=16,
-        # ),
-        # "time_d_model": trial.suggest_int(
-        #     "time_d_model",
-        #     min(search_space["time_d_model"]),
-        #     max(search_space["time_d_model"]),
-        #     step=16,
-        # ),
-        # "pos_d_model": trial.suggest_int(
-        #     "pos_d_model",
-        #     min(search_space["pos_d_model"]),
-        #     max(search_space["pos_d_model"]),
-        #     step=16,
-        # ),
-        # "d_model": trial.suggest_int(
-        #     "d_model",
-        #     min(search_space["d_model"]),
-        #     max(search_space["d_model"]),
-        #     step=16,
-        # ),
-        # "conv_out_dim": trial.suggest_int(
-        #     "conv_out_dim",
-        #     min(search_space["conv_out_dim"]),
-        #     max(search_space["conv_out_dim"]),
-        #     step=32,
-        # ),
-        # "e_layers": trial.suggest_int(
-        #     "e_layers",
-        #     min(search_space["e_layers"]),
-        #     max(search_space["e_layers"]),
-        #     step=2,
-        # ),
-        # Float suggestions (commented out)
-        # "learning_rate": trial.suggest_float(
-        #     "learning_rate",
-        #     min(search_space["learning_rate"]),
-        #     max(search_space["learning_rate"]),
-        #     log=True,
-        # ),
-        # "dropout": trial.suggest_float(
-        #     "dropout",
-        #     min(search_space["dropout"]),
-        #     max(search_space["dropout"]),
-        #     step=0.02,
-        # ),
+        # Integer suggestions
+        "num_heads": trial.suggest_int(
+            "num_heads",
+            min(search_space["num_heads"]),
+            max(search_space["num_heads"]),
+            step=8,
+        ),
+        "hidden_d_model": trial.suggest_int(
+            "hidden_d_model",
+            min(search_space["hidden_d_model"]),
+            max(search_space["hidden_d_model"]),
+            step=4,
+        ),
+        "token_conv_kernel": trial.suggest_int(
+            "token_conv_kernel",
+            min(search_space["token_conv_kernel"]),
+            max(search_space["token_conv_kernel"]),
+            step=2,
+        ),
+        "last_d_model": trial.suggest_int(
+            "last_d_model",
+            min(search_space["last_d_model"]),
+            max(search_space["last_d_model"]),
+            step=64,
+        ),
+        "seq_len": trial.suggest_int(
+            "seq_len",
+            min(search_space["seq_len"]),
+            max(search_space["seq_len"]),
+        ),
+        "token_d_model": trial.suggest_int(
+            "token_d_model",
+            min(search_space["token_d_model"]),
+            max(search_space["token_d_model"]),
+            step=4,
+        ),
+        "time_d_model": trial.suggest_int(
+            "time_d_model",
+            min(search_space["time_d_model"]),
+            max(search_space["time_d_model"]),
+            step=4,
+        ),
+        "pos_d_model": trial.suggest_int(
+            "pos_d_model",
+            min(search_space["pos_d_model"]),
+            max(search_space["pos_d_model"]),
+            step=4,
+        ),
+        "d_model": trial.suggest_int(
+            "d_model",
+            min(search_space["d_model"]),
+            max(search_space["d_model"]),
+            step=32,
+        ),
+        "conv_out_dim": trial.suggest_int(
+            "conv_out_dim",
+            min(search_space["conv_out_dim"]),
+            max(search_space["conv_out_dim"]),
+            step=64,
+        ),
+        "e_layers": trial.suggest_int(
+            "e_layers",
+            min(search_space["e_layers"]),
+            max(search_space["e_layers"]),
+            step=1,
+        ),
+        # Float suggestions
+        "learning_rate": trial.suggest_float(
+            "learning_rate",
+            min(search_space["learning_rate"]),
+            max(search_space["learning_rate"]),
+            log=True,
+        ),
+        "dropout": trial.suggest_float(
+            "dropout",
+            min(search_space["dropout"]),
+            max(search_space["dropout"]),
+            step=0.02,
+        ),
         # Categorical suggestions
-        "num_heads": trial.suggest_categorical("num_heads", search_space["num_heads"]),
-        "hidden_d_model": trial.suggest_categorical(
-            "hidden_d_model", search_space["hidden_d_model"]
-        ),
-        "token_conv_kernel": trial.suggest_categorical(
-            "token_conv_kernel", search_space["token_conv_kernel"]
-        ),
-        "last_d_model": trial.suggest_categorical(
-            "last_d_model", search_space["last_d_model"]
-        ),
-        "seq_len": trial.suggest_categorical("seq_len", search_space["seq_len"]),
-        "token_d_model": trial.suggest_categorical(
-            "token_d_model", search_space["token_d_model"]
-        ),
-        "time_d_model": trial.suggest_categorical(
-            "time_d_model", search_space["time_d_model"]
-        ),
-        "pos_d_model": trial.suggest_categorical(
-            "pos_d_model", search_space["pos_d_model"]
-        ),
-        "d_model": trial.suggest_categorical("d_model", search_space["d_model"]),
-        "conv_out_dim": trial.suggest_categorical(
-            "conv_out_dim", search_space["conv_out_dim"]
-        ),
-        "e_layers": trial.suggest_categorical("e_layers", search_space["e_layers"]),
-        "learning_rate": trial.suggest_categorical(
-            "learning_rate", search_space["learning_rate"]
-        ),
-        "dropout": trial.suggest_categorical("dropout", search_space["dropout"]),
         "combine_type": trial.suggest_categorical(
             "combine_type", search_space["combine_type"]
         ),
@@ -657,11 +633,13 @@ def suggest_hyperparameters(
         "feat_conv_kernel": trial.suggest_categorical(
             "feat_conv_kernel", search_space["feat_conv_kernel"]
         ),
-        "norm_after_dict": trial.suggest_categorical(
-            "norm_after_dict", search_space["norm_after_dict_combinations"]
-        ),
         "skip_connection_mode": trial.suggest_categorical(
             "skip_connection_mode", search_space["skip_connection_mode"]
+        ),
+        "conv_norm": trial.suggest_categorical("conv_norm", search_space["conv_norm"]),
+        "mlp_norm": trial.suggest_categorical("mlp_norm", search_space["mlp_norm"]),
+        "scale_y_type": trial.suggest_categorical(
+            "scale_y_type", search_space["scale_y_type"]
         ),
     }
 

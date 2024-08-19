@@ -53,18 +53,23 @@ def create_exp_settings(args):
         # Ensure model_settings and training_settings are Namespace objects
         model_settings = args.model_settings
         training_settings = args.training_settings
+        data_settings = args.data_settings
 
-        norm_after_dict = model_settings.norm_after_dict
+        norm_after_dict = {
+            "conv_norm": model_settings.conv_norm,
+            "mlp_norm": model_settings.mlp_norm,
+        }
 
         # Round the learning rate to 4 decimal places
         learning_rate_rounded = round(training_settings.learning_rate, 4)
+        dropout_rounded = round(model_settings.dropout, 3)
 
         # Define the settings dictionary
         settings_dict = {
+            "scale_y": data_settings.scale_y_type,
             "skip_mode": model_settings.skip_connection_mode,
-            "conv": norm_after_dict.conv,
-            "mha": norm_after_dict.mha,
-            "mlp": norm_after_dict.mlp,
+            "conv": norm_after_dict["conv_norm"],
+            "mlp": norm_after_dict["mlp_norm"],
             "use_pos": model_settings.use_pos_enc,
             "seq_len": model_settings.seq_len,
             "lr": learning_rate_rounded,
@@ -78,7 +83,7 @@ def create_exp_settings(args):
             "tok_conv_k": model_settings.token_conv_kernel,
             "conv_out_d": model_settings.conv_out_dim,
             "feat_conv_k": model_settings.feat_conv_kernel,
-            "dropout": model_settings.dropout,
+            "dropout": dropout_rounded,
             "norm_type": model_settings.norm_type,
             "num_heads": model_settings.num_heads,
             "bs": training_settings.batch_size,
