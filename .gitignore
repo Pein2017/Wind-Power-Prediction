@@ -12,3 +12,5 @@ __pycache__/
 # Ignore everything under train_log and output directories
 /train_log/
 /res_output/
+
+/.history/

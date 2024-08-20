@@ -10,13 +10,13 @@ convertsecs() {
 
 
 # Number of Processes
-COUNT=12
-START=12
+COUNT=128
+START=0
 END=$((START + COUNT - 1))
 SLEEP=3
 
 # Number of GPUs
-GPU_COUNT=4
+GPU_COUNT=8
 
 # Capture the start time
 start_time=$(date +%s)

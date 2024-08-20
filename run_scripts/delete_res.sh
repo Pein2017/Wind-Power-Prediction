@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the folder name as a variable
-FOLDER_NAME="24-08-18-mlp_v3-time_feats_only_day"
+FOLDER_NAME="24-08-20-day_hour-minmax"
 
 # Define the base directory path
 BASE_DIR="/data/Pein/Pytorch/Wind-Power-Prediction"

@@ -465,9 +465,9 @@ def main():
     # Generate a time-based seed
     time_seed = int(time.time() * 10000) % 100000
 
-    time_str = "24-08-19-no_time"
+    time_str = "24-08-20-day_hour-minmax"
     study_name = f"{time_str}-farm_66"
-    n_trails = 12 * 2
+    n_trails = 12 * 0.5
     sampler_name = "cma"
     pruner_type = "median"
     args = {
@@ -521,7 +521,7 @@ def suggest_hyperparameters(
             "conv_mlp",
             "full",
         ],  # "none", "conv_mha", "conv_mlp", "full"
-        "scale_y_type": ["standard"],  # min_max
+        "scale_y_type": ["min_max"],  # standard, min_max
     }
 
     if return_search_space:

@@ -427,7 +427,7 @@ class Model(nn.Module):
         super(Model, self).__init__()
 
         # Time features to be used for embedding
-        TIME_FEATURES = []  # "quarter_hour","hour",
+        TIME_FEATURES = ['hour','day']  # "quarter_hour","hour",
 
         # Extract configurations from the config
         input_dim = config.input_dim
