@@ -30,12 +30,12 @@ class WindPowerDataModule(LightningDataModule):
         self.batch_size = args.training_settings.batch_size
 
         # Optional attributes with defaults
-        self.train_val_split = getattr(args.data_settings, "train_val_split", 0.2)
+        self.val_split  = getattr(args.data_settings, "val_split ", 0.2)
         self.random_split = getattr(args.data_settings, "random_split")
 
-        # check if train_val_split is smaller than 0.4
-        if self.train_val_split > 0.4:
-            raise ValueError("train_val_split should be smaller than 0.4")
+        # check if val_split  is smaller than 0.4
+        if self.val_split  > 0.4:
+            raise ValueError("val_split  should be smaller than 0.4")
 
         self.scale_x_type = getattr(args.data_settings, "scale_x_type", "standard")
         self.scale_y_type = getattr(args.data_settings, "scale_y_type", "min_max")
@@ -51,11 +51,11 @@ class WindPowerDataModule(LightningDataModule):
         if self.random_split:
             train_data, val_data = train_test_split(
                 train_data,
-                test_size=self.train_val_split,
+                test_size=self.val_split ,
             )
         else:
             # raise NotImplementedError("Non-random split not implemented yet")
-            train_data_size = int(len(train_data) * (1 - self.train_val_split))
+            train_data_size = int(len(train_data) * (1 - self.val_split ))
             train_data, val_data = (
                 train_data[:train_data_size],
                 train_data[train_data_size:],
@@ -163,7 +163,7 @@ if __name__ == "__main__":
         "test_path": test_ori,
         "seq_len": seq_len,
         "batch_size": batch_size,
-        "train_val_split": 0.2,
+        "val_split ": 0.2,
         "scale_x_type": "standard",
         "scale_y_type": "min_max",
         "num_workers": 4,

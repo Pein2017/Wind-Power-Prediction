@@ -1,96 +1,0 @@
-[I 2024-08-20 02:50:20,872] Using an existing study with name '24-08-20-day_hour-minmax-farm_66' instead of creating a new one.
-Creating study "24-08-20-day_hour-minmax-farm_66" with storage "sqlite:////data/Pein/Pytorch/Wind-Power-Prediction/optuna_results/24-08-20-day_hour-minmax/24-08-20-day_hour-minmax-farm_66.db?mode=wal"...
-Using sampler cma with seed 676
-Using sampler : CmaEsSampler, pruner : <optuna.pruners._median.MedianPruner object at 0x7f2ade467ee0>
-  0%|          | 0/6 [00:00<?, ?it/s]/root/miniconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [4, 8] and step=8, but the range is not divisible by `step`. It will be replaced by [4, 4].
-  warnings.warn(
-/root/miniconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [32, 512] and step=64, but the range is not divisible by `step`. It will be replaced by [32, 480].
-  warnings.warn(
-/root/miniconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [16, 256] and step=32, but the range is not divisible by `step`. It will be replaced by [16, 240].
-  warnings.warn(
-                                       0%|          | 0/6 [00:02<?, ?it/s]                                       0%|          | 0/6 [00:02<?, ?it/s]                                       0%|          | 0/6 [00:02<?, ?it/s]                                       0%|          | 0/6 [00:02<?, ?it/s]                                       0%|          | 0/6 [00:03<?, ?it/s]Seed set to 17
-GPU available: True (cuda), used: True
-TPU available: False, using: 0 TPU cores
-HPU available: False, using: 0 HPUs
-You are using a CUDA device ('NVIDIA A100 80GB PCIe') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
-LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [4]
-
-  | Name      | Type    | Params | Mode 
-----------------------------------------------
-0 | model     | Model   | 1.3 M  | train
-1 | criterion | MSELoss | 0      | train
-----------------------------------------------
-1.3 M     Trainable params
-0         Non-trainable params
-1.3 M     Total params
-5.112     Total estimated model params size (MB)
-83        Modules in train mode
-0         Modules in eval mode
-Metric Loss/val improved. New best score: 0.155
-Metric Loss/val improved by 0.019 >= min_delta = 0.0. New best score: 0.136
-Metric Loss/val improved by 0.020 >= min_delta = 0.0. New best score: 0.116
-Metric Loss/val improved by 0.023 >= min_delta = 0.0. New best score: 0.093
-Metric Loss/val improved by 0.008 >= min_delta = 0.0. New best score: 0.085
-Metric Loss/val improved by 0.013 >= min_delta = 0.0. New best score: 0.072
-Metric Loss/val improved by 0.008 >= min_delta = 0.0. New best score: 0.064
-Monitored metric Loss/val did not improve in the last 15 records. Best score: 0.064. Signaling Trainer to stop.
-                                       0%|          | 0/6 [10:58<?, ?it/s]Best trial: 35. Best value: 0.0627588:   0%|          | 0/6 [10:59<?, ?it/s]Best trial: 35. Best value: 0.0627588:  17%|█▋        | 1/6 [10:59<54:56, 659.31s/it]/root/miniconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [4, 8] and step=8, but the range is not divisible by `step`. It will be replaced by [4, 4].
-  warnings.warn(
-/root/miniconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [32, 512] and step=64, but the range is not divisible by `step`. It will be replaced by [32, 480].
-  warnings.warn(
-/root/miniconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [16, 256] and step=32, but the range is not divisible by `step`. It will be replaced by [16, 240].
-  warnings.warn(
-                                                                                     Best trial: 35. Best value: 0.0627588:  17%|█▋        | 1/6 [11:04<54:56, 659.31s/it]                                                                                     Best trial: 35. Best value: 0.0627588:  17%|█▋        | 1/6 [11:04<54:56, 659.31s/it]                                                                                     Best trial: 35. Best value: 0.0627588:  17%|█▋        | 1/6 [11:06<54:56, 659.31s/it]                                                                                     Best trial: 35. Best value: 0.0627588:  17%|█▋        | 1/6 [11:06<54:56, 659.31s/it]                                                                                     Best trial: 35. Best value: 0.0627588:  17%|█▋        | 1/6 [11:07<54:56, 659.31s/it]Seed set to 17
-GPU available: True (cuda), used: True
-TPU available: False, using: 0 TPU cores
-HPU available: False, using: 0 HPUs
-LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [4]
-
-  | Name      | Type    | Params | Mode 
-----------------------------------------------
-0 | model     | Model   | 900 K  | train
-1 | criterion | MSELoss | 0      | train
-----------------------------------------------
-900 K     Trainable params
-0         Non-trainable params
-900 K     Total params
-3.604     Total estimated model params size (MB)
-83        Modules in train mode
-0         Modules in eval mode
-Metric Loss/val improved. New best score: 0.169
-Metric Loss/val improved by 0.019 >= min_delta = 0.0. New best score: 0.151
-Metric Loss/val improved by 0.019 >= min_delta = 0.0. New best score: 0.132
-Metric Loss/val improved by 0.027 >= min_delta = 0.0. New best score: 0.105
-Metric Loss/val improved by 0.020 >= min_delta = 0.0. New best score: 0.085
-Metric Loss/val improved by 0.012 >= min_delta = 0.0. New best score: 0.073
-Metric Loss/val improved by 0.006 >= min_delta = 0.0. New best score: 0.067
-Metric Loss/val improved by 0.000 >= min_delta = 0.0. New best score: 0.066
-Metric Loss/val improved by 0.008 >= min_delta = 0.0. New best score: 0.058
-Monitored metric Loss/val did not improve in the last 15 records. Best score: 0.058. Signaling Trainer to stop.
-                                                                                     Best trial: 35. Best value: 0.0627588:  17%|█▋        | 1/6 [23:48<54:56, 659.31s/it]Best trial: 120. Best value: 0.0562338:  17%|█▋        | 1/6 [23:48<54:56, 659.31s/it]Best trial: 120. Best value: 0.0562338:  33%|███▎      | 2/6 [23:48<48:16, 724.21s/it]/root/miniconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [4, 8] and step=8, but the range is not divisible by `step`. It will be replaced by [4, 4].
-  warnings.warn(
-/root/miniconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [32, 512] and step=64, but the range is not divisible by `step`. It will be replaced by [32, 480].
-  warnings.warn(
-/root/miniconda3/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [16, 256] and step=32, but the range is not divisible by `step`. It will be replaced by [16, 240].
-  warnings.warn(
-                                                                                      Best trial: 120. Best value: 0.0562338:  33%|███▎      | 2/6 [23:52<48:16, 724.21s/it]                                                                                      Best trial: 120. Best value: 0.0562338:  33%|███▎      | 2/6 [23:52<48:16, 724.21s/it]                                                                                      Best trial: 120. Best value: 0.0562338:  33%|███▎      | 2/6 [23:52<48:16, 724.21s/it]                                                                                      Best trial: 120. Best value: 0.0562338:  33%|███▎      | 2/6 [23:52<48:16, 724.21s/it]                                                                                      Best trial: 120. Best value: 0.0562338:  33%|███▎      | 2/6 [23:53<48:16, 724.21s/it]Seed set to 17
-GPU available: True (cuda), used: True
-TPU available: False, using: 0 TPU cores
-HPU available: False, using: 0 HPUs
-LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [4]
-
-  | Name      | Type    | Params | Mode 
-----------------------------------------------
-0 | model     | Model   | 1.7 M  | train
-1 | criterion | MSELoss | 0      | train
-----------------------------------------------
-1.7 M     Trainable params
-0         Non-trainable params
-1.7 M     Total params
-6.807     Total estimated model params size (MB)
-123       Modules in train mode
-0         Modules in eval mode
-Metric Loss/val improved. New best score: 0.142
-Metric Loss/val improved by 0.019 >= min_delta = 0.0. New best score: 0.123
-Metric Loss/val improved by 0.018 >= min_delta = 0.0. New best score: 0.105
-Metric Loss/val improved by 0.022 >= min_delta = 0.0. New best score: 0.083

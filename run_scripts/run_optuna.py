@@ -6,7 +6,6 @@ import os
 import sqlite3
 import sys
 import time
-import traceback
 from pathlib import Path
 from threading import Lock
 from typing import Dict
@@ -23,8 +22,14 @@ sys.path.append("/data/Pein/Pytorch/Wind-Power-Prediction")
 import pytorch_lightning as pl  # noqa
 
 from exp.pl_exp import WindPowerExperiment
-from run_scripts.single_exp import (prepare_data_module, prepare_output_directory, set_seed,
-                                    setup_device_and_strategy, setup_logging, setup_trainer)
+from run_scripts.single_exp import (
+    prepare_data_module,
+    prepare_output_directory,
+    set_seed,
+    setup_device_and_strategy,
+    setup_logging,
+    setup_trainer,
+)
 from utils.callback import MetricsCallback, OptunaPruningCallback, get_callbacks
 from utils.config import dict_to_namespace, load_config, namespace_to_dict
 from utils.results import custom_test
@@ -98,7 +103,7 @@ hyperparam_path_map = {
         "conv_out_dim": "conv_out_dim",
         "feat_conv_kernel": "feat_conv_kernel",
         "norm_after_dict": "norm_after_dict",
-        "skip_connection_mode": "skip_connection_mode",
+        "skip_connection_mode": "skip_connedsction_mode",
         "conv_norm": "conv_norm",
         "mlp_norm": "mlp_norm",
     },
@@ -111,6 +116,10 @@ hyperparam_path_map = {
     "data_settings": {
         "scale_y_type": "scale_y_type",
         "random_split": "random_split",
+        "val_split": "val_split",
+    },
+    "scheduler_settings": {
+        "weight_decay": "weight_decay",
     },
 }
 
@@ -253,58 +262,58 @@ def _log_metrics(trainer, use_wandb):
 
 def objective(trial, config_path: str, time_str):
     """Objective function for Optuna to minimize."""
-    try:
-        base_config = _load_and_update_config(config_path, trial, time_str)
-        print(f"\nRunning experiment with config:\n{base_config}\n\n")
+    # try:
+    base_config = _load_and_update_config(config_path, trial, time_str)
+    print(f"\nRunning experiment with config:\n{base_config}\n\n")
 
-        (
+    (
+        trainer,
+        wind_power_module,
+        train_dataloader,
+        val_dataloaders,
+        use_wandb,
+        exp_output_dir,
+        version,
+        data_module,
+        base_config,
+    ) = setup_environment(trial, base_config)
+
+    log_file_path = _prepare_logging(base_config)
+
+    with open(log_file_path, "w") as f, contextlib.redirect_stdout(
+        f
+    ), contextlib.redirect_stderr(f):
+        trial_start_time = time.time()
+
+        training_duration = run_training(
+            trainer, wind_power_module, train_dataloader, val_dataloaders
+        )
+        testing_duration = run_custom_test(
             trainer,
             wind_power_module,
-            train_dataloader,
-            val_dataloaders,
-            use_wandb,
-            exp_output_dir,
-            version,
             data_module,
             base_config,
-        ) = setup_environment(trial, base_config)
+            exp_output_dir,
+            version,
+        )
 
-        log_file_path = _prepare_logging(base_config)
+        calculate_total_duration(trial_start_time)
 
-        with open(log_file_path, "w") as f, contextlib.redirect_stdout(
-            f
-        ), contextlib.redirect_stderr(f):
-            trial_start_time = time.time()
+        print(f"Training time of trial: {training_duration:.2f} seconds")
+        print(f"Testing time of trial: {testing_duration:.2f} seconds")
+        print(
+            f"Total time of trial: {training_duration + testing_duration:.2f} seconds"
+        )
 
-            training_duration = run_training(
-                trainer, wind_power_module, train_dataloader, val_dataloaders
-            )
-            testing_duration = run_custom_test(
-                trainer,
-                wind_power_module,
-                data_module,
-                base_config,
-                exp_output_dir,
-                version,
-            )
+    weighted_loss = _log_metrics(trainer, use_wandb)
 
-            calculate_total_duration(trial_start_time)
+    return weighted_loss
 
-            print(f"Training time of trial: {training_duration:.2f} seconds")
-            print(f"Testing time of trial: {testing_duration:.2f} seconds")
-            print(
-                f"Total time of trial: {training_duration + testing_duration:.2f} seconds"
-            )
-
-        weighted_loss = _log_metrics(trainer, use_wandb)
-
-        return weighted_loss
-
-    except Exception:
-        print("Trial failed due to an error:")
-        traceback.print_exc()  # Print the full traceback of the error
-        # Return a very high loss value to signify failure in Optuna
-        return float("inf")
+    # except Exception:
+    #     print("Trial failed due to an error:")
+    #     traceback.print_exc()  # Print the full traceback of the error
+    #     # Return a very high loss value to signify failure in Optuna
+    #     return float("inf")
 
 
 study_lock = Lock()
@@ -365,7 +374,7 @@ def create_study(args):
 def get_pruner(args):
     """Get the appropriate Optuna pruner based on the provided type."""
     if args.pruner_type == "median":
-        return MedianPruner(n_startup_trials=5, n_warmup_steps=25, interval_steps=1)
+        return MedianPruner(n_startup_trials=10, n_warmup_steps=25, interval_steps=1)
     elif args.pruner_type == "hyperband":
         return HyperbandPruner(min_resource=3, max_resource="auto", reduction_factor=3)
     elif args.pruner_type == "successive_halving":
@@ -465,9 +474,9 @@ def main():
     # Generate a time-based seed
     time_seed = int(time.time() * 10000) % 100000
 
-    time_str = "24-08-20-day_hour-minmax"
+    time_str = "24-08-22-seq_8-search"
     study_name = f"{time_str}-farm_66"
-    n_trails = 12 * 0.5
+    n_trails = 24 * 1
     sampler_name = "cma"
     pruner_type = "median"
     args = {
@@ -492,16 +501,16 @@ def suggest_hyperparameters(
     """Suggest hyperparameters using Optuna trial or return search space."""
     search_space = {
         # d_model related parameters
-        "d_model": [16, 256],
-        "hidden_d_model": [16, 32, 48],
+        "d_model": [96],
+        "hidden_d_model": [64],
         "last_d_model": [32, 512],
-        "time_d_model": [4, 32],
-        "pos_d_model": [4, 32],
-        "token_d_model": [4, 8],
+        "time_d_model": [8, 64],
+        "pos_d_model": [16, 64],
+        "token_d_model": [8, 12],
         # Model architecture and layers
-        "e_layers": [2, 8],
-        "token_conv_kernel": [9, 11],
-        "feat_conv_kernel": [9, 11],
+        "e_layers": [3, 6],
+        "token_conv_kernel": [5, 9, 11],
+        "feat_conv_kernel": [5, 9, 11],
         "conv_out_dim": [64, 128, 256],
         # Attention mechanism parameters
         "num_heads": [4, 8],
@@ -511,17 +520,18 @@ def suggest_hyperparameters(
         "norm_type": ["batch", "layer"],
         "dropout": [0.1, 0.15, 0.2],
         "seq_len": [8],
-        "train_epochs": [50],
+        "train_epochs": [40, 50, 60],
         # Parameters to search
-        "learning_rate": [8e-4, 8e-3, 2e-2, 5e-2],  # 8e-4, 1e-3,
-        "batch_size": [1024],
+        "learning_rate": [8e-4, 8e-3, 2e-2],  # 8e-4, 1e-3,
+        "batch_size": [128, 256, 512, 1024],
         "conv_norm": [True],
         "mlp_norm": [True, False],
         "skip_connection_mode": [
             "conv_mlp",
-            "full",
         ],  # "none", "conv_mha", "conv_mlp", "full"
-        "scale_y_type": ["min_max"],  # standard, min_max
+        "scale_y_type": ["standard"],  # standard, min_max
+        "weight_decay": [1e-4, 1e-2],
+        "val_split": [0.1, 0.15, 0.2, 0.25],
     }
 
     if return_search_space:
@@ -607,7 +617,16 @@ def suggest_hyperparameters(
             max(search_space["dropout"]),
             step=0.02,
         ),
+        "weight_decay": trial.suggest_float(
+            "weight_decay",
+            min(search_space["weight_decay"]),
+            max(search_space["weight_decay"]),
+            log=True,
+        ),
         # Categorical suggestions
+        "train_epochs": trial.suggest_categorical(
+            "train_epochs", search_space["train_epochs"]
+        ),
         "combine_type": trial.suggest_categorical(
             "combine_type", search_space["combine_type"]
         ),
@@ -617,9 +636,6 @@ def suggest_hyperparameters(
         "norm_type": trial.suggest_categorical("norm_type", search_space["norm_type"]),
         "batch_size": trial.suggest_categorical(
             "batch_size", search_space["batch_size"]
-        ),
-        "train_epochs": trial.suggest_categorical(
-            "train_epochs", search_space["train_epochs"]
         ),
         "feat_conv_kernel": trial.suggest_categorical(
             "feat_conv_kernel", search_space["feat_conv_kernel"]
@@ -632,6 +648,7 @@ def suggest_hyperparameters(
         "scale_y_type": trial.suggest_categorical(
             "scale_y_type", search_space["scale_y_type"]
         ),
+        "val_split": trial.suggest_categorical("val_split", search_space["val_split"]),
     }
 
     return hyperparams

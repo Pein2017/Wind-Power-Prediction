@@ -54,6 +54,7 @@ def create_exp_settings(args):
         model_settings = args.model_settings
         training_settings = args.training_settings
         data_settings = args.data_settings
+        scheduler_settings = args.scheduler_settings
 
         norm_after_dict = {
             "conv_norm": model_settings.conv_norm,
@@ -63,30 +64,35 @@ def create_exp_settings(args):
         # Round the learning rate to 4 decimal places
         learning_rate_rounded = round(training_settings.learning_rate, 4)
         dropout_rounded = round(model_settings.dropout, 3)
+        weight_decay_rounded = round(scheduler_settings.weight_decay, 4)
 
         # Define the settings dictionary
         settings_dict = {
-            "scale_y": data_settings.scale_y_type,
-            "skip_mode": model_settings.skip_connection_mode,
-            "conv": norm_after_dict["conv_norm"],
-            "mlp": norm_after_dict["mlp_norm"],
-            "use_pos": model_settings.use_pos_enc,
-            "seq_len": model_settings.seq_len,
-            "lr": learning_rate_rounded,
-            "d": model_settings.d_model,
-            "hid_d": model_settings.hidden_d_model,
-            "last_d": model_settings.last_d_model,
-            "tok_d": model_settings.token_d_model,
-            "time_d": model_settings.time_d_model,
-            "pos_d": model_settings.pos_d_model,
-            "e_layers": model_settings.e_layers,
-            "tok_conv_k": model_settings.token_conv_kernel,
-            "conv_out_d": model_settings.conv_out_dim,
-            "feat_conv_k": model_settings.feat_conv_kernel,
-            "dropout": dropout_rounded,
-            "norm_type": model_settings.norm_type,
-            "num_heads": model_settings.num_heads,
-            "bs": training_settings.batch_size,
+            # Data Settings
+            "vs": data_settings.val_split,  # val_split -> vs
+            # Model Architecture Settings
+            "d": model_settings.d_model,  # d_model -> d
+            "hd": model_settings.hidden_d_model,  # hidden_d_model -> hd
+            "ld": model_settings.last_d_model,  # last_d_model -> ld
+            "td": model_settings.token_d_model,  # token_d_model -> td
+            "timed": model_settings.time_d_model,  # time_d_model -> timed
+            "pd": model_settings.pos_d_model,  # pos_d_model -> pd
+            "el": model_settings.e_layers,  # e_layers -> el
+            "nh": model_settings.num_heads,  # num_heads -> nh
+            "cd": model_settings.conv_out_dim,  # conv_out_dim -> cd
+            "tck": model_settings.token_conv_kernel,  # token_conv_kernel -> tck
+            "fck": model_settings.feat_conv_kernel,  # feat_conv_kernel -> fck
+            "nt": model_settings.norm_type,  # norm_type -> nt
+            "sm": model_settings.skip_connection_mode,  # skip_connection_mode -> sm
+            "up": model_settings.use_pos_enc,  # use_pos_enc -> up
+            "sl": model_settings.seq_len,  # seq_len -> sl
+            "mlp": norm_after_dict["mlp_norm"],  # mlp_norm -> mlp
+            # Training Settings
+            "ep": training_settings.train_epochs,  # train_epochs -> ep
+            "bs": training_settings.batch_size,  # batch_size -> bs
+            "lr": learning_rate_rounded,  # learning_rate -> lr
+            "dp": dropout_rounded,  # dropout -> dp
+            "wd": weight_decay_rounded,  # weight_decay -> wd
         }
 
         # Create the exp_settings string

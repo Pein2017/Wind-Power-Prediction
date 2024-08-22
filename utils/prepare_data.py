@@ -29,7 +29,7 @@ if __name__ == "__main__":
         "test_path": test_ori,
         "seq_len": seq_len,
         "batch_size": batch_size,
-        "train_val_split": 0.2,
+        "val_split ": 0.2,
         "scale_x_type": "standard",
         "scale_y_type": "min_max",
         "num_workers": 4,

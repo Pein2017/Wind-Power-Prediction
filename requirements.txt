@@ -6,6 +6,7 @@ alembic
 anyio
 argon2-cffi
 argon2-cffi-bindings
+optuna
 arrow
 async-lru
 async-timeout
@@ -83,6 +84,7 @@ Send2Trash
 sentry-sdk
 setproctitle
 smmap
+seaborn
 sniffio
 soupsieve
 SQLAlchemy
