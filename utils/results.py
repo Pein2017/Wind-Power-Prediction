@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 import torch
 
-from utils.inference import inverse_transform
 from utils.metrics import AccuracyMetricLoss, metric  # noqa
 from utils.tools import visual
 
@@ -116,13 +115,24 @@ def custom_test(
     if plot_scaled:
         plot_results(preds, trues, plot_dir, "scaled")
 
+    # Inverse transform the predictions and true values to the original scale
     if data_module.scaler_y:
-        inversed_preds, inversed_trues = inverse_transform(
-            preds, trues, data_module.scaler_y
-        )
+        # Reshape to 2D array before inverse transforming
+        preds_reshaped = preds.reshape(-1, 1)
+        trues_reshaped = trues.reshape(-1, 1)
+
+        inversed_preds = data_module.inverse_transform(
+            data_module.scaler_y, preds_reshaped, order=data_module.y_transform_order
+        ).flatten()  # Flatten back to 1D after inverse transforming
+        inversed_trues = data_module.inverse_transform(
+            data_module.scaler_y, trues_reshaped, order=data_module.y_transform_order
+        ).flatten()  # Flatten back to 1D after inverse transforming
+
+        # Ensure the predictions and true values are non-negative
         inversed_preds = np.maximum(inversed_preds, 0)
         inversed_trues = np.maximum(inversed_trues, 0)
 
+        # Plot the results in the original scale
         plot_results(inversed_preds, inversed_trues, plot_dir, "original")
     else:
         # If no scaler_y, treat preds and trues as original scale

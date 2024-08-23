@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the folder name as a variable
-FOLDER_NAME="24-08-22-seq_8-search"
+FOLDER_NAME="24-08-23-test"
 
 # Define the base directory path
 BASE_DIR="/data/Pein/Pytorch/Wind-Power-Prediction"

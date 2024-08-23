@@ -23,6 +23,7 @@ data_paths:
 
 # Data settings
 data_settings:
+  y_transform_order: 0.333
   val_split : 0.2
   target: "power"
   inverse: true

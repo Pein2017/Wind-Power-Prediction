@@ -117,6 +117,7 @@ hyperparam_path_map = {
         "scale_y_type": "scale_y_type",
         "random_split": "random_split",
         "val_split": "val_split",
+        "y_transform_order": "y_transform_order",
     },
     "scheduler_settings": {
         "weight_decay": "weight_decay",
@@ -474,9 +475,9 @@ def main():
     # Generate a time-based seed
     time_seed = int(time.time() * 10000) % 100000
 
-    time_str = "24-08-22-seq_8-search"
+    time_str = "24-08-23-test"
     study_name = f"{time_str}-farm_66"
-    n_trails = 24 * 1
+    n_trails = 20 * 0.2
     sampler_name = "cma"
     pruner_type = "median"
     args = {
@@ -501,29 +502,29 @@ def suggest_hyperparameters(
     """Suggest hyperparameters using Optuna trial or return search space."""
     search_space = {
         # d_model related parameters
-        "d_model": [96],
+        "d_model": [64],
         "hidden_d_model": [64],
-        "last_d_model": [32, 512],
-        "time_d_model": [8, 64],
-        "pos_d_model": [16, 64],
-        "token_d_model": [8, 12],
+        "last_d_model": [64, 128],
+        "time_d_model": [16],
+        "pos_d_model": [32],
+        "token_d_model": [8],
         # Model architecture and layers
         "e_layers": [3, 6],
-        "token_conv_kernel": [5, 9, 11],
-        "feat_conv_kernel": [5, 9, 11],
-        "conv_out_dim": [64, 128, 256],
+        "token_conv_kernel": [7],
+        "feat_conv_kernel": [11],
+        "conv_out_dim": [64, 128],
         # Attention mechanism parameters
         "num_heads": [4, 8],
         # Miscellaneous fixed parameters
         "combine_type": ["add"],
         "use_pos_enc": [True, False],
-        "norm_type": ["batch", "layer"],
-        "dropout": [0.1, 0.15, 0.2],
+        "norm_type": ["layer"],  # batch, layer
+        "dropout": [0.1],
         "seq_len": [8],
-        "train_epochs": [40, 50, 60],
+        "train_epochs": [60],
         # Parameters to search
         "learning_rate": [8e-4, 8e-3, 2e-2],  # 8e-4, 1e-3,
-        "batch_size": [128, 256, 512, 1024],
+        "batch_size": [1024],
         "conv_norm": [True],
         "mlp_norm": [True, False],
         "skip_connection_mode": [
@@ -531,7 +532,8 @@ def suggest_hyperparameters(
         ],  # "none", "conv_mha", "conv_mlp", "full"
         "scale_y_type": ["standard"],  # standard, min_max
         "weight_decay": [1e-4, 1e-2],
-        "val_split": [0.1, 0.15, 0.2, 0.25],
+        "val_split": [0.2],
+        "y_transform_order": [0.2, 0.3, 0.4, 0.5],
     }
 
     if return_search_space:
@@ -649,6 +651,9 @@ def suggest_hyperparameters(
             "scale_y_type", search_space["scale_y_type"]
         ),
         "val_split": trial.suggest_categorical("val_split", search_space["val_split"]),
+        "y_transform_order": trial.suggest_categorical(
+            "y_transform_order", search_space["y_transform_order"]
+        ),
     }
 
     return hyperparams

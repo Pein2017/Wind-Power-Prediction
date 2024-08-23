@@ -110,6 +110,7 @@ class MetricsCallback(Callback):
             test_loader = trainer.val_dataloaders[1]
             scaler = getattr(trainer, "scaler_y", None)
             scale_y_flag = True if scaler is not None else False
+
             (
                 train_rmse,
                 train_custom_acc,

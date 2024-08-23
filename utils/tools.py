@@ -8,7 +8,7 @@ plt.switch_backend("agg")
 
 
 # Utility function to get the scaler
-def get_scaler(scaler_type):
+def get_skl_scaler(scaler_type):
     if scaler_type == "standard":
         return StandardScaler()
     elif scaler_type == "min_max":
@@ -16,30 +16,6 @@ def get_scaler(scaler_type):
     # Add other scalers here if needed
     else:
         return None
-
-
-# Utility function to fit and transform the data
-def fit_transform(scaler, data):
-    if scaler:
-        return scaler.fit_transform(data)
-    else:
-        return data
-
-
-# Utility function to inverse transform the data
-def inverse_transform(scaler, data):
-    if scaler:
-        return scaler.inverse_transform(data)
-    else:
-        return data
-
-
-# Utility function to transform the data using the fitted scaler
-def transform(scaler, data):
-    if scaler:
-        return scaler.transform(data)
-    else:
-        return data
 
 
 def visual(true, preds=None, name_base="./pic/test", skip_plot=False):
