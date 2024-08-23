@@ -163,7 +163,9 @@ class WindPowerDataModule(LightningDataModule):
 
 class YPowerScaler:
     """
-    Transform the order of Y first and then apply sklearn scaler
+    Handles scaling for both X and Y:
+    - For Y: Applies a power transformation if y_transform_order is set, followed by sklearn scaling.
+    - For X: Applies only sklearn scaling.
     """
 
     def __init__(self, scaler=None, y_transform_order=None):
@@ -171,29 +173,41 @@ class YPowerScaler:
         self.y_transform_order = y_transform_order
 
     def fit(self, data):
-        """Fit the scaler to the data after applying the power transformation."""
+        """
+        Fit the scaler to the data.
+        - For Y: Apply power transformation first if y_transform_order is set, then fit the scaler.
+        - For X: Directly fit the scaler.
+        """
         if self.y_transform_order is not None:
-            data = data**self.y_transform_order  # Apply the power transformation
+            data = data**self.y_transform_order  # Apply the power transformation to Y
         if self.scaler:
-            self.scaler.fit(data)  # Fit the scaling
+            self.scaler.fit(data)  # Fit the scaler to the transformed Y or original X
         return self
 
     def transform(self, data):
-        """Transform the data using the fitted scaler."""
+        """
+        Transform the data using the fitted scaler.
+        - For Y: Apply power transformation first if y_transform_order is set, then scale.
+        - For X: Directly scale the data.
+        """
         if self.y_transform_order is not None:
-            data = data**self.y_transform_order  # Apply the power transformation
+            data = data**self.y_transform_order  # Apply the power transformation to Y
         if self.scaler:
-            data = self.scaler.transform(data)  # Apply the scaling
+            data = self.scaler.transform(data)  # Scale the transformed Y or original X
         return data
 
     def inverse_transform(self, data):
-        """Inverse transform the data back to the original scale."""
+        """
+        Inverse transform the data back to the original scale.
+        - For Y: Inverse scale first, then reverse the power transformation if y_transform_order is set.
+        - For X: Directly inverse scale the data.
+        """
         if self.scaler:
-            data = self.scaler.inverse_transform(data)  # Inverse the scaling
+            data = self.scaler.inverse_transform(data)  # Inverse scale
         if self.y_transform_order is not None:
             data = data ** (
                 1 / self.y_transform_order
-            )  # Reverse the power transformation
+            )  # Reverse the power transformation for Y
         return data
 
 

@@ -477,7 +477,7 @@ def main():
 
     time_str = "24-08-23-test"
     study_name = f"{time_str}-farm_66"
-    n_trails = 20 * 0.2
+    n_trails = 20 * 1
     sampler_name = "cma"
     pruner_type = "median"
     args = {
@@ -531,9 +531,9 @@ def suggest_hyperparameters(
             "conv_mlp",
         ],  # "none", "conv_mha", "conv_mlp", "full"
         "scale_y_type": ["standard"],  # standard, min_max
-        "weight_decay": [1e-4, 1e-2],
+        "weight_decay": [1e-4],
         "val_split": [0.2],
-        "y_transform_order": [0.2, 0.3, 0.4, 0.5],
+        "y_transform_order": [0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6],
     }
 
     if return_search_space:

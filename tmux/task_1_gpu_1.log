@@ -1,8 +1,8 @@
-[I 2024-08-23 03:19:36,008] Using an existing study with name '24-08-23-test-farm_66' instead of creating a new one.
+[I 2024-08-23 04:41:55,693] Using an existing study with name '24-08-23-test-farm_66' instead of creating a new one.
 Creating study "24-08-23-test-farm_66" with storage "sqlite:////data/Pein/Pytorch/Wind-Power-Prediction/optuna_results/24-08-23-test/24-08-23-test-farm_66.db?mode=wal"...
-Using sampler cma with seed 56126
-Using sampler : CmaEsSampler, pruner : <optuna.pruners._median.MedianPruner object at 0x7f75a8eb6140>
-  0%|          | 0/4 [00:00<?, ?it/s]/opt/conda/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [4, 8] and step=8, but the range is not divisible by `step`. It will be replaced by [4, 4].
+Using sampler cma with seed 52844
+Using sampler : CmaEsSampler, pruner : <optuna.pruners._median.MedianPruner object at 0x7fb459936110>
+  0%|          | 0/20 [00:00<?, ?it/s]/opt/conda/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [4, 8] and step=8, but the range is not divisible by `step`. It will be replaced by [4, 4].
   warnings.warn(
 Seed set to 17
 GPU available: True (cuda), used: True
@@ -13,17 +13,17 @@ LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
 
   | Name      | Type    | Params | Mode 
 ----------------------------------------------
-0 | model     | Model   | 751 K  | train
+0 | model     | Model   | 901 K  | train
 1 | criterion | MSELoss | 0      | train
 ----------------------------------------------
-751 K     Trainable params
+901 K     Trainable params
 0         Non-trainable params
-751 K     Total params
-3.005     Total estimated model params size (MB)
-103       Modules in train mode
+901 K     Total params
+3.604     Total estimated model params size (MB)
+143       Modules in train mode
 0         Modules in eval mode
-Metric Loss/val improved. New best score: 1.925
-Metric Loss/val improved by 0.008 >= min_delta = 0.0. New best score: 1.918
-Metric Loss/val improved by 0.004 >= min_delta = 0.0. New best score: 1.913
-Metric Loss/val improved by 0.008 >= min_delta = 0.0. New best score: 1.905
-Metric Loss/val improved by 0.061 >= min_delta = 0.0. New best score: 1.844
+Metric Loss/val improved. New best score: 1.600
+Metric Loss/val improved by 0.015 >= min_delta = 0.0. New best score: 1.585
+Metric Loss/val improved by 0.012 >= min_delta = 0.0. New best score: 1.573
+Metric Loss/val improved by 0.026 >= min_delta = 0.0. New best score: 1.547
+Metric Loss/val improved by 0.636 >= min_delta = 0.0. New best score: 0.911

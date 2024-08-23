@@ -1,8 +1,8 @@
-[I 2024-08-23 03:19:46,397] Using an existing study with name '24-08-23-test-farm_66' instead of creating a new one.
+[I 2024-08-23 04:42:06,067] Using an existing study with name '24-08-23-test-farm_66' instead of creating a new one.
 Creating study "24-08-23-test-farm_66" with storage "sqlite:////data/Pein/Pytorch/Wind-Power-Prediction/optuna_results/24-08-23-test/24-08-23-test-farm_66.db?mode=wal"...
-Using sampler cma with seed 59225
-Using sampler : CmaEsSampler, pruner : <optuna.pruners._median.MedianPruner object at 0x7fdcebf0e0e0>
-  0%|          | 0/4 [00:00<?, ?it/s]/opt/conda/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [4, 8] and step=8, but the range is not divisible by `step`. It will be replaced by [4, 4].
+Using sampler cma with seed 56612
+Using sampler : CmaEsSampler, pruner : <optuna.pruners._median.MedianPruner object at 0x7fd9f10ce170>
+  0%|          | 0/20 [00:00<?, ?it/s]/opt/conda/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [4, 8] and step=8, but the range is not divisible by `step`. It will be replaced by [4, 4].
   warnings.warn(
 Seed set to 17
 GPU available: True (cuda), used: True
@@ -13,12 +13,14 @@ LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
 
   | Name      | Type    | Params | Mode 
 ----------------------------------------------
-0 | model     | Model   | 755 K  | train
+0 | model     | Model   | 534 K  | train
 1 | criterion | MSELoss | 0      | train
 ----------------------------------------------
-755 K     Trainable params
+534 K     Trainable params
 0         Non-trainable params
-755 K     Total params
-3.022     Total estimated model params size (MB)
+534 K     Total params
+2.140     Total estimated model params size (MB)
 103       Modules in train mode
 0         Modules in eval mode
+Metric Loss/val improved. New best score: 1.586
+Metric Loss/val improved by 0.002 >= min_delta = 0.0. New best score: 1.584

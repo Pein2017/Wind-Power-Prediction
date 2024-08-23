@@ -1,8 +1,8 @@
-[I 2024-08-23 03:19:39,969] Using an existing study with name '24-08-23-test-farm_66' instead of creating a new one.
+[I 2024-08-23 04:41:59,815] Using an existing study with name '24-08-23-test-farm_66' instead of creating a new one.
 Creating study "24-08-23-test-farm_66" with storage "sqlite:////data/Pein/Pytorch/Wind-Power-Prediction/optuna_results/24-08-23-test/24-08-23-test-farm_66.db?mode=wal"...
-Using sampler cma with seed 95719
-Using sampler : CmaEsSampler, pruner : <optuna.pruners._median.MedianPruner object at 0x7fec83382140>
-  0%|          | 0/4 [00:00<?, ?it/s]/opt/conda/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [4, 8] and step=8, but the range is not divisible by `step`. It will be replaced by [4, 4].
+Using sampler cma with seed 94362
+Using sampler : CmaEsSampler, pruner : <optuna.pruners._median.MedianPruner object at 0x7fdec7236140>
+  0%|          | 0/20 [00:00<?, ?it/s]/opt/conda/envs/Pein_310/lib/python3.10/site-packages/optuna/distributions.py:700: UserWarning: The distribution is specified by [4, 8] and step=8, but the range is not divisible by `step`. It will be replaced by [4, 4].
   warnings.warn(
 Seed set to 17
 GPU available: True (cuda), used: True
@@ -13,13 +13,14 @@ LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [3]
 
   | Name      | Type    | Params | Mode 
 ----------------------------------------------
-0 | model     | Model   | 460 K  | train
+0 | model     | Model   | 676 K  | train
 1 | criterion | MSELoss | 0      | train
 ----------------------------------------------
-460 K     Trainable params
+676 K     Trainable params
 0         Non-trainable params
-460 K     Total params
-1.840     Total estimated model params size (MB)
+676 K     Total params
+2.706     Total estimated model params size (MB)
 83        Modules in train mode
 0         Modules in eval mode
-Metric Loss/val improved. New best score: 1.581
+Metric Loss/val improved. New best score: 1.789
+Metric Loss/val improved by 0.113 >= min_delta = 0.0. New best score: 1.676
