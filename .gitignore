@@ -6,15 +6,21 @@
 *.json
 *.ckpt
 
+*/*/checkpoints/
+
 # Ignore TensorBoard event files
 events.out.tfevents.*
 
 # Ignore __pycache__ directories
 __pycache__/
 
-# Ignore everything under train_log and output directories
+# Ignore everything under result/optuna_results, result/train_log, and result/res_output
 /result/optuna_results/
-/result/res_output/
 /result/train_log/
+/result/res_output/
+
+# Un-ignore specific _result folders and their contents
+!result/res_output/*_result/
+!result/res_output/*_result/**
 
 /.history/
