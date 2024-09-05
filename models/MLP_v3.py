@@ -6,8 +6,12 @@ from typing import List, Optional
 import torch
 import torch.nn as nn
 
-from models.layers.Embed import (PositionalEmbedding, TimeFeatureEmbedding, TokenEmbedding,
-                                 generate_x_mark)
+from models.layers.Embed import (
+    PositionalEmbedding,
+    TimeFeatureEmbedding,
+    TokenEmbedding,
+    generate_x_mark,
+)
 
 level = logging.INFO
 # Create a custom logger
@@ -42,6 +46,7 @@ def get_activation(activation_type: str) -> nn.Module:
     else:
         raise ValueError(f"Unsupported activation_type type: {activation_type}")
 
+
 class InitBlock(nn.Module):
     def __init__(
         self,
@@ -50,7 +55,9 @@ class InitBlock(nn.Module):
         output_dim: int,  # output_dim should be the enter d_model for the stacked network
         pos_d_model: Optional[int] = None,
         time_d_model: Optional[int] = None,
-        time_features: Optional[List] = None,  # Allow None or empty list for time features
+        time_features: Optional[
+            List
+        ] = None,  # Allow None or empty list for time features
         token_conv_kernel: int = 5,
         norm_type: str = "batchnorm",  # Norm type: 'batchnorm' or 'layernorm'
         activation_type: str = "relu",  # Activation type: 'relu', 'gelu', etc.
@@ -427,7 +434,7 @@ class Model(nn.Module):
         super(Model, self).__init__()
 
         # Time features to be used for embedding
-        TIME_FEATURES = ['hour','day']  # "quarter_hour","hour",
+        TIME_FEATURES = ["hour", "day"]  # "quarter_hour","hour",
 
         # Extract configurations from the config
         input_dim = config.input_dim
@@ -499,6 +506,14 @@ class Model(nn.Module):
         )
 
     def forward(self, x, x_mark, x_dec=None, x_dec_mark=None):
+        # check if the x and x_mark contains Nan values
+        if torch.isnan(x).any():
+            logger.error("x contains NaN values")
+            raise ValueError("x contains NaN values")
+        if torch.isnan(x_mark).any():
+            logger.error("x_mark contains NaN values")
+            raise ValueError("x_mark contains NaN values")
+
         # Process input through InitBlock
         x = self.init_block(x, x_mark)  # Shape: [batch, seq_len, conv_out_dim]
         # Pass through stacked blocks

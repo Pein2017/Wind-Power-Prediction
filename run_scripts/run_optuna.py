@@ -10,6 +10,7 @@ from pathlib import Path
 from threading import Lock
 from typing import Dict
 
+import numpy as np  # noqa
 import optuna
 import torch
 from optuna.pruners import HyperbandPruner, MedianPruner, SuccessiveHalvingPruner
@@ -468,16 +469,12 @@ def run_optuna_study(args):
 
 
 def main():
-    import time
-
-    import numpy as np  # noqa
-
     # Generate a time-based seed
     time_seed = int(time.time() * 10000) % 100000
 
-    time_str = "24-08-23-test"
+    time_str = "24-08-25-hid_d-search"
     study_name = f"{time_str}-farm_66"
-    n_trails = 20 * 1
+    n_trails = 25 * 6
     sampler_name = "cma"
     pruner_type = "median"
     args = {
@@ -502,38 +499,38 @@ def suggest_hyperparameters(
     """Suggest hyperparameters using Optuna trial or return search space."""
     search_space = {
         # d_model related parameters
-        "d_model": [64],
-        "hidden_d_model": [64],
-        "last_d_model": [64, 128],
+        "d_model": [256],
+        "hidden_d_model": [32, 512],
+        "last_d_model": [256],
         "time_d_model": [16],
         "pos_d_model": [32],
         "token_d_model": [8],
         # Model architecture and layers
-        "e_layers": [3, 6],
+        "e_layers": [4],
         "token_conv_kernel": [7],
-        "feat_conv_kernel": [11],
-        "conv_out_dim": [64, 128],
+        "feat_conv_kernel": [7],
+        "conv_out_dim": [800],
         # Attention mechanism parameters
         "num_heads": [4, 8],
         # Miscellaneous fixed parameters
         "combine_type": ["add"],
-        "use_pos_enc": [True, False],
-        "norm_type": ["layer"],  # batch, layer
-        "dropout": [0.1],
+        "use_pos_enc": [True],
+        "norm_type": ["batch"],  # batch, layer
+        "dropout": [0.16],
         "seq_len": [8],
-        "train_epochs": [60],
+        "train_epochs": [50],
         # Parameters to search
-        "learning_rate": [8e-4, 8e-3, 2e-2],  # 8e-4, 1e-3,
+        "learning_rate": [1e-3, 8e-3],  # 8e-4, 1e-3,
         "batch_size": [1024],
         "conv_norm": [True],
-        "mlp_norm": [True, False],
+        "mlp_norm": [True],
         "skip_connection_mode": [
             "conv_mlp",
         ],  # "none", "conv_mha", "conv_mlp", "full"
         "scale_y_type": ["standard"],  # standard, min_max
         "weight_decay": [1e-4],
         "val_split": [0.2],
-        "y_transform_order": [0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6],
+        "y_transform_order": [1.44],
     }
 
     if return_search_space:
@@ -607,6 +604,12 @@ def suggest_hyperparameters(
             step=1,
         ),
         # Float suggestions
+        "y_transform_order": trial.suggest_float(
+            "y_transform_order",
+            min(search_space["y_transform_order"]),
+            max(search_space["y_transform_order"]),
+            step=0.02,
+        ),
         "learning_rate": trial.suggest_float(
             "learning_rate",
             min(search_space["learning_rate"]),
@@ -651,23 +654,25 @@ def suggest_hyperparameters(
             "scale_y_type", search_space["scale_y_type"]
         ),
         "val_split": trial.suggest_categorical("val_split", search_space["val_split"]),
-        "y_transform_order": trial.suggest_categorical(
-            "y_transform_order", search_space["y_transform_order"]
-        ),
     }
 
     return hyperparams
 
 
 if __name__ == "__main__":
-    import os
     import time
+    from datetime import timedelta
 
     start_time = time.time()
     main()
     end_time = time.time()
 
-    print(
-        f"Total time taken: {end_time - start_time: 0.4f} seconds, {(end_time - start_time) / 60: 0.2f} minutes"
-    )
+    # Assuming end_time and start_time are in seconds
+    total_seconds = end_time - start_time
+    total_minutes = total_seconds / 60
+
+    # Convert total_seconds to a timedelta object to format it as HH:MM:SS
+    time_taken = str(timedelta(seconds=total_seconds))
+
+    print(f"Total time taken: {time_taken}, {total_minutes: 0.2f} minutes")
     print("Done!")

@@ -1,13 +1,18 @@
 import datetime
 import os
 
+import matplotlib.pyplot as plt
 import optuna
+import pytorch_lightning as pl
+import seaborn as sns
+import torch.nn as nn
 from pytorch_lightning.callbacks import (
     Callback,
     EarlyStopping,
     LearningRateMonitor,
     ModelCheckpoint,
 )
+from torchvision.utils import make_grid
 
 from utils.config import dict_to_namespace
 from utils.inference import full_inference
@@ -71,6 +76,94 @@ def get_callbacks(callback_settings):
         early_stopping_callback,
         checkpoint_callback,
     ]
+
+
+class VisualizeDistsCallback(pl.Callback):
+    def __init__(self, log_every_n_epochs=5):
+        super().__init__()
+        self.log_every_n_epochs = log_every_n_epochs
+
+    def on_epoch_end(self, trainer, pl_module):
+        if trainer.current_epoch % self.log_every_n_epochs == 0:
+            # Use the existing TensorBoard logger
+            writer = trainer.logger.experiment
+            for name, param in pl_module.named_parameters():
+                if any(x in name for x in ["weight", "bias"]):
+                    writer.add_histogram(name, param, global_step=trainer.current_epoch)
+
+
+class VisualizeWeightsCallback(pl.Callback):
+    def __init__(self, log_every_n_epochs=5):
+        super().__init__()
+        self.log_every_n_epochs = log_every_n_epochs
+
+    def on_epoch_end(self, trainer, pl_module):
+        if trainer.current_epoch % self.log_every_n_epochs == 0:
+            # Use the existing TensorBoard logger
+            writer = trainer.logger.experiment
+
+            for name, layer in pl_module.named_modules():
+                if isinstance(layer, nn.Conv1d):
+                    weight = layer.weight.data.cpu()
+                    grid = make_grid(
+                        weight.unsqueeze(1), normalize=True, scale_each=True
+                    )
+                    writer.add_image(
+                        f"{name}_filters", grid, global_step=trainer.current_epoch
+                    )
+
+                elif isinstance(layer, nn.MultiheadAttention):
+                    # Visualize the q_proj_weight as a heatmap (you can extend this for k, v, and out proj as well)
+                    q_weight = layer.q_proj_weight.data.cpu().numpy()
+                    fig, ax = plt.subplots(figsize=(6, 6))
+                    sns.heatmap(q_weight, ax=ax, cmap="viridis")
+                    ax.set_title(f"{name}_q_proj_weight")
+                    writer.add_figure(
+                        f"{name}_q_proj_weight", fig, global_step=trainer.current_epoch
+                    )
+                    plt.close(fig)
+
+                elif isinstance(layer, nn.Linear):
+                    weight = layer.weight.data.cpu().numpy()
+                    fig, ax = plt.subplots(figsize=(6, 6))
+                    sns.heatmap(weight, ax=ax, cmap="viridis")
+                    ax.set_title(f"{name}_weight")
+                    writer.add_figure(
+                        f"{name}_weight", fig, global_step=trainer.current_epoch
+                    )
+                    plt.close(fig)
+
+                elif isinstance(layer, nn.BatchNorm1d) or isinstance(
+                    layer, nn.BatchNorm2d
+                ):
+                    weight = layer.weight.data.cpu().numpy()
+                    bias = layer.bias.data.cpu().numpy()
+                    fig, axs = plt.subplots(1, 2, figsize=(12, 6))
+                    sns.histplot(weight, ax=axs[0], kde=True)
+                    axs[0].set_title(f"{name}_weight_distribution")
+                    sns.histplot(bias, ax=axs[1], kde=True)
+                    axs[1].set_title(f"{name}_bias_distribution")
+                    writer.add_figure(
+                        f"{name}_batchnorm_weight_bias",
+                        fig,
+                        global_step=trainer.current_epoch,
+                    )
+                    plt.close(fig)
+
+                elif isinstance(layer, nn.LayerNorm):
+                    weight = layer.weight.data.cpu().numpy()
+                    bias = layer.bias.data.cpu().numpy()
+                    fig, axs = plt.subplots(1, 2, figsize=(12, 6))
+                    sns.histplot(weight, ax=axs[0], kde=True)
+                    axs[0].set_title(f"{name}_weight_distribution")
+                    sns.histplot(bias, ax=axs[1], kde=True)
+                    axs[1].set_title(f"{name}_bias_distribution")
+                    writer.add_figure(
+                        f"{name}_layernorm_weight_bias",
+                        fig,
+                        global_step=trainer.current_epoch,
+                    )
+                    plt.close(fig)
 
 
 class MetricsCallback(Callback):

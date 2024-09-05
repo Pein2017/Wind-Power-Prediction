@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 import torch
 
-from utils.metrics import AccuracyMetricLoss, metric  # noqa
 from utils.tools import visual
 
 

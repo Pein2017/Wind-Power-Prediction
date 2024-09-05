@@ -1,0 +1,152 @@
+Short name-Original,Short name in csv & netCDF,ID,Long Name,Units
+100u,u100,228246,100 metre U wind component,m/s
+100v,v100,228247,100 metre V wind component,m/s
+10fg,fg10,49,10 metre wind gust since previous post-processing,m/s
+10u,u10,165,10 metre U wind component,m/s
+10v,v10,166,10 metre V wind component,m/s
+200si,si200,228241,200 metre wind speed,m/s
+200u,u200,228239,200 metre U wind component,m/s
+200v,v200,228240,200 metre V wind component,m/s
+2d,d2m,168,2 metre dewpoint temperature,K
+2t,t2m,167,2 metre temperature,K
+asn,asn,32,Snow albedo,(0 - 1)
+bld,bld,145,Boundary layer dissipation,J/m2
+blh,blh,159,Boundary layer height,m
+cape,cape,59, Convective available potential energy,J /kg
+capes,capes,228044,Convective available potential energy shear,m2 /s2
+cbh,cbh,228023,Cloud base height,m
+cdir,cdir,228022,Clear-sky direct solar radiation at surface,J/m2
+ceil,ceil,260109,Ceiling,m
+chnk,chnk,148,Charnock,~
+ci,siconc,31,Sea ice area fraction,(0 - 1)
+cin,cin,228001,Convective inhibition,J /kg
+cl,cl,26,Lake cover,(0 - 1)
+cp,cp,143,Convective precipitation,m
+crr,crr,228218,Convective rain rate,kg/(m2 s)
+csfr,csfr,228220,Convective snowfall rate water equivalent,kg/(m2 s)
+deg0l,deg0l,228024,0 degrees C isothermal level (atm),m
+degm10l,degm10l,228020,-10 degrees C isothermal level (atm),m
+dl,dl,228007,Lake total depth,m
+dsrp,dsrp,47,Direct solar radiation,J/m2
+e,e,182,Evaporation,m of water equivalent
+es,es,44,Snow evaporation,m of water equivalent
+ewss,ewss,180,Eastward turbulent surface stress,N m-2 s
+fal,fal,243,Forecast albedo,(0 - 1)
+fdir,fdir,228021,Total sky direct solar radiation at surface,J/m2
+flsr,flsr,245,Forecast logarithm of surface roughness for heat,~
+fsr,fsr,244,Forecast surface roughness,m
+fzra,fzra,228216,Accumulated freezing rain,m
+gh,gh,156,Geopotential Height,gpm
+gwd,gwd,197,Gravity wave dissipation,J/m2
+hcc,hcc,188,High cloud cover,(0 - 1)
+hcct,hcct,228046,Height of convective cloud top,m
+hwbt0,hwbt0,228047,Height of zero-degree wet-bulb temperature,m
+hwbt1,hwbt1,228048,Height of one-degree wet-bulb temperature,m
+i10fg,i10fg,228029,Instantaneous 10 metre wind gust,m/s
+ie,ie,232,Instantaneous moisture flux,kg/m2 /s
+iews,iews,229,Instantaneous eastward turbulent surface stress,N /m2
+ilspf,ilspf,228217,Instantaneous large-scale surface precipitation fraction,(0 - 1)
+inss,inss,230,Instantaneous northward turbulent surface stress,N/m2
+ishf,ishf,231,Instantaneous surface sensible heat flux,W/m2
+istl1,istl1,35,Ice temperature layer 1,K
+istl2,istl2,36,Ice temperature layer 2,K
+istl3,istl3,37,Ice temperature layer 3,K
+istl4,istl4,38,Ice temperature layer 4,K
+kx,kx,260121,K index,K
+lblt,lblt,228010,Lake bottom temperature,K
+lcc,lcc,186,Low cloud cover, (0 - 1)
+lgws,lgws,195,Eastward gravity wave surface stress,N m-2 s
+licd,licd,228014,Lake ice total depth,m
+lict,lict,228013,Lake ice surface temperature,K
+litoti,litoti,228050,Instantaneous total lightning flash density,km2 /day
+lmld,lmld,228009,Lake mix-layer depth,m
+lmlt,lmlt,228008,Lake mix-layer temperature,K
+lshf,lshf,228012,Lake shape factor,dimensionless
+lspf,lspf,50,Large-scale precipitation fraction,s
+lsp,lsp,142,Large-scale precipitation,m
+lsrr,lsrr,228219,Large scale rain rate,kg/m2 /s
+lssfr,lssfr,228221,Large scale snowfall rate water equivalent,kg/m2 /s
+ltlt,ltlt,228011,Lake total layer temperature,K
+mcc,mcc,187,Medium cloud cover,(0 - 1)
+mgws,mgws,196,Northward gravity wave surface stress,N m-2 s
+mlcape100,mlcape100,228233,Mixed-layer CAPE in the lowest 100 hPa,J /kg
+mlcape50,mlcape50,228231,Mixed-layer CAPE in the lowest 50 hPa,J /kg
+mlcin100,mlcin100,228234,Mixed-layer CIN in the lowest 100 hPa,J /kg
+mlcin50,mlcin50,228232,Mixed-layer CIN in the lowest 50 hPa,J /kg
+mld,mld,151148,Mixed layer depth,m
+mn2t,mn2t,202,Minimum temperature at 2 metres since previous post-processing,K
+msl,msl,151,Mean sea level pressure,Pa
+mucape,mucape,228235,Most-unstable CAPE,J /kg
+mudlp,mudlp,228237,Departure level of the most unstable parcel expressed as Pressure,Pa
+mx2t,mx2t,201,Maximum temperature at 2 metres since previous post-processing,K
+mxtpr,mxtpr,228226,Maximum total precipitation rate since previous post-processing,kg/m2 /s
+nsss,nsss,181,Northward turbulent surface stress,N m-2 s
+ocu,uoe,151131,Eastward sea water velocity,m/s
+ocv,von,151132,Northward sea water velocity,m/s
+parcs,parcs,20,Clear sky surface photosynthetically active radiation,J/m2
+par,par,58,Photosynthetically active radiation at the surface,J/m2
+pev,pev,228251,Potential evaporation,m
+poolx,totalx,Œ¥’“µΩ,,
+ptype,ptype,260015,Precipitation type,code table (4.201)
+ro,ro,205,Runoff,m
+rsn,rsn,33,Snow density,kg/m3
+sav300,sav300,151175,Average salinity in the upper 300m,psu
+sd,sd,141,Snow depth,m of water equivalent
+sf,sf,144,Snowfall,m of water equivalent
+sithick,sithick,174098,Sea-ice thickness,m
+skt,skt,235,Skin temperature,K
+slhf,slhf,147,Surface latent heat flux,J/m2
+smlt,smlt,45,Snowmelt,m of water equivalent
+so,so,151130,Sea water practical salinity,psu
+sp,sp,134,Surface pressure,Pa
+src,src,198,Skin reservoir content,m of water equivalent
+sro,sro,8,Surface runoff,m
+sshf,sshf,146,Surface sensible heat flux,J/m2
+ssrc,ssrc,210,"Surface net solar radiation, clear sky",J/m2
+ssrdc,ssrdc,228129,Surface solar radiation downward clear-sky,J/m2
+ssrd,ssrd,169,Surface solar radiation downwards,J/m2
+ssr,ssr,176,Surface net solar radiation,J/m2
+ssro,ssro,9,Sub-surface runoff,m
+sst,sst,34,Sea surface temperature,K
+stl1,stl1,139,Soil temperature level 1,K
+stl2,stl2,170,Soil temperature level 2,K
+stl3,stl3,183,Soil temperature level 3,K
+stl4,stl4,236,Soil temperature level 4,K
+strc,strc,211,"Surface net thermal radiation, clear sky",J/m2
+strdc,strdc,228130,Surface thermal radiation downward clear-sky,J/m2
+strd,strd,175,Surface thermal radiation downwards,J/m2
+str,str,177,Surface net thermal radiation,J/m2
+sund,sund,189,Sunshine duration,s
+swvl1,swvl1,39,Volumetric soil water layer 1,m3 /m3
+swvl2,swvl2,40,Volumetric soil water layer 2,m3 /m3
+swvl3,swvl3,41,Volumetric soil water layer 3,m3 /m3
+swvl4,swvl4,42,Volumetric soil water layer 4,m3 /m3
+t20d,t20d,151163,Depth of 20C isotherm,m
+tav300,tav300,151164,Average potential temperature in the upper 300m,°Ê
+tcc,tcc,164,Total cloud cover,(0 - 1)
+tciw,tciw,79,Total column cloud ice water,kg/m2
+tclw,tclw,78,Total column cloud liquid water,kg/m2
+tco3,tco3,206,Total column ozone,kg/m2
+tcrw,tcrw,228089,Total column rain water,kg/m2
+tcslw,tcslw,228088,Total column supercooled liquid water,kg/m2
+tcsw,tcsw,228090,Total column snow water,kg/m2
+tcw,tcw,136,Total column water,kg/m2
+tcwv,tcwv,137,Total column water vapour,kg/m2
+tisr,tisr,212,TOA incident solar radiation,J/m2
+tp,tp,228,Total precipitation,m
+tprate,tprate,260048,Total precipitation rate,kg/m2 /s
+trpp,trpp,228045,Tropopause pressure,Pa
+tsn,tsn,238,Temperature of snow layer,K
+tsrc,tsrc,208,"Top net solar radiation, clear sky",J/m2
+tsr,tsr,178,Top net solar radiation,J/m2
+ttrc,ttrc,209,"Top net thermal radiation, clear sky",J/m2
+ttr,ttr,179,Top net thermal radiation,J/m2
+u10n,u10n,228131,Neutral wind at 10 m u-component,m/s
+uvb,uvb,57,Downward UV radiation at the surface,J/m2
+v10n,v10n,228132,Neutral wind at 10 m v-component,m/s
+vimd,vimd,213,Vertically integrated moisture divergence,kg/m2
+vis,p3020,3020,Visibility,m
+viwve,viwve,162071,Vertical integral of eastward water vapour flux,kg/m2 /s
+viwvn,viwvn,162072,Vertical integral of northward water vapour flux,kg/m2 /s
+zos,zos,151145,Sea surface height,m
+zust,zust,228003,Friction velocity,m/s

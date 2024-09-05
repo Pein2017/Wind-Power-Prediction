@@ -2,6 +2,7 @@ import os
 from argparse import Namespace
 from typing import Union
 
+import numpy as np  # noqa
 import pandas as pd  # noqa
 from pytorch_lightning import LightningDataModule
 from sklearn.model_selection import train_test_split
@@ -74,9 +75,23 @@ class WindPowerDataModule(LightningDataModule):
         train_X = train_data[self.feature_columns].values
         train_y = train_data[["power"]].values
 
+        # Print the distribution of the power among train, val, and test before scaling
+        print("Before scaling:")
+        print(
+            f"Train power mean: {train_y.mean()}, std: {train_y.std()}, min {train_y.min()}, max {train_y.max()}"
+        )
+        print(
+            f'Val power mean: {val_data["power"].mean()}, std: {val_data["power"].std()}, min {val_data["power"].min()}, max {val_data["power"].max()}'
+        )
+        print(
+            f'Test power mean: {test_data["power"].mean()}, std: {test_data["power"].std()}, min {test_data["power"].min()}, max {test_data["power"].max()}'
+        )
+
+        # Fit scalers
         self.scaler_x.fit(train_X)
         self.scaler_y.fit(train_y)
 
+        # Transform data
         self.train_X = self.scaler_x.transform(train_X)
         self.train_y = self.scaler_y.transform(train_y)
         self.val_X = self.scaler_x.transform(val_data[self.feature_columns].values)
@@ -84,6 +99,34 @@ class WindPowerDataModule(LightningDataModule):
         self.test_X = self.scaler_x.transform(test_data[self.feature_columns].values)
         self.test_y = self.scaler_y.transform(test_data[["power"]].values)
 
+        # Print the distribution after scaling
+        print("After scaling:")
+        print(
+            f"Train power mean: {self.train_y.mean()}, std: {self.train_y.std()}, min {self.train_y.min()}, max {self.train_y.max()}"
+        )
+        print(
+            f"Val power mean: {self.val_y.mean()}, std: {self.val_y.std()}, min {self.val_y.min()}, max {self.val_y.max()}"
+        )
+        print(
+            f"Test power mean: {self.test_y.mean()}, std: {self.test_y.std()}, min {self.test_y.min()}, max {self.test_y.max()}"
+        )
+
+        # Inverse transform the scaled data
+        train_y_inversed = self.scaler_y.inverse_transform(self.train_y)
+        val_y_inversed = self.scaler_y.inverse_transform(self.val_y)
+        test_y_inversed = self.scaler_y.inverse_transform(self.test_y)
+
+        # Print the distribution after inverse scaling
+        print("After inverse scaling:")
+        print(
+            f"Train power mean: {train_y_inversed.mean()}, std: {train_y_inversed.std()}, min {train_y_inversed.min()}, max {train_y_inversed.max()}"
+        )
+        print(
+            f"Val power mean: {val_y_inversed.mean()}, std: {val_y_inversed.std()}, min {val_y_inversed.min()}, max {val_y_inversed.max()}"
+        )
+        print(
+            f"Test power mean: {test_y_inversed.mean()}, std: {test_y_inversed.std()}, min {test_y_inversed.min()}, max {test_y_inversed.max()}"
+        )
         self.train_X_mark = train_data[self.time_feature_columns].values
         self.val_X_mark = val_data[self.time_feature_columns].values
         self.test_X_mark = test_data[self.time_feature_columns].values
@@ -178,6 +221,7 @@ class YPowerScaler:
         - For Y: Apply power transformation first if y_transform_order is set, then fit the scaler.
         - For X: Directly fit the scaler.
         """
+        data = data.astype(np.float64)  # Ensure data is in high precision
         if self.y_transform_order is not None:
             data = data**self.y_transform_order  # Apply the power transformation to Y
         if self.scaler:
@@ -190,6 +234,7 @@ class YPowerScaler:
         - For Y: Apply power transformation first if y_transform_order is set, then scale.
         - For X: Directly scale the data.
         """
+        data = data.astype(np.float64)  # Ensure data is in high precision
         if self.y_transform_order is not None:
             data = data**self.y_transform_order  # Apply the power transformation to Y
         if self.scaler:
@@ -202,12 +247,19 @@ class YPowerScaler:
         - For Y: Inverse scale first, then reverse the power transformation if y_transform_order is set.
         - For X: Directly inverse scale the data.
         """
+        data = data.astype(np.float64)  # Ensure data is in high precision
+
+        # Inverse scale the data if a scaler is provided
         if self.scaler:
-            data = self.scaler.inverse_transform(data)  # Inverse scale
+            data = self.scaler.inverse_transform(data)
+
+        # # Truncate data to be positive
+        data = np.maximum(data, 0)
+
+        # Apply the reverse power transformation if y_transform_order is provided
         if self.y_transform_order is not None:
-            data = data ** (
-                1 / self.y_transform_order
-            )  # Reverse the power transformation for Y
+            data = data ** (1 / self.y_transform_order)
+
         return data
 
 

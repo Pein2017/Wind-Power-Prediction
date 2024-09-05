@@ -144,24 +144,6 @@ class WindPowerExperiment(pl.LightningModule):
         # Log all at once
         self.log_dict(log_data, on_epoch=True, on_step=False)
 
-    # def on_train_epoch_end(self):
-    #     if not self.train_losses:
-    #         raise ValueError("No training loss found for epoch end logging.")
-    #     avg_train_loss = self._aggregate_losses(self.train_losses)
-    #     self.avg_train_loss = avg_train_loss
-    #     self.train_losses.clear()
-
-    #     # Log to TensorBoard with truncated value
-    #     truncated_train_loss = self._truncate_loss(avg_train_loss)
-    #     print(f"debug: truncated_train_loss: {truncated_train_loss}")
-    #     self.log(
-    #         "train_loss",
-    #         truncated_train_loss,
-    #         on_epoch=True,
-    #         on_step=False,
-    #         logger=True,
-    #     )
-
     #     # todo check if this is necessary
     #     # # Adjust the learning rate at the end of each epoch
     #     # scheduler = (
