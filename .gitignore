@@ -14,13 +14,15 @@ events.out.tfevents.*
 # Ignore __pycache__ directories
 __pycache__/
 
-# Ignore everything under result/optuna_results, result/train_log, and result/res_output
+# Ignore everything under result/optuna_results and result/train_log
 /result/optuna_results/
 /result/train_log/
-/result/res_output/
 
-# Un-ignore specific _result folders and their contents
+# Ignore everything under result/res_output but keep _result folders and their contents
+/result/res_output/*
 !result/res_output/*_result/
+/result/res_output/*_result/*
 !result/res_output/*_result/**
+
 
 /.history/
