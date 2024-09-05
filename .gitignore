@@ -24,5 +24,4 @@ __pycache__/
 /result/res_output/*_result/*
 !result/res_output/*_result/**
 
-
 /.history/
