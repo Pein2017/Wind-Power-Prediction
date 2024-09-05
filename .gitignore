@@ -1,16 +1,20 @@
 # Ignore everything under the data directory
 /data/
 
-# Ignore all .pth files
 *.pth
 *.db
 *.json
+*.ckpt
+
+# Ignore TensorBoard event files
+events.out.tfevents.*
 
 # Ignore __pycache__ directories
 __pycache__/
 
 # Ignore everything under train_log and output directories
-/train_log/
-/res_output/
+/result/optuna_results/
+/result/res_output/
+/result/train_log/
 
 /.history/
